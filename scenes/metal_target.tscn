@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://ly67c2aajcpn"]
+
+[ext_resource type="Script" uid="uid://xakjkqrf0go8" path="res://scripts/metal_target.gd" id="1_4cdb5"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1kgbs"]
+height = 0.02
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4cdb5"]
+height = 0.02
+
+[node name="StaticBody3D" type="StaticBody3D"]
+script = ExtResource("1_4cdb5")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.481255, 0)
+mesh = SubResource("CylinderMesh_1kgbs")
+skeleton = NodePath("../../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/MetalTarget")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.481255, 0)
+shape = SubResource("CylinderShape3D_4cdb5")
