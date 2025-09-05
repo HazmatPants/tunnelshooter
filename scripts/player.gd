@@ -27,6 +27,8 @@ var look_rotation: Vector2 = Vector2.ZERO
 @onready var right_hand_position: Node3D = $Camera3D/RHandPosition
 @onready var left_hand_position: Node3D = $Camera3D/LHandPosition
 @onready var holster_position: Node3D = $HolsterPosition
+var sprint_rhand_pos: Node3D = Node3D.new()
+var base_rhand_pos
 
 @onready var playerGUI = $"../PlayerGUI"
 
@@ -225,6 +227,10 @@ func footstep_sound(type: String="step", volume: float=0.0):
 		play_random_sfx(sound_list, volume)
 
 func _ready():
+	base_rhand_pos = right_hand_position.transform
+	get_tree().current_scene.call_deferred("add_child", sprint_rhand_pos)
+	sprint_rhand_pos.position = right_hand_position.position
+	sprint_rhand_pos.rotation_degrees = right_hand_position.rotation_degrees + Vector3(0.0, 20.0, -30.0)
 	ap_tinnitus.stream = preload("res://assets/audio/sfx/player/tinnitus.wav")
 	ap_tinnitus.volume_linear = 0.0
 	ap_tinnitus.autoplay = true
@@ -395,9 +401,12 @@ func _physics_process(delta):
 	if health <= 0:
 		die()
 		health = 0.1
-	
+	if sprinting:
+		right_hand_position.transform = lerp(right_hand_position.transform, sprint_rhand_pos.transform, 0.1)
+	else:
+		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.6)
 	if left_hand:
-		left_hand.global_transform = lerp(left_hand.global_transform, left_hand_position.global_transform, 0.6)
+		left_hand.global_transform = lerp(left_hand.global_transform, left_hand_position.global_transform, 0.8)
 
 	if input_enabled:
 		if Input.is_action_just_pressed("eject_mag"):

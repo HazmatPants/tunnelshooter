@@ -34,7 +34,6 @@ size = Vector3(0.02, 2, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63018, 0)
 bobbing_amount = 0.01
 sprint_bobbing_amount = 0.02
-equipment = []
 
 [node name="PlayerGUI" parent="." instance=ExtResource("2_0wfyh")]
 
@@ -43,6 +42,9 @@ environment = SubResource("Environment_sugp2")
 
 [node name="SteamAudioConfig" type="SteamAudioConfig" parent="."]
 max_reflection_sources = 256.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.832873, 2.41927e-08, -0.553464, 0.553464, -3.6406e-08, 0.832873, 0, -1, -4.37114e-08, 0, 4.48028, 0)
 
 [node name="SS320" parent="." instance=ExtResource("1_sugp2")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.0272406, 1.15955, -1.54484)
@@ -72,9 +74,6 @@ shape = SubResource("BoxShape3D_0wfyh")
 mesh = SubResource("BoxMesh_sugp2")
 
 [node name="SteamAudioGeometry" type="SteamAudioGeometry" parent="StaticBody3D2/MeshInstance3D"]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.11303, 0.993592, 0, -0.993592, -0.11303, 0, 4.48028, 0)
 
 [node name="Target" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -2.38419e-07, 2.01111, -10.266)

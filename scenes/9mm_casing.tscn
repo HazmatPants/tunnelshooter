@@ -1,9 +1,13 @@
-[gd_scene load_steps=10 format=4 uid="uid://bpe6k1skr476b"]
+[gd_scene load_steps=11 format=4 uid="uid://bpe6k1skr476b"]
 
 [ext_resource type="Texture2D" uid="uid://bk0p22nkddrrw" path="res://assets/models/9mm_casing_Image_0.png" id="1_b6mm6"]
 [ext_resource type="Script" uid="uid://dm43udmtlc65k" path="res://scripts/casing.gd" id="1_uxv1h"]
 [ext_resource type="Texture2D" uid="uid://bw4xjx4bu766v" path="res://assets/models/9mm_casing_Image_1.png" id="2_uxv1h"]
 [ext_resource type="Texture2D" uid="uid://ugk24epsurr1" path="res://assets/models/9mm_casing_Image_2.png" id="3_daqbj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uxv1h"]
+friction = 0.5
+bounce = 0.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crp7t"]
 resource_name = "TT_checker_4096x4096_UV_GRID.001"
@@ -59,6 +63,7 @@ height = 0.02
 radius = 0.006
 
 [node name="RigidBody3D" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_uxv1h")
 script = ExtResource("1_uxv1h")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
