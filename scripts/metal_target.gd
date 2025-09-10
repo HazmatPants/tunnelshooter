@@ -15,7 +15,7 @@ const sfx_hit := [
 	preload("res://assets/audio/sfx/physics/metal_target/metal_hit_tonal_5.wav")
 ]
 
-func hit():
+func hit(_bullet: Node3D):
 	is_hit = true
 	play_random_sfx(sfx_hit, 16)
 	$CollisionShape3D.disabled = true

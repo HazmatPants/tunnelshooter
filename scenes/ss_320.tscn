@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://bd4siua5myuh0"]
+[gd_scene load_steps=30 format=4 uid="uid://bd4siua5myuh0"]
 
 [ext_resource type="Script" uid="uid://cc4iweqokmawh" path="res://scripts/gun.gd" id="1_8p8bs"]
 [ext_resource type="Texture2D" uid="uid://taj2mkpf6yxi" path="res://assets/models/ss320_Image_0.png" id="1_mecvt"]
@@ -235,21 +235,21 @@ length = 0.001
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.000477194, 1)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -260,21 +260,46 @@ length = 0.3
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.1, 1, -0.01, 0, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.000477194, 1, 0.1, 1, -0.0473609, -0.116238, 0.367522, 0.921506, 0.133333, 1, -0.0483846, -0.115815, 0.359378, 0.924712)
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.000477194, 1, 0.1, 1, 0.0208016, 0.0546267, 0.369977, 0.9272, 0.133333, 1, 0.0215964, 0.0543174, 0.356409, 0.9325)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
+
+[sub_resource type="Animation" id="Animation_1h7jo"]
+resource_name = "inspect_to_pull"
+length = 0.3
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gun/Slide")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -0.01, 0, 0, 0.133333, 1, -0.023, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Gun")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.0215964, 0.0543174, 0.356409, 0.9325, 0.133333, 1, 0.0332864, 0.04805, 0.136998, 0.988845)
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -285,7 +310,7 @@ length = 0.1
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0.000343574, 1, -0.0289344, -2.76119e-05, 0, 0.0599911, 1, 0, 0, 0)
@@ -296,21 +321,21 @@ length = 0.3
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.1, 1, -0.0304024, -2.90126e-05, 0)
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.1, 1, -0.025, 0, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.000477194, 1, 0.1, 1, 0.0314764, 0.0573902, 0.240628, 0.968408, 0.166667, 1, 0.0336955, 0.0561161, 0.202594, 0.977073)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -321,21 +346,21 @@ length = 0.3
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, -0.0260909, -2.90126e-05, 0, 0.1, 1, -0.0304024, -2.90126e-05, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.000477194, 1, 0.1, 1, 0.0314764, 0.0573902, 0.240628, 0.968408, 0.166667, 1, 0.0336955, 0.0561161, 0.202594, 0.977073)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -345,21 +370,21 @@ resource_name = "slideforward"
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, -0.0304024, -2.90126e-05, 0, 0.0666667, 1, 0, 0, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0.0336955, 0.0561161, 0.202594, 0.977073, 0.133333, 1, 0, 0, -0.0648458, 0.997895, 0.266667, 1, 0, 0, 0, 1)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -369,21 +394,21 @@ resource_name = "slidelock"
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, -0.0304024, -2.90126e-05, 0, 0.0666667, 1, -0.0260909, -2.90126e-05, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0.0336955, 0.0561161, 0.202594, 0.977073, 0.133333, 1, 0, 0, -0.0648458, 0.997895, 0.266667, 1, 0, 0, 0, 1)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -393,21 +418,21 @@ resource_name = "sliderelease"
 tracks/0/type = "position_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("320/Slide")
+tracks/0/path = NodePath("Gun/Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, -0.0304024, -2.90126e-05, 0, 0.0666667, 1, 0, 0, 0)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("320")
+tracks/1/path = NodePath("Gun")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.0666667, 1, 0, 0, -0.0648458, 0.997895, 0.133333, 1, 0, 0, 0, 1)
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("320")
+tracks/2/path = NodePath("Gun")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
@@ -416,6 +441,7 @@ tracks/2/keys = PackedFloat32Array(0, 1, -0.00983862, -0.041509, 0)
 _data = {
 &"RESET": SubResource("Animation_i80ub"),
 &"inspect": SubResource("Animation_50tbr"),
+&"inspect_to_pull": SubResource("Animation_1h7jo"),
 &"shoot": SubResource("Animation_8p8bs"),
 &"slideback": SubResource("Animation_o4etu"),
 &"slidebacklock": SubResource("Animation_xdhax"),
@@ -428,54 +454,54 @@ _data = {
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 script = ExtResource("1_8p8bs")
 
-[node name="320" type="Node3D" parent="."]
+[node name="Gun" type="Node3D" parent="."]
 transform = Transform3D(0.999999, 0.000954387, 0, -0.000954387, 0.999999, 0, 0, 0, 1, -0.00983862, -0.041509, 0)
 
-[node name="Object_14" type="MeshInstance3D" parent="320"]
+[node name="Object_14" type="MeshInstance3D" parent="Gun"]
 mesh = SubResource("ArrayMesh_nuyb4")
 skeleton = NodePath("")
 
-[node name="Round" type="Node3D" parent="320"]
+[node name="Round" type="Node3D" parent="Gun"]
 transform = Transform3D(1.12574e-07, 0.945, 0, -0.945, 1.12574e-07, 0, 0, 0, 0.945, 0.0312831, 0.0967994, 0)
 
-[node name="Object_18" type="MeshInstance3D" parent="320/Round"]
+[node name="Object_18" type="MeshInstance3D" parent="Gun/Round"]
 mesh = SubResource("ArrayMesh_bamfy")
 skeleton = NodePath("")
 
-[node name="Slide" type="Node3D" parent="320"]
+[node name="Slide" type="Node3D" parent="Gun"]
 
-[node name="Object_16" type="MeshInstance3D" parent="320/Slide"]
+[node name="Object_16" type="MeshInstance3D" parent="Gun/Slide"]
 mesh = SubResource("ArrayMesh_gwvis")
 skeleton = NodePath("")
 
-[node name="Cylinder" type="MeshInstance3D" parent="320/Slide"]
+[node name="Cylinder" type="MeshInstance3D" parent="Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, 0.140412, 0.109818, 0)
 mesh = SubResource("ArrayMesh_eixqn")
 skeleton = NodePath("")
 
-[node name="Cylinder_001" type="MeshInstance3D" parent="320/Slide"]
+[node name="Cylinder_001" type="MeshInstance3D" parent="Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, -0.00804708, 0.109677, -0.001946)
 mesh = SubResource("ArrayMesh_b05p5")
 skeleton = NodePath("")
 
-[node name="Cylinder_002" type="MeshInstance3D" parent="320/Slide"]
+[node name="Cylinder_002" type="MeshInstance3D" parent="Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, -0.00804708, 0.109677, 0.001946)
 mesh = SubResource("ArrayMesh_t3423")
 skeleton = NodePath("")
 
-[node name="Magazine" type="Node3D" parent="320"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00411561, -0.00480536, 0)
+[node name="Magazine" type="Node3D" parent="Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00132797, -0.00152212, 0)
 
-[node name="MagazineInsert" type="Node3D" parent="320"]
+[node name="MagazineInsert" type="Node3D" parent="Gun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0108295, -0.159705, 0)
 
-[node name="LaserRay" type="RayCast3D" parent="320"]
+[node name="LaserRay" type="RayCast3D" parent="Gun"]
 transform = Transform3D(1, -0.000954392, 0, 0.000954392, 1, 0, 0, 0, 1, 0.152215, 0.0784018, 0)
 target_position = Vector3(30, 0, 0)
 debug_shape_custom_color = Color(0, 1, 0, 1)
 debug_shape_thickness = 1
 
-[node name="MuzzleRay" type="RayCast3D" parent="320"]
+[node name="MuzzleRay" type="RayCast3D" parent="Gun"]
 transform = Transform3D(1, -0.000954392, 0, 0.000954392, 1, 0, 0, 0, 1, 0.152196, 0.0982428, 0)
 target_position = Vector3(30, 0, 0)
 debug_shape_thickness = 1

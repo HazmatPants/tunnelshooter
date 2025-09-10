@@ -34,6 +34,7 @@ size = Vector3(0.02, 2, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63018, 0)
 bobbing_amount = 0.01
 sprint_bobbing_amount = 0.02
+equipment = []
 
 [node name="PlayerGUI" parent="." instance=ExtResource("2_0wfyh")]
 
@@ -44,7 +45,7 @@ environment = SubResource("Environment_sugp2")
 max_reflection_sources = 256.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.832873, 2.41927e-08, -0.553464, 0.553464, -3.6406e-08, 0.832873, 0, -1, -4.37114e-08, 0, 4.48028, 0)
+transform = Transform3D(0.763417, -0.399789, -0.507309, 0.553464, -3.6406e-08, 0.832873, -0.332974, -0.916607, 0.221269, 0, 4.48028, 0)
 
 [node name="SS320" parent="." instance=ExtResource("1_sugp2")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.0272406, 1.15955, -1.54484)
@@ -114,4 +115,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.42674, 1.61841, -28.7085)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5604, 1.61841, -28.7085)
 
 [node name="MetalTarget10" parent="." instance=ExtResource("5_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.552, 1.61841, -28.7085)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.2169, 1.61841, -28.7085)
+
+[node name="MetalTarget11" parent="." instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8986, 1.61841, -67.2311)
+
+[node name="MetalTarget12" parent="." instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.70361, 1.61841, -67.2311)

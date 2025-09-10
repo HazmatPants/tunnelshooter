@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ly67c2aajcpn"]
+[gd_scene load_steps=5 format=3 uid="uid://ly67c2aajcpn"]
 
 [ext_resource type="Script" uid="uid://xakjkqrf0go8" path="res://scripts/metal_target.gd" id="1_4cdb5"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4cdb5"]
+metallic = 1.0
+roughness = 0.65
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_1kgbs"]
+material = SubResource("StandardMaterial3D_4cdb5")
 height = 0.02
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_4cdb5"]

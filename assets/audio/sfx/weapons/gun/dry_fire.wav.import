@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://b42vvxpmwb6hc"
-path="res://.godot/imported/dry_fire.wav-96179fba382e1364e1319b41525b06ce.sample"
+path="res://.godot/imported/dry_fire.wav-ed24844332c3a9eb469c8bb8b834efd8.sample"
 
 [deps]
 
-source_file="res://assets/audio/sfx/gun/dry_fire.wav"
-dest_files=["res://.godot/imported/dry_fire.wav-96179fba382e1364e1319b41525b06ce.sample"]
+source_file="res://assets/audio/sfx/weapons/gun/dry_fire.wav"
+dest_files=["res://.godot/imported/dry_fire.wav-ed24844332c3a9eb469c8bb8b834efd8.sample"]
 
 [params]
 

@@ -1,12 +1,12 @@
 extends Node3D
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var muzzleRay: RayCast3D = $"320/MuzzleRay"
+@onready var muzzleRay: RayCast3D = $"Gun/MuzzleRay"
 @onready var casingPos: Node3D = $CasePos
-@onready var magPos: Node3D = $"320/Magazine"
-@onready var magInsertPos: Node3D = $"320/MagazineInsert"
+@onready var magPos: Node3D = $"Gun/Magazine"
+@onready var magInsertPos: Node3D = $"Gun/MagazineInsert"
 
-@onready var laserRay: RayCast3D = $"320/LaserRay"
+@onready var laserRay: RayCast3D = $"Gun/LaserRay"
 @onready var laserPoint: Decal = $LaserPoint
 
 var ammo_label: Label
@@ -20,11 +20,11 @@ var holster := true
 var muzzleflash = preload("res://scenes/muzzleflash.tscn")
 var casing = preload("res://scenes/9mm_casing.tscn")
 
-const sfx_dryfire := preload("res://assets/audio/sfx/gun/dry_fire.wav")
+const sfx_dryfire := preload("res://assets/audio/sfx/weapons/gun/dry_fire.wav")
 const sfx_shoot := [
-	preload("res://assets/audio/sfx/gun/gun_fire_1.wav"),
-	preload("res://assets/audio/sfx/gun/gun_fire_2.wav"),
-	preload("res://assets/audio/sfx/gun/gun_fire_3.wav")
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_2.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_3.wav")
 ]
 
 const sfx_holster := [
@@ -41,29 +41,31 @@ const sfx_unholster := [
 ]
 
 const sfx_slideback := [
-	preload("res://assets/audio/sfx/gun/slide_back_1.wav"),
-	preload("res://assets/audio/sfx/gun/slide_back_2.wav")
+	preload("res://assets/audio/sfx/weapons/gun/slide_back_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/slide_back_2.wav")
 ]
 const sfx_slideforward := [
-	preload("res://assets/audio/sfx/gun/slide_release_1.wav"),
-	preload("res://assets/audio/sfx/gun/slide_release_2.wav"),
-	preload("res://assets/audio/sfx/gun/slide_release_3.wav")
+	preload("res://assets/audio/sfx/weapons/gun/slide_release_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/slide_release_2.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/slide_release_3.wav")
 ]
-const sfx_slidehit := preload("res://assets/audio/sfx/gun/slide_lock_hit.wav")
+const sfx_slidehit := preload("res://assets/audio/sfx/weapons/gun/slide_lock_hit.wav")
 
 const sfx_mag_out := [
-	preload("res://assets/audio/sfx/gun/mag_out_1.wav"),
-	preload("res://assets/audio/sfx/gun/mag_out_2.wav")
+	preload("res://assets/audio/sfx/weapons/gun/mag_out_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/mag_out_2.wav")
 ]
 const sfx_mag_in := [
-	preload("res://assets/audio/sfx/gun/mag_in_1.wav"),
-	preload("res://assets/audio/sfx/gun/mag_in_2.wav")
+	preload("res://assets/audio/sfx/weapons/gun/mag_in_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/mag_in_2.wav")
 ]
 const sfx_mag_insert := [
-	preload("res://assets/audio/sfx/gun/insert_mag_1.wav"),
-	preload("res://assets/audio/sfx/gun/insert_mag_2.wav"),
-	preload("res://assets/audio/sfx/gun/insert_mag_3.wav")
+	preload("res://assets/audio/sfx/weapons/gun/insert_mag_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/insert_mag_2.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/insert_mag_3.wav")
 ]
+
+var bullet = preload("res://scenes/bullet.tscn")
 
 var magazine: RigidBody3D = preload("res://scenes/magazine.tscn").instantiate()
 var chamber: bool = false
@@ -132,7 +134,7 @@ func _process(_delta: float) -> void:
 						playsound(sfx_dryfire)
 						anim.play("shoot")
 						chamber = false
-						playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 16)
+						playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 18)
 						if not "ear-pro" in Global.player.equipment:
 							Global.player.damage_ears(0.002)
 
@@ -150,7 +152,7 @@ func _process(_delta: float) -> void:
 
 						Global.player.look_rotation += Vector2(
 							randf_range(-0.1, 0.1), 
-							randf_range(-0.1, 0.1)
+							randf_range(0.1, 0.2)
 						)
 						Global.player.viewpunch_rotation += Vector3(
 							randf_range(-1.0, 1.0), 
@@ -172,8 +174,8 @@ func _process(_delta: float) -> void:
 						if hammer:
 							playsound(sfx_dryfire)
 							hammer = false
-							hrecoil += 0.01
-							recoil += -0.01
+							hrecoil += randf_range(-0.01, 0.01)
+							recoil += randf_range(-0.01, 0.01)
 		if not holster:
 			if Input.is_action_just_pressed("pullslide"): 
 				if not Input.is_action_pressed("slidelock"):
@@ -189,7 +191,7 @@ func _process(_delta: float) -> void:
 						spawn_casing()
 						chamber = false
 			if Input.is_action_just_released("pullslide"):
-				recoil -= 0.1
+				recoil -= 0.2
 				if magazine:
 					if magazine.ammo <= 0:
 						anim.play("slidelock")
@@ -202,6 +204,7 @@ func _process(_delta: float) -> void:
 					slidelock = true
 				else:
 					anim.play("slideforward")
+					recoil -= 0.2
 					play_random_sfx(sfx_slideforward)
 					if not first_input == "slidelock":
 						if magazine:
@@ -220,7 +223,8 @@ func _process(_delta: float) -> void:
 							chamber = true
 			if Input.is_action_just_released("slidelock"):
 				if Input.is_action_pressed("pullslide"):
-					anim.play("slideback")
+					anim.play("inspect_to_pull")
+					play_random_sfx(sfx_slideback)
 					hammer = true
 					if chamber:
 						spawn_casing()
@@ -230,7 +234,7 @@ func _process(_delta: float) -> void:
 							magazine.ammo -= 1
 							chamber = true
 			if Input.is_action_just_pressed("eject_mag"):
-				if magazine:
+				if magazine and magAction == "none":
 					play_random_sfx(sfx_mag_out)
 					magAction = "eject"
 					recoil += 0.05
@@ -267,11 +271,11 @@ func _process(_delta: float) -> void:
 			if not Input.is_action_pressed("slidelock") and not Input.is_action_pressed("pullslide"):
 				first_input = ""
 					
-		$"320/Round".visible = chamber
+		$"Gun/Round".visible = chamber
 
 		if magazine:
 			if magazine.ammo == magazine.maximum and chamber:
-				ammo_label.text = str(magazine.ammo) + "+1" 
+				ammo_label.text = str(magazine.ammo) + "+1"
 			else:
 				ammo_label.text = str(magazine.ammo + 1 if chamber else magazine.ammo)
 		else:
@@ -285,7 +289,7 @@ func playsound(stream: AudioStream, volume: float=0):
 	var ap = AudioStreamPlayer3D.new()
 	ap.max_db = volume
 	get_tree().current_scene.add_child(ap)
-	ap.global_transform = muzzleRay.global_transform
+	ap.global_transform = global_transform
 	ap.stream = stream
 	ap.bus = "SFX"
 	ap.play()
@@ -293,32 +297,10 @@ func playsound(stream: AudioStream, volume: float=0):
 	ap.queue_free()
 
 func shoot_bullet():
-	var ray := muzzleRay
-	if !ray.is_colliding():
-		return
+	var b = bullet.instantiate()
 	
-	var collider = ray.get_collider()
-	
-	if collider.has_method("hit"):
-		collider.hit()
-
-	var pos := ray.get_collision_point()
-	var n := ray.get_collision_normal().normalized()
-
-	var decal := Decal.new()
-	get_tree().current_scene.add_child(decal)
-	decal.texture_albedo = preload("res://assets/textures/decals/bullet_hole.png")
-	var up := n
-	var right := up.cross(Vector3.FORWARD)
-	if right.length() < 0.001:
-		right = up.cross(Vector3.RIGHT)
-	right = right.normalized()
-	var forward := right.cross(up).normalized()
-
-	var decalbasis := Basis(right, up, forward)
-
-	decal.global_transform = Transform3D(decalbasis, pos + n * 0.01)
-	decal.size = Vector3(0.05, 0.5, 0.05)
+	get_tree().current_scene.call_deferred("add_child", b)
+	b.global_transform = muzzleRay.global_transform
 
 func spawn_casing():
 	var case: RigidBody3D = casing.instantiate()
