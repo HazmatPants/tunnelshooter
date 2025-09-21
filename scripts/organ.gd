@@ -15,13 +15,29 @@ const sfx_flesh_hit := [
 func hit(_bullet):
 	if isHeart:
 		Global.player.healthCtl.heartRate = 0
+		Global.player.healthCtl.organs["Heart"] = false
 		Global.player.healthCtl.add_affliction("cardiacArrest", 100)
+		Global.player.healthCtl.add_affliction("heartPierced", 100)
+	if isLung:
+		Global.player.healthCtl.organs[name] = false
+		if name == "LLung":
+			if Global.player.healthCtl.organs["RLung"]:
+				Global.player.healthCtl.bloodOxygen /= 2
+				Global.player.healthCtl.add_affliction("lungCollapsed", 1)
+			else:
+				Global.player.healthCtl.add_affliction("respiratoryFailure", 1)
+		if name == "RLung":
+			if Global.player.healthCtl.organs["LLung"]:
+				Global.player.healthCtl.bloodOxygen /= 2
+				Global.player.healthCtl.add_affliction("lungCollapsed", 1)
+			else:
+				Global.player.healthCtl.add_affliction("respiratoryFailure", 1)
 
 	Global.player.healthCtl.Limbs["Thorax"].bleedingRate += randf_range(5.0, 10.0)
 	Global.player.healthCtl.Limbs["Thorax"].pain += randf_range(0.1, 0.4)
 	Global.player.healthCtl.Limbs["Thorax"].muscleHealth -= randf_range(0.01, 0.1)
 	Global.player.healthCtl.Limbs["Thorax"].skinHealth -= randf_range(0.01, 0.3)
-	play_random_sfx(sfx_flesh_hit, 15)
+	play_random_sfx(sfx_flesh_hit, 24)
 	Global.player.viewpunch_velocity += Vector3(200.0, 0, 0)
 
 func play_random_sfx(sound_list, volume: float=0):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b6e7d6pfq0oyt"]
+[gd_scene load_steps=27 format=3 uid="uid://b6e7d6pfq0oyt"]
 
 [ext_resource type="Script" uid="uid://dy7uicypdd4mx" path="res://scripts/playerFB.gd" id="1_oxfux"]
 [ext_resource type="Script" uid="uid://dvqi222awr8qj" path="res://scripts/damage_ctl.gd" id="2_j0tbg"]
@@ -41,6 +41,9 @@ size = Vector3(0.485, 0.355, 0.315)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ovmo4"]
 size = Vector3(0.14, 0.175, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_320lh"]
+size = Vector3(0.14, 0.215, 0.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_koaa2"]
 size = Vector3(0.49, 0.385, 0.315)
@@ -173,6 +176,24 @@ isHeart = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Thorax/Heart"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0354093, 0.0311354, -0.0663726)
 shape = SubResource("BoxShape3D_ovmo4")
+
+[node name="LLung" type="StaticBody3D" parent="Thorax"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.118697, -0.0183763, 0)
+script = ExtResource("5_ox7cw")
+isLung = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Thorax/LLung"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0354093, 0.0311354, -0.0663726)
+shape = SubResource("BoxShape3D_320lh")
+
+[node name="RLung" type="StaticBody3D" parent="Thorax"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, -0.018, 0)
+script = ExtResource("5_ox7cw")
+isLung = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Thorax/RLung"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0354093, 0.0311354, -0.0663726)
+shape = SubResource("BoxShape3D_320lh")
 
 [node name="Abdomen" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)

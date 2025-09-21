@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cg16m1n7m1cp5"
-path="res://.godot/imported/braindead.png-c794e9c08c7b97a91532e36b73565f55.ctex"
+uid="uid://c01jb5m00mldm"
+path="res://.godot/imported/respiratoryfailure.png-ed4ae47706eb5dfec09e92a46f209316.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/ui/afflictions/braindead.png"
-dest_files=["res://.godot/imported/braindead.png-c794e9c08c7b97a91532e36b73565f55.ctex"]
+source_file="res://assets/textures/ui/afflictions/respiratoryfailure.png"
+dest_files=["res://.godot/imported/respiratoryfailure.png-ed4ae47706eb5dfec09e92a46f209316.ctex"]
 
 [params]
 

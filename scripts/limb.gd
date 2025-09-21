@@ -22,15 +22,17 @@ var skinHealth: float = 1.0
 func _process(delta: float) -> void:
 	bleedingRate -= 0.0025 * delta
 	bleedingRate = clampf(bleedingRate, 0.0, INF)
-	pain -= 0.01 * (1.0 - Global.player.healthCtl.adrenaline) * delta
-	pain = clampf(pain, 0.0, INF)
+	pain -= 0.001 * (1.0 - Global.player.healthCtl.adrenaline) * delta
+	pain = clampf(pain, 0.0, 1.0)
 
 func hit(_bullet):
 	if isHead:
 		Global.player.healthCtl.brainHealth = 0
+		play_random_sfx(sfx_flesh_hit, 40)
 
 	bleedingRate += randf_range(1.0, 3.0) * bleedingRateMult
-	pain += randf_range(0.3, 1.0)
+	pain += randf_range(0.025, 0.1) * (1.0 - Global.player.healthCtl.adrenaline)
+	Global.player.healthCtl.adrenaline += 0.025
 	muscleHealth -= randf_range(0.01, 0.1)
 	skinHealth -= randf_range(0.01, 0.2)
 	play_random_sfx(sfx_flesh_hit, 10)

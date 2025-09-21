@@ -498,7 +498,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0108295, -0.159705, 0)
 [node name="LaserRay" type="RayCast3D" parent="Gun"]
 transform = Transform3D(1, -0.000954392, 0, 0.000954392, 1, 0, 0, 0, 1, 0.152215, 0.0784018, 0)
 target_position = Vector3(30, 0, 0)
-debug_shape_custom_color = Color(0, 1, 0, 1)
 debug_shape_thickness = 1
 
 [node name="MuzzleRay" type="RayCast3D" parent="Gun"]
@@ -522,4 +521,4 @@ texture_emission = ExtResource("5_i80ub")
 emission_energy = 16.0
 modulate = Color(0, 1, 0, 1)
 
-[node name="LaserLine" type="MeshInstance3D" parent="."]
+[node name="LaserMesh" type="MeshInstance3D" parent="."]

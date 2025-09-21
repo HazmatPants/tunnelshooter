@@ -23,6 +23,12 @@ var afflictions: Dictionary = {
 	#"cardiacArrest": {"intensity": 1.0}
 }
 
+var organs: Dictionary = { # true = lung working
+	"Heart": true,
+	"LLung": true,
+	"RLung": true
+}
+
 var bloodOxygen: float = 1.0
 var brainHealth: float = 1.0
 var consciousness: float = 1.0
@@ -160,6 +166,17 @@ func get_limb_total(value: String):
 				total += limbSection.get(value)
 		else:
 			total += limb.get(value)
+
+	return total
+
+func get_limb_all(value: String):
+	var total: Dictionary = {}
+	for limb in Limbs.values():
+		if limb is Dictionary:
+			for limbSection in limb.values():
+				total[limbSection] = limbSection.get(value)
+		else:
+			total[limb] = limb.get(value)
 
 	return total
 

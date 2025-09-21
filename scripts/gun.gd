@@ -72,7 +72,10 @@ var chamber: bool = false
 var hammer: bool = false
 var slidelock: bool = false
 
+var laserMesh = MeshInstance3D.new()
+
 func _ready() -> void:
+	get_tree().current_scene.call_deferred("add_child", laserMesh)
 	get_tree().current_scene.call_deferred("add_child", magazine)
 	magazine.gravity_scale = 0.0
 	magazine.position = magPos.position
@@ -121,6 +124,20 @@ func _process(_delta: float) -> void:
 			var ray = laserRay
 			laserPoint.global_position = ray.get_collision_point()
 			laserPoint.rotation = ray.get_collision_normal()
+		var mesh = ImmediateMesh.new()
+		var mat = StandardMaterial3D.new()
+		mat.emission_enabled = true
+		mat.emission = Color("00ff00ff")
+		mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+		mesh.surface_add_vertex(laserRay.global_position)
+		if laserRay.is_colliding():
+			mesh.surface_add_vertex(laserRay.get_collision_point())
+		else:
+			mesh.surface_add_vertex(to_global(laserRay.position + laserRay.target_position))
+
+		mesh.surface_end()
+		mesh.surface_set_material(0, mat)
+		laserMesh.mesh = mesh
 	else:
 		laserRay.enabled = false
 		laserPoint.visible = false

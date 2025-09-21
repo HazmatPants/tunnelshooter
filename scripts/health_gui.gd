@@ -119,7 +119,7 @@ func _process(delta: float) -> void:
 		$Panel/VBoxContainer/WorkLabel.text = "Work: " + str(int(round(healthCtl.physicalWork * 100))) + "%"
 		$Panel/VBoxContainer/StaminaLabel.text = "Stamina: " + str(int(round(healthCtl.stamina * 100))) + "%"
 		$Panel/VBoxContainer/Blood/VBoxContainer/BloodVolumeLabel.text = str(snapped(healthCtl.bloodVolume / 1000, 0.01)) + " L"
-		$Panel/VBoxContainer/PainLabel.text = "Pain: " + str(int(round(healthCtl.get_limb_total("pain") / 16 * 100))) + "%"
+		$Panel/VBoxContainer/PainLabel.text = "Pain: " + str(int(round(healthCtl.get_limb_all("pain").values().max() * 100))) + "%"
 		var bleedRate = healthCtl.get_limb_total("bleedingRate")
 		if bleedRate > 0:
 			$Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel.text = str(snapped((healthCtl.get_limb_total("bleedingRate") / 1000) * 60, 0.01)) + " L/m"
@@ -167,8 +167,8 @@ func check_tooltip(node: Control, tt_title: String, tt_desc: String=""):
 
 func limb_tooltip(limb: Control):
 	check_tooltip(limb, LimbDisplayNames[limb.name], 
-	"Blood Loss Rate: %s\nPain: %s" % 
-	[PhysicalLimbs[limb.name].bleedingRate, PhysicalLimbs[limb.name].pain])
+	"Blood Loss Rate: %s L/m\nPain: %s%%" % 
+	[str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)), str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
 
 func handle_tooltips():
 	check_tooltip($Panel/VBoxContainer/Brain/VBoxContainer/BrainHealthLabel, "Brain Integrity (%)")
@@ -183,7 +183,7 @@ func handle_tooltips():
 	check_tooltip($Body/Thorax/Heart, "Heart")
 	check_tooltip($Body/Thorax/LLung, "Left Lung")
 	check_tooltip($Body/Thorax/RLung, "Right Lung")
-	check_tooltip($Panel/VBoxContainer/PainLabel, "Total Pain (%)")
+	check_tooltip($Panel/VBoxContainer/PainLabel, "Max Pain (%)")
 
 	limb_tooltip($Body/Head)
 	limb_tooltip($Body/Neck)

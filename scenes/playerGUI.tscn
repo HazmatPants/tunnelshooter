@@ -663,14 +663,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -512.0
-offset_top = -512.0
-offset_right = 512.0
-offset_bottom = 512.0
+offset_left = -1024.0
+offset_top = -1024.0
+offset_right = 1024.0
+offset_bottom = 1024.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.15, 1.15)
-pivot_offset = Vector2(512, 512)
+scale = Vector2(0.505, 0.505)
+pivot_offset = Vector2(1024, 1024)
 texture = ExtResource("12_cle1p")
 
 [node name="Blackout" type="ColorRect" parent="."]
@@ -771,7 +771,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_y1buc")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Tooltip/Panel"]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 0
 offset_right = 200.0
 offset_bottom = 55.0
@@ -791,6 +791,7 @@ color = Color(0, 0.647059, 0, 1)
 
 [node name="Description" type="Label" parent="Tooltip/Panel/VBoxContainer"]
 modulate = Color(0, 1, 0, 1)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = SubResource("Theme_8rw1s")
 text = "Description"

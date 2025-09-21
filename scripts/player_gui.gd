@@ -81,11 +81,13 @@ func _process(_delta: float) -> void:
 	$tinnitus.text = "Tinnitus: " + str(Global.player.tinnitus)
 	$hearingdamage.text = "Damage: " + str(Global.player.hearing_damage)
 	
-	var painImageSine = 2.0 - Global.player.healthCtl.get_limb_total("pain")
+	var total_pain = Global.player.healthCtl.get_limb_total("pain")
+	var painImageSine = 2.0 - total_pain
 	painImageSine += (sin((PI * time) / 30) * 1 / 2 * PI)
-	painImageSine += 10
 	time += 1
-	$Pain/Pain.scale = Vector2(1.0, 1.0) * painImageSine
+	$Pain/Pain.scale = $Pain/Pain.scale.lerp(Vector2(1.0, 1.0) * painImageSine, 0.01)
+	$Pain/Pain.modulate.a = total_pain
+	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
 	$Blackout.modulate.a = 1.0 - Global.player.healthCtl.consciousness
 	if Global.player.healthCtl.brainHealth < last_brainHealth:

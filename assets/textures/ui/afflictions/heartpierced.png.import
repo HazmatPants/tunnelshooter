@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cg16m1n7m1cp5"
-path="res://.godot/imported/braindead.png-c794e9c08c7b97a91532e36b73565f55.ctex"
+uid="uid://cahd62x8ysfrx"
+path="res://.godot/imported/heartpierced.png-5c19d8d826d919c0e93a8ae53f0742c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/ui/afflictions/braindead.png"
-dest_files=["res://.godot/imported/braindead.png-c794e9c08c7b97a91532e36b73565f55.ctex"]
+source_file="res://assets/textures/ui/afflictions/heartpierced.png"
+dest_files=["res://.godot/imported/heartpierced.png-5c19d8d826d919c0e93a8ae53f0742c3.ctex"]
 
 [params]
 
