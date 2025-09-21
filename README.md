@@ -7,6 +7,9 @@ Blood volume, blood oxygen, physical work, pain, adrenaline, etc. are all dynami
 
 Inspired by [Receiver 2](https://receiver2.com) and [Casualites: Unknown](https://orsonik.itch.io/scav-prototype).
 
+[To-Do List](TO-DO.md)
+
+# Images
 ![alt text](/gallery/image-60.png)
 ![alt text](/gallery/image-131.png)
 ![alt text](/gallery/image-153.png)
