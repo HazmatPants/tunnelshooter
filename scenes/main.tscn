@@ -1,12 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=19 format=3 uid="uid://dtqbmnfg75l2j"]
 
-[ext_resource type="PackedScene" uid="uid://dvhwnqxq8rhjo" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://bd4siua5myuh0" path="res://scenes/ss_320.tscn" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://bedjnkl6c6nv0" path="res://assets/textures/target_bullseye.png" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://ly67c2aajcpn" path="res://scenes/metal_target.tscn" id="5_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://crf0rainai2gr" path="res://scenes/turret.tscn" id="6_tefeu"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
+ssao_enabled = true
 glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wfyh"]
@@ -28,12 +30,26 @@ material = SubResource("StandardMaterial3D_tbgi4")
 [sub_resource type="BoxShape3D" id="BoxShape3D_o6xl0"]
 size = Vector3(0.02, 2, 2)
 
+[sub_resource type="BoxMesh" id="BoxMesh_tbgi4"]
+size = Vector3(3, 4, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
+size = Vector3(2, 2, 0.02)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tbgi4"]
+viewport_path = NodePath("Mirror/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_tbgi4")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tbgi4"]
+material = SubResource("StandardMaterial3D_tefeu")
+
 [node name="Node3D" type="Node3D"]
 
-[node name="Player" parent="." instance=ExtResource("1_o5qli")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63018, 0)
-bobbing_amount = 0.01
-sprint_bobbing_amount = 0.02
+[node name="Player" parent="." instance=ExtResource("1_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5247, 0)
 equipment = []
 
 [node name="PlayerGUI" parent="." instance=ExtResource("2_0wfyh")]
@@ -122,3 +138,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8986, 1.61841, -67.2311)
 
 [node name="MetalTarget12" parent="." instance=ExtResource("5_tbgi4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.70361, 1.61841, -67.2311)
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84376, 2.52953, -10.1965)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("BoxMesh_tbgi4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="Mirror" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.71454, 2.39132, -10.1965)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mirror"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PlaneMesh_tbgi4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mirror"]
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="SubViewport" type="SubViewport" parent="Mirror"]
+
+[node name="Camera3D" type="Camera3D" parent="Mirror/SubViewport"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 7.71454, 2.39132, -10.1965)
+
+[node name="Turret" parent="." instance=ExtResource("6_tefeu")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 3.85764, 1.6991, 3.532)

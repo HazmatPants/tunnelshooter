@@ -1,12 +1,101 @@
-[gd_scene format=3 uid="uid://dc7l8xehcc418"]
+[gd_scene load_steps=27 format=3 uid="uid://dc7l8xehcc418"]
+
+[ext_resource type="Script" uid="uid://bch43lv5jeax1" path="res://scripts/player_gui.gd" id="1_cvfx2"]
+[ext_resource type="Texture2D" uid="uid://ra82yd2smxab" path="res://assets/textures/ui/loudwarn.png" id="2_8q740"]
+[ext_resource type="AudioStream" uid="uid://2vpiayiwu6uf" path="res://assets/audio/music/death.wav" id="2_y1buc"]
+[ext_resource type="Script" uid="uid://blb1fv4k7or1f" path="res://scripts/health_gui.gd" id="3_57hkc"]
+[ext_resource type="FontFile" uid="uid://boeoafodkpa6u" path="res://assets/fonts/PerfectDOSVGA437.ttf" id="4_kf1ee"]
+[ext_resource type="Texture2D" uid="uid://dlyman3ct7axr" path="res://assets/textures/ui/heartgradient.png" id="5_4ybym"]
+[ext_resource type="Script" uid="uid://cvvccnb70kmw7" path="res://scripts/gui_limb.gd" id="5_fay7l"]
+[ext_resource type="Texture2D" uid="uid://cu042gg71e377" path="res://assets/textures/ui/brainicon.png" id="5_fwc18"]
+[ext_resource type="Texture2D" uid="uid://d1rxvp3cn23ew" path="res://assets/textures/ui/blood.png" id="5_hu3yy"]
+[ext_resource type="Texture2D" uid="uid://c22dfe45ffyal" path="res://assets/textures/ui/ecg.png" id="5_kx3gu"]
+[ext_resource type="Texture2D" uid="uid://bf5yudjb1uf7y" path="res://assets/textures/ui/hearticon.png" id="6_0f6tr"]
+[ext_resource type="Texture2D" uid="uid://dmi3u4ivo82ou" path="res://assets/textures/ui/braindeathprogress.png" id="8_epmk8"]
+[ext_resource type="Script" uid="uid://dve405pslbkba" path="res://scripts/dev_console.gd" id="9_q0f5p"]
+[ext_resource type="Script" uid="uid://cls3l640543eb" path="res://scripts/afflictions.gd" id="10_bauuc"]
+[ext_resource type="Script" uid="uid://ct72clt2kjpmf" path="res://scripts/tooltip.gd" id="12_8rw1s"]
+[ext_resource type="Texture2D" uid="uid://ca7dshqmqa1kv" path="res://assets/textures/ui/painimage.png" id="12_calrp"]
+[ext_resource type="Texture2D" uid="uid://dqo7to14qax7a" path="res://assets/textures/ui/painGradient.png" id="12_cle1p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
+bg_color = Color(0, 0, 0, 0.666667)
+
+[sub_resource type="Theme" id="Theme_q0f5p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fay7l"]
+bg_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0f5p"]
+bg_color = Color(0.6141, 0.483, 0.69, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="Theme_hu3yy"]
+default_font = ExtResource("4_kf1ee")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0f6tr"]
+bg_color = Color(0, 0.2, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.53, 0.53, 0.53, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+anti_aliasing_size = 4.0
+
+[sub_resource type="Theme" id="Theme_epmk8"]
+default_font = ExtResource("4_kf1ee")
+default_font_size = 80
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1buc"]
+bg_color = Color(0, 0.258824, 0, 0.705882)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.542318, 0.542318, 0.542318, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="Theme" id="Theme_8rw1s"]
+default_font = ExtResource("4_kf1ee")
+default_font_size = 16
 
 [node name="PlayerGUI" type="CanvasLayer"]
+script = ExtResource("1_cvfx2")
 
 [node name="PopupContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 4
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 4
+
+[node name="MusicPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_y1buc")
 max_polyphony = 4
 
 [node name="Control" type="Control" parent="."]
@@ -35,3 +124,673 @@ offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "12+1"
+
+[node name="HintText" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.257
+anchor_right = 0.5
+anchor_bottom = 0.257
+offset_left = -20.0
+offset_top = -11.536
+offset_right = 20.0
+offset_bottom = 11.464
+grow_horizontal = 2
+horizontal_alignment = 1
+
+[node name="HearingDamageIcon" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_left = 0.039
+anchor_top = 0.796
+anchor_right = 0.039
+anchor_bottom = 0.796
+offset_left = -19.928
+offset_top = -19.808
+offset_right = 20.072
+offset_bottom = 20.192
+grow_horizontal = 2
+texture = ExtResource("2_8q740")
+
+[node name="tinnitus" type="Label" parent="."]
+visible = false
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 42.0
+offset_bottom = 25.0
+
+[node name="hearingdamage" type="Label" parent="."]
+visible = false
+anchors_preset = -1
+anchor_top = 0.049
+anchor_bottom = 0.049
+offset_left = 2.0
+offset_top = 0.247999
+offset_right = 42.0
+offset_bottom = 23.248
+
+[node name="HealthGUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+script = ExtResource("3_57hkc")
+
+[node name="Background" type="Panel" parent="HealthGUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kf1ee")
+
+[node name="Body" type="Control" parent="HealthGUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -153.595
+offset_top = -209.5
+offset_right = 340.405
+offset_bottom = 209.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Head" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -205.23
+offset_right = 40.0
+offset_bottom = -125.23
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="Neck" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -123.935
+offset_right = 30.0
+offset_bottom = -111.935
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="Thorax" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -111.0
+offset_right = 40.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="Heart" type="Panel" parent="HealthGUI/Body/Thorax"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.144
+offset_left = 27.595
+offset_top = 9.0
+offset_right = -32.405
+offset_bottom = 26.928
+pivot_offset = Vector2(10, 10)
+theme = SubResource("Theme_q0f5p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fay7l")
+
+[node name="LLung" type="Panel" parent="HealthGUI/Body/Thorax"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.144
+offset_left = 45.0
+offset_top = 10.0
+offset_right = -7.0
+offset_bottom = 45.928
+theme = SubResource("Theme_q0f5p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q0f5p")
+
+[node name="RLung" type="Panel" parent="HealthGUI/Body/Thorax"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.144
+offset_left = 6.59496
+offset_top = 10.0
+offset_right = -45.405
+offset_bottom = 45.928
+pivot_offset = Vector2(28, 0)
+theme = SubResource("Theme_q0f5p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q0f5p")
+
+[node name="Abdomen" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="LUpperArm" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 46.0
+offset_top = -111.0
+offset_right = 118.0
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="LForearm" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 122.68
+offset_top = -111.0
+offset_right = 202.68
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="LHand" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 206.99
+offset_top = -111.0
+offset_right = 244.99
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="RUpperArm" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.33
+offset_top = -111.0
+offset_right = -45.33
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="RForearm" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -201.055
+offset_top = -111.0
+offset_right = -121.055
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="RHand" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -242.87
+offset_top = -111.0
+offset_right = -204.87
+offset_bottom = -73.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="LThigh" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 3.0
+offset_top = 26.0
+offset_right = 40.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="LCrus" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 3.00003
+offset_top = 92.02
+offset_right = 40.0
+offset_bottom = 155.02
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="LFoot" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 3.00003
+offset_top = 158.56
+offset_right = 55.0
+offset_bottom = 179.56
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="RThigh" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = 26.0
+offset_right = -3.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_fay7l")
+
+[node name="RCrus" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = 92.02
+offset_right = -2.99997
+offset_bottom = 155.02
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="RFoot" type="ColorRect" parent="HealthGUI/Body"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = 158.56
+offset_right = -2.99997
+offset_bottom = 179.56
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_fay7l")
+
+[node name="Panel" type="Panel" parent="HealthGUI"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -11.2
+anchor_top = -4.825
+anchor_right = -5.9
+anchor_bottom = 4.775
+offset_left = 13025.4
+offset_top = 3247.6
+offset_right = 7132.8
+offset_bottom = -2600.2
+theme = SubResource("Theme_hu3yy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0f6tr")
+
+[node name="VSeparator" type="ColorRect" parent="HealthGUI/Panel"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+offset_left = 108.275
+offset_top = 49.0
+offset_right = 109.275
+offset_bottom = 89.0
+color = Color(0, 1, 0, 1)
+
+[node name="ECG" type="TextureRect" parent="HealthGUI/Panel"]
+modulate = Color(0, 1, 0, 1)
+clip_children = 1
+texture_filter = 1
+layout_mode = 2
+offset_left = 111.999
+offset_top = 48.9998
+offset_right = 211.999
+offset_bottom = 88.9998
+pivot_offset = Vector2(50, 20)
+texture = ExtResource("5_kx3gu")
+expand_mode = 1
+
+[node name="Gradient" type="TextureRect" parent="HealthGUI/Panel/ECG"]
+clip_children = 1
+layout_mode = 0
+offset_left = -120.0
+offset_top = -43.0
+offset_right = 8.0
+offset_bottom = 85.0
+texture = ExtResource("5_4ybym")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HealthGUI/Panel"]
+layout_mode = 0
+offset_right = 213.0
+offset_bottom = 174.0
+
+[node name="Brain" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Brain"]
+modulate = Color(0, 1, 0, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("5_fwc18")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HealthGUI/Panel/VBoxContainer/Brain"]
+layout_mode = 2
+
+[node name="BrainHealthLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Brain/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "Int: 100%"
+
+[node name="ConsciousnessLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Brain/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "Conc: 100%"
+
+[node name="Separator2" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 1)
+layout_mode = 2
+color = Color(0, 1, 0, 1)
+
+[node name="Heart" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Heart"]
+modulate = Color(0, 1, 0, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("6_0f6tr")
+stretch_mode = 3
+
+[node name="BPMLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Heart"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "80 BPM"
+
+[node name="Separator" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 1)
+layout_mode = 2
+color = Color(0, 1, 0, 1)
+
+[node name="Blood" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Blood"]
+modulate = Color(0, 1, 0, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("5_hu3yy")
+stretch_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HealthGUI/Panel/VBoxContainer/Blood"]
+layout_mode = 2
+
+[node name="BloodVolumeLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "5 L"
+
+[node name="BleedingRateLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "0.10 L/m"
+
+[node name="SPO2Label" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "SPO2 100%"
+
+[node name="Separator3" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 1)
+layout_mode = 2
+color = Color(0, 1, 0, 1)
+
+[node name="WorkLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "Work: 5%"
+
+[node name="StaminaLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "Stamina: 100%"
+
+[node name="PainLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+text = "Pain: 100%"
+
+[node name="Pain" type="TextureRect" parent="."]
+clip_children = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.15, 1.15)
+pivot_offset = Vector2(512, 512)
+texture = ExtResource("12_calrp")
+
+[node name="Pain" type="TextureRect" parent="Pain"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.15, 1.15)
+pivot_offset = Vector2(512, 512)
+texture = ExtResource("12_cle1p")
+
+[node name="Blackout" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Blackout"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -95.0
+offset_right = 68.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_epmk8")
+text = "..."
+horizontal_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Blackout"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -207.0
+offset_top = 16.56
+offset_right = 207.0
+offset_bottom = 56.56
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.0
+value = 1.0
+nine_patch_stretch = true
+texture_progress = ExtResource("8_epmk8")
+
+[node name="DevConsole" type="LineEdit" parent="."]
+visible = false
+offset_right = 732.0
+offset_bottom = 31.0
+placeholder_text = "Type a command..."
+keep_editing_on_text_submit = true
+script = ExtResource("9_q0f5p")
+
+[node name="CodeEdit" type="CodeEdit" parent="DevConsole"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.032
+anchor_bottom = 1.032
+offset_top = 0.00799751
+offset_right = 725.0
+offset_bottom = 288.008
+editable = false
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+wrap_mode = 1
+scroll_smooth = true
+draw_tabs = true
+
+[node name="AfflictionList" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(128, 64)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -96.0
+offset_right = 160.0
+offset_bottom = -32.0
+grow_vertical = 0
+script = ExtResource("10_bauuc")
+
+[node name="Tooltip" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("12_8rw1s")
+
+[node name="Panel" type="Panel" parent="Tooltip"]
+custom_minimum_size = Vector2(100, 15)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 30.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y1buc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tooltip/Panel"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 55.0
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Tooltip/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+theme = SubResource("Theme_8rw1s")
+text = "Title"
+
+[node name="Separator" type="ColorRect" parent="Tooltip/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0.647059, 0, 1)
+
+[node name="Description" type="Label" parent="Tooltip/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+theme = SubResource("Theme_8rw1s")
+text = "Description"

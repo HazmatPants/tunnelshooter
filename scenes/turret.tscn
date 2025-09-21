@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://crf0rainai2gr"]
+
+[ext_resource type="Script" uid="uid://dhqie3tqm620w" path="res://scripts/turret.gd" id="1_x3mc5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3mc5"]
+metallic = 0.97
+roughness = 0.69
+
+[sub_resource type="BoxMesh" id="BoxMesh_el7wl"]
+material = SubResource("StandardMaterial3D_x3mc5")
+size = Vector3(0.205, 0.34, 0.765)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_485p4"]
+material = SubResource("StandardMaterial3D_x3mc5")
+top_radius = 0.06
+bottom_radius = 0.06
+
+[node name="Turret" type="Node3D"]
+script = ExtResource("1_x3mc5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_el7wl")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.680188)
+mesh = SubResource("CylinderMesh_485p4")
+
+[node name="MuzzleRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.66084)
+target_position = Vector3(0, 0, -30)
+collide_with_areas = true
+
+[node name="casingPos" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.118959, 0.130286, 0)

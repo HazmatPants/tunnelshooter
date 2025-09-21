@@ -18,11 +18,9 @@ func _ready() -> void:
 
 func _on_body_entered(_body):
 	if abs(linear_velocity.length()) > 0.1:
-		var ap = SteamAudioPlayer.new()
-		ap.reflection = true
-		ap.attenuation_model = 3
+		var ap = AudioStreamPlayer3D.new()
 		ap.bus = "SFX"
-		ap.distance_attenuation = true
 		get_tree().current_scene.add_child(ap)
 		ap.global_transform = global_transform
-		ap.play_stream(sfx_shell[randi_range(0, sfx_shell.size() - 1)])
+		ap.stream = sfx_shell[randi_range(0, sfx_shell.size() - 1)]
+		ap.play()

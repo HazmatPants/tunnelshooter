@@ -521,3 +521,5 @@ texture_albedo = ExtResource("5_i80ub")
 texture_emission = ExtResource("5_i80ub")
 emission_energy = 16.0
 modulate = Color(0, 1, 0, 1)
+
+[node name="LaserLine" type="MeshInstance3D" parent="."]

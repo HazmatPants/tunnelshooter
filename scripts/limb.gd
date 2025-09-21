@@ -1,0 +1,51 @@
+extends Node3D
+
+@export var isHead: bool = false
+@export var isArm: bool = false
+@export var isLeg: bool = false
+@export var bleedingRateMult: float = 1.0
+
+const sfx_flesh_hit := [
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_1.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_2.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_3.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_4.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_5.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_6.wav")
+]
+
+var bleedingRate: float = 0.0
+var pain: float = 0.0
+var muscleHealth: float = 1.0
+var skinHealth: float = 1.0
+
+func _process(delta: float) -> void:
+	bleedingRate -= 0.0025 * delta
+	bleedingRate = clampf(bleedingRate, 0.0, INF)
+	pain -= 0.01 * (1.0 - Global.player.healthCtl.adrenaline) * delta
+	pain = clampf(pain, 0.0, INF)
+
+func hit(_bullet):
+	if isHead:
+		Global.player.healthCtl.brainHealth = 0
+
+	bleedingRate += randf_range(1.0, 3.0) * bleedingRateMult
+	pain += randf_range(0.3, 1.0)
+	muscleHealth -= randf_range(0.01, 0.1)
+	skinHealth -= randf_range(0.01, 0.2)
+	play_random_sfx(sfx_flesh_hit, 10)
+	Global.player.viewpunch_velocity += Vector3(200.0, 0, 0)
+
+func play_random_sfx(sound_list, volume: float=0):
+	var idx = randi() % sound_list.size()
+	playsound(sound_list[idx], volume)
+
+func playsound(stream: AudioStream, volume: float=0):
+	var ap = AudioStreamPlayer.new()
+	ap.volume_db = volume
+	get_tree().current_scene.add_child(ap)
+	ap.stream = stream
+	ap.bus = "SFX"
+	ap.play()
+	await ap.finished
+	ap.queue_free()

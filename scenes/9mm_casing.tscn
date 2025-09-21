@@ -6,8 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://ugk24epsurr1" path="res://assets/models/9mm_casing_Image_2.png" id="3_daqbj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uxv1h"]
-friction = 0.5
-bounce = 0.2
+friction = 0.3
+rough = true
+bounce = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crp7t"]
 resource_name = "TT_checker_4096x4096_UV_GRID.001"

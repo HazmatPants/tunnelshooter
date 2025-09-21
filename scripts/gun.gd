@@ -74,7 +74,7 @@ var slidelock: bool = false
 
 func _ready() -> void:
 	get_tree().current_scene.call_deferred("add_child", magazine)
-	magazine.freeze = true
+	magazine.gravity_scale = 0.0
 	magazine.position = magPos.position
 	magazine.inserted = true
 	ammo_label = Global.playerGUI.get_node("AmmoLabel")
@@ -84,13 +84,13 @@ func _ready() -> void:
 var first_input: String = ""
 var magAction: String = "none"
 func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("holster"):
+	if Input.is_action_just_pressed("holster") and Global.player.is_input_enabled():
 		holster = !holster
 		play_random_sfx(sfx_holster if holster else sfx_unholster)
 	if holster:
 		global_transform = lerp(global_transform, Global.player.holster_position.global_transform, 0.2)
 	else:
-		if Input.is_action_pressed("rmb"):
+		if Input.is_action_pressed("rmb") and Global.player.is_input_enabled():
 			if Input.is_action_pressed("pullslide"):
 				var target = Global.player.grab_position.global_transform
 				var targetEuler = target.basis.get_euler() + Vector3(0, 0, 0.4)
@@ -98,7 +98,6 @@ func _process(_delta: float) -> void:
 				global_transform = lerp(global_transform, target, 0.2)
 			else:
 				global_transform = lerp(global_transform, Global.player.grab_position.global_transform, 0.2)
-
 		else:
 			global_transform = lerp(global_transform, Global.player.right_hand_position.global_transform, 0.2)
 	if magazine:
@@ -127,16 +126,19 @@ func _process(_delta: float) -> void:
 		laserPoint.visible = false
 
 	if not holster:
-		if Input.is_action_just_pressed("lmb"):
+		if Input.is_action_just_pressed("lmb") and Global.player.is_input_enabled():
 			if not slidelock:
 				if hammer:
 					if chamber:
 						playsound(sfx_dryfire)
+						play_random_sfx(sfx_slideback)
 						anim.play("shoot")
 						chamber = false
 						playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 18)
-						if not "ear-pro" in Global.player.equipment:
-							Global.player.damage_ears(0.002)
+						if "ear-pro" in Global.player.equipment:
+							Global.player.damage_ears(0.00005)
+						else:
+							Global.player.damage_ears(0.01)
 
 						var Flash = muzzleflash.instantiate()
 						get_tree().current_scene.add_child(Flash)
@@ -164,7 +166,8 @@ func _process(_delta: float) -> void:
 						
 						if magazine:
 							if magazine.ammo > 0:
-								magazine.ammo -= 1
+								if not Global.infinite_ammo:
+									magazine.ammo -= 1
 								chamber = true
 							else:
 								anim.play("slidelock")
@@ -177,7 +180,7 @@ func _process(_delta: float) -> void:
 							hrecoil += randf_range(-0.01, 0.01)
 							recoil += randf_range(-0.01, 0.01)
 		if not holster:
-			if Input.is_action_just_pressed("pullslide"): 
+			if Input.is_action_just_pressed("pullslide") and Global.player.is_input_enabled(): 
 				if not Input.is_action_pressed("slidelock"):
 					first_input = "pullslide"
 					recoil += 0.1
@@ -190,7 +193,7 @@ func _process(_delta: float) -> void:
 					if chamber:
 						spawn_casing()
 						chamber = false
-			if Input.is_action_just_released("pullslide"):
+			if Input.is_action_just_released("pullslide") and Global.player.is_input_enabled():
 				recoil -= 0.2
 				if magazine:
 					if magazine.ammo <= 0:
@@ -211,7 +214,7 @@ func _process(_delta: float) -> void:
 							if magazine.ammo > 0:
 								magazine.ammo -= 1
 								chamber = true
-			if Input.is_action_just_pressed("slidelock"):
+			if Input.is_action_just_pressed("slidelock") and Global.player.is_input_enabled():
 				if slidelock:
 					anim.play("sliderelease")
 					recoil -= 0.1
@@ -221,7 +224,7 @@ func _process(_delta: float) -> void:
 						if magazine.ammo > 0:
 							magazine.ammo -= 1
 							chamber = true
-			if Input.is_action_just_released("slidelock"):
+			if Input.is_action_just_released("slidelock") and Global.player.is_input_enabled():
 				if Input.is_action_pressed("pullslide"):
 					anim.play("inspect_to_pull")
 					play_random_sfx(sfx_slideback)
@@ -233,7 +236,7 @@ func _process(_delta: float) -> void:
 						if magazine.ammo > 0:
 							magazine.ammo -= 1
 							chamber = true
-			if Input.is_action_just_pressed("eject_mag"):
+			if Input.is_action_just_pressed("eject_mag") and Global.player.is_input_enabled():
 				if magazine and magAction == "none":
 					play_random_sfx(sfx_mag_out)
 					magAction = "eject"
@@ -243,22 +246,22 @@ func _process(_delta: float) -> void:
 					magazine.inserted = false
 					Global.player.left_hand = magazine
 					magazine = null
-			if Input.is_action_just_pressed("insert_mag"):
+			if Input.is_action_just_pressed("insert_mag") and Global.player.is_input_enabled():
 				if not magazine:
 					if Global.player.left_hand != null:
 						if Global.player.left_hand.name.begins_with("Magazine"):
 							magazine = Global.player.left_hand
 							Global.player.left_hand = null
 							magAction = "inserting"
-							await get_tree().create_timer(0.1).timeout
+							await get_tree().create_timer(0.2).timeout
 							magAction = "insert"
-							await get_tree().create_timer(0.3).timeout
 							play_random_sfx(sfx_mag_in)
+							await get_tree().create_timer(0.12).timeout
+							play_random_sfx(sfx_mag_insert)
 							magazine.inserted = true
-							magazine.freeze = true
+							magazine.gravity_scale = 0.0
 							recoil -= 0.05
 							magAction = "none"
-							play_random_sfx(sfx_mag_insert)
 		
 			if Input.is_action_pressed("slidelock") and not first_input == "pullslide":
 				if Input.is_action_just_pressed("pullslide"):

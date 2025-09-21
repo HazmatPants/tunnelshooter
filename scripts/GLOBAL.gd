@@ -1,6 +1,7 @@
 extends Node
 
 @export var music_enabled: bool = false
+@export var infinite_ammo: bool = true
 
 @onready var playerScene = get_tree().get_current_scene()
 @onready var player = get_tree().get_current_scene().get_node("Player")

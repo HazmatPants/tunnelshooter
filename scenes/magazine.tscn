@@ -117,9 +117,9 @@ mesh = SubResource("ArrayMesh_wx2x4")
 skeleton = NodePath("")
 
 [node name="AmmoLabel" type="Label3D" parent="."]
-transform = Transform3D(-4.37114e-10, 0, -0.01, 0, 0.01, 0, 0.01, 0, -4.37114e-10, -0.0243934, 0.0843806, 0.0125512)
+transform = Transform3D(-4.11646e-10, 0.00336356, -0.00941735, 1.47026e-10, 0.00941735, 0.00336356, 0.01, 0, -4.37114e-10, 0.00300247, 0.0836754, -0.00037412)
+modulate = Color(1, 1, 0, 1)
 outline_modulate = Color(0, 0, 0, 0)
 text = "0"
 font_size = 128
 outline_size = 4
-horizontal_alignment = 0

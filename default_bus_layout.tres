@@ -5,6 +5,7 @@ resource_name = "LowPassFilter"
 
 [sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
 resource_name = "Distortion"
+pre_gain = 2.0
 
 [resource]
 bus/1/name = &"SFX"

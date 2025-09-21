@@ -1,9 +1,7 @@
 extends CharacterBody3D
 
-@export var speed: float = 343
+@export var speed: float = 360
 @export var bounces: int = 1
-
-var ricochet_threshold: float = 0.1
 
 var last_pos: Vector3
 
@@ -20,10 +18,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var motion = transform.basis.x * speed * delta
 	var collision = move_and_collide(motion)
+
 	var new_pos = global_position
-
 	_draw_segment(last_pos, new_pos)
-
 	last_pos = new_pos
 
 	if collision:
@@ -53,16 +50,8 @@ func _on_hit(collision: KinematicCollision3D) -> void:
 	var collider = collision.get_collider()
 	if collider and collider.has_method("hit"):
 		collider.hit(self)
-
-	var normal = collision.get_normal()
-	var incidence = velocity.normalized().dot(normal)
-
-	if bounces > 0 and abs(incidence) < ricochet_threshold:
-		velocity = velocity.bounce(normal)
-		velocity *= 0.8  # optional: lose speed on bounce
-		bounces -= 1
-		global_transform.origin = collision.get_position() + normal * 0.01
-		play_random_sfx(sfx_ricochet, 16)
+		place_decal(collision)
+		queue_free()
 	else:
 		place_decal(collision)
 		queue_free()
@@ -94,9 +83,8 @@ func _draw_segment(from: Vector3, to: Vector3):
 	mi.mesh = line
 	get_tree().current_scene.add_child(mi)
 
-	# auto-delete after 1s
 	var t = Timer.new()
-	t.wait_time = 3.0
+	t.wait_time = 10.0
 	t.one_shot = true
 	mi.add_child(t)
 	t.timeout.connect(mi.queue_free)

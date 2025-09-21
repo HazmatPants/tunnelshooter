@@ -1,0 +1,357 @@
+[gd_scene load_steps=26 format=3 uid="uid://b6e7d6pfq0oyt"]
+
+[ext_resource type="Script" uid="uid://dy7uicypdd4mx" path="res://scripts/playerFB.gd" id="1_oxfux"]
+[ext_resource type="Script" uid="uid://dvqi222awr8qj" path="res://scripts/damage_ctl.gd" id="2_j0tbg"]
+[ext_resource type="Script" uid="uid://cyfajewmoftfl" path="res://scripts/camera.gd" id="2_yo0vl"]
+[ext_resource type="Script" uid="uid://c3d7w6ote68d8" path="res://scripts/limb.gd" id="3_ox7cw"]
+[ext_resource type="Script" uid="uid://cqnnnw0t1tca8" path="res://scripts/organ.gd" id="5_ox7cw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oxfux"]
+size = Vector3(0.825098, 2.19392, 0.4)
+
+[sub_resource type="SphereMesh" id="SphereMesh_oxfux"]
+radius = 0.27
+height = 0.54
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j0tbg"]
+radius = 0.27
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vyb7"]
+albedo_color = Color(0.1812, 0.1812, 0.1812, 1)
+metallic = 0.7
+roughness = 0.15
+
+[sub_resource type="BoxMesh" id="BoxMesh_g2els"]
+material = SubResource("StandardMaterial3D_3vyb7")
+size = Vector3(0.365, 0.255, 0.255)
+
+[sub_resource type="SphereMesh" id="SphereMesh_koaa2"]
+radius = 0.16
+height = 0.52
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_j0tbg"]
+height = 0.17865
+radius = 0.158203
+
+[sub_resource type="BoxMesh" id="BoxMesh_oxfux"]
+size = Vector3(0.485, 0.355, 0.315)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f5m3l"]
+size = Vector3(0.485, 0.355, 0.315)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ovmo4"]
+size = Vector3(0.14, 0.175, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_koaa2"]
+size = Vector3(0.49, 0.385, 0.315)
+
+[sub_resource type="BoxMesh" id="BoxMesh_j0tbg"]
+size = Vector3(0.47, 0.385, 0.255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lu8km"]
+size = Vector3(0.49, 0.432246, 0.315)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lu8km"]
+size = Vector3(0.2, 0.4, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ox7cw"]
+size = Vector3(0.2, 0.4, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_61f7w"]
+size = Vector3(0.18, 0.18, 0.18)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_61f7w"]
+size = Vector3(0.18, 0.18, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ox7cw"]
+size = Vector3(0.265, 0.385, 0.315)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f5m3l"]
+size = Vector3(0.265, 0.14, 0.505)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j0tbg"]
+size = Vector3(1.2, 2.35, 1.2)
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_oxfux")
+bobbing_amount = 0.02
+sprint_bobbing_amount = 0.05
+
+[node name="FrontRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.637485, 0)
+target_position = Vector3(0, 0, -1.5)
+hit_from_inside = true
+
+[node name="HolsterPosition" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, -1, -4.37114e-08, -4.37114e-08, 4.37114e-08, -1, 1.91069e-15, 0.326172, -0.669252, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000439458, -0.173517, 0)
+shape = SubResource("BoxShape3D_oxfux")
+
+[node name="FootstepRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.26181, 0)
+
+[node name="HealthCtl" type="Node" parent="."]
+script = ExtResource("2_j0tbg")
+
+[node name="Head" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.642069, 0)
+script = ExtResource("3_ox7cw")
+isHead = true
+bleedingRateMult = 2.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head"]
+layers = 2
+mesh = SubResource("SphereMesh_oxfux")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head"]
+shape = SubResource("SphereShape3D_j0tbg")
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00458419, -0.234947)
+cull_mask = 1048573
+fov = 85.0
+near = 0.01
+far = 100000.0
+script = ExtResource("2_yo0vl")
+
+[node name="Face" type="MeshInstance3D" parent="Head/Camera3D"]
+transform = Transform3D(0.999998, 0.000736232, 0.00164921, -0.000731691, 0.999996, -0.00276091, -0.00165123, 0.0027597, 0.999995, 0, 0, 0.0237862)
+layers = 2
+mesh = SubResource("BoxMesh_g2els")
+
+[node name="SteamAudioListener" type="SteamAudioListener" parent="Head/Camera3D"]
+
+[node name="InteractRay" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -1.5, 0)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="GrabPoint" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.208, -0.43)
+
+[node name="RHandPosition" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(-0.0206371, -0.182591, 0.982972, -0.0771701, 0.980539, 0.180519, -0.996804, -0.0721307, -0.0343261, 0.0162482, -0.425521, -0.510618)
+
+[node name="LHandPosition" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(-0.270894, -0.0732906, 0.959815, -0.261162, 0.965295, -1.14157e-08, -0.926505, -0.250667, -0.280633, -0.308325, -0.425521, -0.510618)
+
+[node name="Neck" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.642069, 0)
+script = ExtResource("3_ox7cw")
+bleedingRateMult = 2.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.274414, 0)
+layers = 2
+mesh = SubResource("SphereMesh_koaa2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24765, 0)
+shape = SubResource("CylinderShape3D_j0tbg")
+
+[node name="Thorax" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.144096, 0)
+script = ExtResource("3_ox7cw")
+bleedingRateMult = 1.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Thorax"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0410731, 0)
+mesh = SubResource("BoxMesh_oxfux")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Thorax"]
+shape = SubResource("BoxShape3D_f5m3l")
+
+[node name="Heart" type="StaticBody3D" parent="Thorax"]
+script = ExtResource("5_ox7cw")
+isHeart = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Thorax/Heart"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0354093, 0.0311354, -0.0663726)
+shape = SubResource("BoxShape3D_ovmo4")
+
+[node name="Abdomen" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)
+script = ExtResource("3_ox7cw")
+bleedingRateMult = 1.3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Abdomen"]
+mesh = SubResource("BoxMesh_koaa2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Abdomen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.206507, 0)
+mesh = SubResource("BoxMesh_j0tbg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Abdomen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.023623, 0)
+shape = SubResource("BoxShape3D_lu8km")
+
+[node name="LArm" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.338454, 0.294744, 0)
+
+[node name="LUpperArm" type="StaticBody3D" parent="LArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.135136, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm"]
+mesh = SubResource("BoxMesh_lu8km")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LArm/LUpperArm"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="LForearmPivot" type="Node3D" parent="LArm/LUpperArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.211459, 0)
+
+[node name="LForearm" type="StaticBody3D" parent="LArm/LUpperArm/LForearmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.182486, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm/LForearmPivot/LForearm"]
+mesh = SubResource("BoxMesh_lu8km")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LArm/LUpperArm/LForearmPivot/LForearm"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="LHandPivot" type="Node3D" parent="LArm/LUpperArm/LForearmPivot/LForearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.187598, 0)
+
+[node name="LHand" type="StaticBody3D" parent="LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0835183, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot/LHand"]
+mesh = SubResource("BoxMesh_61f7w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot/LHand"]
+shape = SubResource("BoxShape3D_61f7w")
+
+[node name="RArm" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.338, 0.295, 0)
+
+[node name="RUpperArm" type="StaticBody3D" parent="RArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.135136, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm"]
+mesh = SubResource("BoxMesh_lu8km")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RArm/RUpperArm"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="RForearmPivot" type="Node3D" parent="RArm/RUpperArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.211459, 0)
+
+[node name="RForearm" type="StaticBody3D" parent="RArm/RUpperArm/RForearmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.182486, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm/RForearmPivot/RForearm"]
+mesh = SubResource("BoxMesh_lu8km")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RArm/RUpperArm/RForearmPivot/RForearm"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="RHandPivot" type="Node3D" parent="RArm/RUpperArm/RForearmPivot/RForearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.187598, 0)
+
+[node name="RHand" type="StaticBody3D" parent="RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0835183, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot/RHand"]
+mesh = SubResource("BoxMesh_61f7w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot/RHand"]
+shape = SubResource("BoxShape3D_61f7w")
+
+[node name="LLeg" type="Node3D" parent="."]
+transform = Transform3D(0.997564, 0.0697565, 0, -0.0697565, 0.997564, 0, 0, 0, 1, -0.116333, -0.374242, 0)
+
+[node name="LThigh" type="StaticBody3D" parent="LLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh"]
+mesh = SubResource("BoxMesh_ox7cw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LLeg/LThigh"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="LCrusPivot" type="Node3D" parent="LLeg/LThigh"]
+transform = Transform3D(0.996194, -0.0871557, 0, 0.0871557, 0.996194, 0, 0, 0, 1, -0.00571927, -0.198902, 0)
+
+[node name="LCrus" type="StaticBody3D" parent="LLeg/LThigh/LCrusPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00627396, -0.177442, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh/LCrusPivot/LCrus"]
+mesh = SubResource("BoxMesh_ox7cw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LLeg/LThigh/LCrusPivot/LCrus"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="LFootPivot" type="Node3D" parent="LLeg/LThigh/LCrusPivot/LCrus"]
+transform = Transform3D(0.999947, 0.0102624, 0, -0.0102624, 0.999947, 0, 0, 0, 1, -0.00374794, -0.178035, 0)
+
+[node name="LFoot" type="StaticBody3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot"]
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
+mesh = SubResource("BoxMesh_f5m3l")
+skeleton = NodePath("../../root/@EditorNode@22274/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Player/LLegPivot/LThigh/LCrusPivot/LCrus")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="RLeg" type="Node3D" parent="."]
+transform = Transform3D(0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0, 1, 0.116, -0.374, 0)
+
+[node name="RThigh" type="StaticBody3D" parent="RLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh"]
+mesh = SubResource("BoxMesh_ox7cw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RLeg/RThigh"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="RCrusPivot" type="Node3D" parent="RLeg/RThigh"]
+transform = Transform3D(0.996194, 0.0871557, 0, -0.0871557, 0.996194, 0, 0, 0, 1, -0.00571927, -0.198902, 0)
+
+[node name="RCrus" type="StaticBody3D" parent="RLeg/RThigh/RCrusPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00627396, -0.177442, 0)
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh/RCrusPivot/RCrus"]
+mesh = SubResource("BoxMesh_ox7cw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RLeg/RThigh/RCrusPivot/RCrus"]
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="RFootPivot" type="Node3D" parent="RLeg/RThigh/RCrusPivot/RCrus"]
+transform = Transform3D(0.999947, 0.0102624, 0, -0.0102624, 0.999947, 0, 0, 0, 1, -0.00374794, -0.178035, 0)
+
+[node name="RFoot" type="StaticBody3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot"]
+script = ExtResource("3_ox7cw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
+mesh = SubResource("BoxMesh_f5m3l")
+skeleton = NodePath("../../root/@EditorNode@22274/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/Player/RLegPivot/RThigh/RCrusPivot/RCrus")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
+shape = SubResource("BoxShape3D_ox7cw")
+
+[node name="PlayerShootRad" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerShootRad"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.167969, 0)
+shape = SubResource("BoxShape3D_j0tbg")

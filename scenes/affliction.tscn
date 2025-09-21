@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://ddbw1o7hndh18"]
+
+[ext_resource type="Texture2D" uid="uid://c8nnpugky31h7" path="res://assets/textures/ui/afflictions/affliction_bg.png" id="1_5lv1a"]
+[ext_resource type="Script" uid="uid://cctb52c2fh2r2" path="res://scripts/affliction.gd" id="1_b3hfl"]
+[ext_resource type="Texture2D" uid="uid://dtirlu8sgobp1" path="res://assets/textures/ui/afflictions/cardiacarrest.png" id="2_b3hfl"]
+
+[node name="Affliction" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 3
+script = ExtResource("1_b3hfl")
+
+[node name="BG" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_5lv1a")
+
+[node name="Icon" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+texture = ExtResource("2_b3hfl")

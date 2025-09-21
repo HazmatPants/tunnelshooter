@@ -8,12 +8,12 @@ extends CharacterBody3D
 @export var jump_velocity := 4.5
 @export var gravity := Vector3.DOWN * 9.8
 
-@export var crouch_scale := 1.0
+@export var crouch_height := 1.0
 @export var crouch_move_speed := 2.0
 @export var crouch_bobbing_speed := 8.0
 
 var crouching := false
-var default_scale := 2.0
+var default_height
 
 var input_enabled := true
 var mouse_look_enabled := true
@@ -227,6 +227,8 @@ func footstep_sound(type: String="step", volume: float=0.0):
 		play_random_sfx(sound_list, volume)
 
 func _ready():
+	default_height = $CollisionShape3D.position.y
+	
 	base_rhand_pos = right_hand_position.transform
 	get_tree().current_scene.call_deferred("add_child", sprint_rhand_pos)
 	sprint_rhand_pos.position = right_hand_position.position
@@ -243,9 +245,12 @@ func _ready():
 func _unhandled_input(event):
 	if input_enabled:
 		if event is InputEventMouseMotion and mouse_look_enabled:
-			look_rotation.x -= event.relative.x * mouse_sensitivity
-			look_rotation.y -= event.relative.y * mouse_sensitivity
+			var mouse_sens = mouse_sensitivity if not Input.is_action_pressed("zoom") else mouse_sensitivity / 4
+			look_rotation.x -= event.relative.x * mouse_sens
+			look_rotation.y -= event.relative.y * mouse_sens
 			look_rotation.y = clamp(look_rotation.y, -1.5, 1.5)
+		if event is InputEventKey and event.keycode == KEY_ESCAPE and event.is_pressed():
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 	rotation.y = look_rotation.x
 	camera.rotation.x = look_rotation.y
 
@@ -271,7 +276,6 @@ func _physics_process(delta):
 			elif Input.is_action_pressed("move_right"):
 				target_roll = -deg_to_rad(strafe_roll_amount)
 
-
 	current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * strafe_roll_speed)
 
 	input_dir = input_dir.normalized()
@@ -279,10 +283,8 @@ func _physics_process(delta):
 	
 	var speed = sprint_speed if sprinting else move_speed if not crouching else crouch_move_speed
 	var desired_velocity = input_dir * speed
-	# Separate XZ velocity
 	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
 
-	# Pick accel/decel based on input and limit it when in air
 	var accel
 	if input_dir.length() > 0:
 		if is_on_floor():
@@ -318,10 +320,10 @@ func _physics_process(delta):
 	if input_enabled:
 		if Input.is_action_pressed("crouch"):
 			crouching = true
-			$CollisionShape3D.shape.height = lerp($CollisionShape3D.shape.height, crouch_scale, 0.1)
+			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, crouch_height, 0.1)
 		else:
 			crouching = false
-			$CollisionShape3D.shape.height = lerp($CollisionShape3D.shape.height, default_scale, 0.1)
+			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, default_height, 0.1)
 	
 	move_and_slide()
 
@@ -411,31 +413,35 @@ func _physics_process(delta):
 	if input_enabled:
 		if Input.is_action_just_pressed("eject_mag"):
 			if left_hand:
-				left_hand.freeze = false
+				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
 
 func _process(delta: float) -> void:
-	if tinnitus > 1:
-		tinnitus = 1
-	ap_tinnitus.volume_linear = tinnitus
+	if tinnitus > 2:
+		tinnitus = 2
+	ap_tinnitus.volume_linear = tinnitus * 2
 	tinnitus = lerp(tinnitus, hearing_damage, 0.15 * delta)
+	
+	if hearing_damage > 0:
+		hearing_damage -= 0.0000001
 	
 	var lowpass_hz = 20000 - (hearing_damage + tinnitus) * 5e5
 	if "ear-pro" in Global.player.equipment:
 		lowpass_hz -= 19000
-	if lowpass_hz < 100:
-		lowpass_hz = 100
-	AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
+	if lowpass_hz < 100.0:
+		lowpass_hz = 100.0
+	if lowpass_hz > AudioServer.get_bus_effect(1, 0).cutoff_hz:
+		AudioServer.get_bus_effect(1, 0).cutoff_hz = lerp(AudioServer.get_bus_effect(1, 0).cutoff_hz, lowpass_hz, 0.01)
+	else:
+		AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
 
 func damage_ears(amount: float):
+	if not "ear-pro" in equipment:
+		Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 	tinnitus += amount
 	if tinnitus > 0.03:
 		hearing_damage += amount / 20
 
 func die():
 	get_tree().quit()
-
-func add_camera_rotation(delta_yaw: float, delta_pitch: float) -> void:
-	look_rotation.x += delta_yaw
-	look_rotation.y = clamp(look_rotation.y + delta_pitch, -1.5, 1.5)
