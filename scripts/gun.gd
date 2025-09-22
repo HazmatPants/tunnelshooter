@@ -156,6 +156,7 @@ func _process(_delta: float) -> void:
 							Global.player.damage_ears(0.00005)
 						else:
 							Global.player.damage_ears(0.01)
+							Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 
 						var Flash = muzzleflash.instantiate()
 						get_tree().current_scene.add_child(Flash)

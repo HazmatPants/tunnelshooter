@@ -135,7 +135,7 @@ func _HeartBeat():
 	Heart.scale = Vector2(1.2, 1.2)
 	Heart.get_theme_stylebox("panel").skew = Vector2(0, randf_range(-0.25, 0.25))
 	$Panel/ECG/Gradient.position.x = -120
-	if visible:
+	if visible and not healthCtl.consciousness <= healthCtl.unconsciousThreshold:
 		playsound(sfx_heartBeat)
 		ap_ecg.play()
 
@@ -151,10 +151,16 @@ func playsound(stream: AudioStream, volume: float=0):
 var breathing_cycle: bool = false # true = breathing in
 var breathe_timer: float = 0.0
 func lung_anim(delta):
-	$Body/Thorax/LLung.scale = lerp($Body/Thorax/LLung.scale,
-		Vector2(1.0, 1.0) if breathing_cycle else Vector2(0.7, 0.7), 0.01)
-	$Body/Thorax/RLung.scale = lerp($Body/Thorax/LLung.scale,
-		Vector2(1.0, 1.0) if breathing_cycle else Vector2(0.7, 0.7), 0.01)
+	if healthCtl.organs["LLung"]:
+		$Body/Thorax/LLung.scale = lerp($Body/Thorax/LLung.scale,
+			Vector2(1.0, 1.0) if breathing_cycle else Vector2(0.7, 0.7), 0.01)
+	else:
+		$Body/Thorax/LLung.modulate = lerp($Body/Thorax/LLung.modulate, Color(1, 0.5, 0.5), 0.05)
+	if healthCtl.organs["RLung"]:
+		$Body/Thorax/RLung.scale = lerp($Body/Thorax/LLung.scale,
+			Vector2(1.0, 1.0) if breathing_cycle else Vector2(0.7, 0.7), 0.01)
+	else:
+		$Body/Thorax/RLung.modulate = lerp($Body/Thorax/RLung.modulate, Color(1, 0.5, 0.5), 0.05)
 
 	breathe_timer += delta
 	if breathe_timer > 60.0 / healthCtl.breathingRate:
@@ -167,8 +173,8 @@ func check_tooltip(node: Control, tt_title: String, tt_desc: String=""):
 
 func limb_tooltip(limb: Control):
 	check_tooltip(limb, LimbDisplayNames[limb.name], 
-	"Blood Loss Rate: %s L/m\nPain: %s%%" % 
-	[str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)), str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
+	"Muscle Health: %s%%\nSkin Health: %s%%\nBlood Loss Rate: %s L/m\nPain: %s%%" % 
+	[str(int(round(PhysicalLimbs[limb.name].muscleHealth * 100))), str(int(round(PhysicalLimbs[limb.name].skinHealth * 100))), str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)), str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
 
 func handle_tooltips():
 	check_tooltip($Panel/VBoxContainer/Brain/VBoxContainer/BrainHealthLabel, "Brain Integrity (%)")

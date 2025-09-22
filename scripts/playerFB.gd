@@ -446,8 +446,6 @@ func _process(delta: float) -> void:
 		AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
 
 func damage_ears(amount: float):
-	if not "ear-pro" in equipment:
-		Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 	tinnitus += amount
 	if tinnitus > 0.03:
 		hearing_damage += amount / 20

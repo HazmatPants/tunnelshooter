@@ -33,6 +33,8 @@ func hit(_bullet):
 			else:
 				Global.player.healthCtl.add_affliction("respiratoryFailure", 1)
 
+		
+
 	Global.player.healthCtl.Limbs["Thorax"].bleedingRate += randf_range(5.0, 10.0)
 	Global.player.healthCtl.Limbs["Thorax"].pain += randf_range(0.1, 0.4)
 	Global.player.healthCtl.Limbs["Thorax"].muscleHealth -= randf_range(0.01, 0.1)

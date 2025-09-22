@@ -37,6 +37,9 @@ func _ready() -> void:
 		$Icon.texture = aff_icons[aff_name]
 
 func _process(_delta: float) -> void:
-	if Rect2(Vector2(), $BG.size).has_point(get_local_mouse_position()):
-		Global.playerGUI.tooltip.request_tooltip(aff_names[aff_name], aff_descs[aff_name])
-	$BG.texture = BG_lethal if Global.player.healthCtl.afflictions[aff_name]["intensity"] >= 1 else BG_normal
+	if Global.player.healthCtl.afflictions.has(aff_name):
+		if Rect2(Vector2(), $BG.size).has_point(get_local_mouse_position()):
+			Global.playerGUI.tooltip.request_tooltip(aff_names[aff_name], aff_descs[aff_name])
+		$BG.texture = BG_lethal if Global.player.healthCtl.afflictions[aff_name]["intensity"] >= 1 else BG_normal
+	else:
+		queue_free()

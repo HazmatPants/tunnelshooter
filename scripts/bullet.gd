@@ -19,9 +19,9 @@ func _physics_process(delta: float) -> void:
 	var motion = transform.basis.x * speed * delta
 	var collision = move_and_collide(motion)
 
-	var new_pos = global_position
-	_draw_segment(last_pos, new_pos)
-	last_pos = new_pos
+	#var new_pos = global_position
+	#_draw_segment(last_pos, new_pos)
+	#last_pos = new_pos
 
 	if collision:
 		_on_hit(collision)

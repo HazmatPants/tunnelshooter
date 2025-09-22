@@ -1,9 +1,16 @@
-extends Node3D
+extends StaticBody3D
 
 @export var fire_rate: float = 0.33
 
 @onready var muzzleRay = $MuzzleRay
+@onready var laserRay = $Laser/LaserRay
+@onready var laserMesh = $LaserBeam
 @onready var casingPos = $casingPos
+
+var parts := {
+	"laser": true,
+	"ammo": true
+}
 
 const muzzleflash = preload("res://scenes/muzzleflash.tscn")
 const casing = preload("res://scenes/9mm_casing.tscn")
@@ -13,6 +20,7 @@ var shoot_cooldown: float = 1.0
 var aggro_timer: float = 0.0
 var state: String = "idle"
 var ammo: int = 30
+var chamber: bool = false
 
 const sfx_fire := [
 	preload("res://assets/audio/sfx/weapons/turret/fire1.wav"),
@@ -31,14 +39,16 @@ const sfx_scan := preload("res://assets/audio/sfx/weapons/turret/ping.wav")
 const sfx_activate := preload("res://assets/audio/sfx/weapons/turret/activate.wav")
 const sfx_deactivate := preload("res://assets/audio/sfx/weapons/turret/deactivate.wav")
 const sfx_dryfire := preload("res://assets/audio/sfx/weapons/turret/dryfire.wav")
+const sfx_chamber := preload("res://assets/audio/sfx/weapons/turret/turret_chamber.wav")
 
 var ap_alarm := AudioStreamPlayer3D.new()
 
 func _ready() -> void:
 	ap_alarm.bus = "SFX"
 	ap_alarm.stream = preload("res://assets/audio/sfx/weapons/turret/alarm.wav")
-	ap_alarm.volume_db = -20
+	ap_alarm.volume_db = -10
 	get_tree().current_scene.call_deferred("add_child", ap_alarm)
+	ap_alarm.global_position = global_position
 
 var search_turn: float = 0.15
 func _process(delta: float) -> void:
@@ -57,10 +67,15 @@ func _process(delta: float) -> void:
 
 	global_transform.basis = global_transform.basis.slerp(target_basis, 3.0 * delta)
 
-	if muzzleRay.is_colliding():
+	if muzzleRay.is_colliding() and parts["laser"]:
 		var collider = muzzleRay.get_collider()
 		if collider:
 			if collider.name == "PlayerShootRad" and not Global.player.dead:
+				if not chamber:
+					if ammo > 0:
+						playsound(sfx_chamber, 10)
+						ammo -= 1
+						chamber = true
 				if not ap_alarm.playing:
 					ap_alarm.playing = true
 					playsound(sfx_activate)
@@ -68,11 +83,18 @@ func _process(delta: float) -> void:
 				aggro_timer = 4
 				if state == "shoot":
 					if shoot_cooldown >= fire_rate:
-						if ammo >= 0:
-							play_random_sfx(sfx_fire)
+						if chamber:
+							play_random_sfx(sfx_fire, 40)
 							shoot_bullet()
 							shoot_cooldown = 0.0
-							ammo -= 1
+							chamber = false
+							var max_range = 500.0
+							var dist = global_position.distance_to(Global.player.global_position)
+							var t = clamp(1.0 - (dist / max_range), 0.0, 1.0)
+							Global.player.damage_ears(t / 100)
+							if ammo > 0:
+								chamber = true
+								ammo -= 1
 						else:
 							playsound(sfx_dryfire)
 							shoot_cooldown = 0.0
@@ -94,6 +116,24 @@ func _process(delta: float) -> void:
 					search_turn = -search_turn
 
 	shoot_cooldown += delta
+
+	if parts["laser"]:
+		var mesh = ImmediateMesh.new()
+		var mat = StandardMaterial3D.new()
+		mat.emission_enabled = true
+		mat.emission = Color("00ff00ff")
+		mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+		mesh.surface_add_vertex(laserRay.position)
+		if laserRay.is_colliding():
+			mesh.surface_add_vertex(to_local(laserRay.get_collision_point()))
+		else:
+			mesh.surface_add_vertex(laserRay.position + laserRay.target_position)
+
+		mesh.surface_end()
+		mesh.surface_set_material(0, mat)
+		laserMesh.mesh = mesh
+	else:
+		laserMesh.visible = false
 
 func shoot_bullet():
 	var b = bullet.instantiate()

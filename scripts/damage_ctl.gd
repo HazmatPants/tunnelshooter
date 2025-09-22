@@ -44,7 +44,7 @@ var breathingRate: float = 90
 var maxBR: float = 200
 var restBR: float = 10
 const oxygenUseRate: float = 0.15
-const brainOxygenThreshold: float = 0.30
+const brainOxygenThreshold: float = 0.10
 const conscOxygenTheshold: float = 0.90
 const conscStaminaThreshold: float = 0.30
 const unconsciousThreshold: float = 0.25
@@ -61,7 +61,8 @@ func _process(delta: float) -> void:
 		var beatInterval = 60.0 / heartRate
 		if beatTimer >= beatInterval:
 			HeartBeat.emit()
-			playsound(sfx_heartBeatAmbient, lerp(-20, 15, 1.0 - min(stamina, bloodOxygen)))
+			if not consciousness <= unconsciousThreshold:
+				playsound(sfx_heartBeatAmbient, lerp(-20, 15, 1.0 - min(stamina, bloodOxygen)))
 			var bloodFraction = bloodVolume / 5000.0
 			bloodOxygen += 0.025 * bloodFraction
 			beatTimer -= beatInterval
@@ -113,12 +114,9 @@ func _process(delta: float) -> void:
 	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 1.0))
 	if consciousness <= unconsciousThreshold:
 		Engine.time_scale = 5.0
-	else:
-		Engine.time_scale = 1.0
-
-	if consciousness <= unconsciousThreshold:
 		Global.player.set_input_lock("unconscious", true)
 	else:
+		Engine.time_scale = 1.0
 		Global.player.set_input_lock("unconscious", false)
 
 	if bloodOxygen < brainOxygenThreshold:
@@ -140,6 +138,10 @@ func _process(delta: float) -> void:
 
 	if bloodLossRate > 0.0:
 		set_affliction("bleeding", bloodLossRate / 100)
+
+	if afflictions.has("bleeding"):
+		if bloodLossRate < 0.00001:
+			afflictions.erase("bleeding")
 
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()

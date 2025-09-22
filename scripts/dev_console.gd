@@ -37,19 +37,11 @@ func parse_command(commandString: String):
 				var stat = Global.player.healthCtl
 				var limbStat = {}
 				for limb in stat.Limbs.keys():
-					if stat.Limbs[limb] is Dictionary:
-						for limbSection in stat.Limbs[limb].keys():
-							limbStat[limb + "_" + limbSection] = {
-								"pain": stat.Limbs[limb][limbSection].pain,
-								"muscle": stat.Limbs[limb][limbSection].muscleHealth,
-								"skin": stat.Limbs[limb][limbSection].skinHealth
-								}
-					else:
-						limbStat[limb] = {
-							"pain": stat.Limbs[limb].pain,
-							"muscle": stat.Limbs[limb].muscleHealth,
-							"skin": stat.Limbs[limb].skinHealth
-							}
+					limbStat[limb] = {
+						"pain": stat.Limbs[limb].pain,
+						"muscle": stat.Limbs[limb].muscleHealth,
+						"skin": stat.Limbs[limb].skinHealth
+						}
 				var limbStatString = ""
 
 				for limb in limbStat.keys():
@@ -132,5 +124,19 @@ func parse_command(commandString: String):
 				user_print("Set '%s' = %s" % [targetvar, new_val])
 			"clear":
 				output.text = ""
+			"heal":
+				var stat = Global.player.healthCtl
+				stat.consciousness = 1.0
+				stat.brainHealth = 1.0
+				stat.bloodOxygen = 1.0
+				stat.bloodVolume = 5000.0
+				for limb in stat.Limbs.keys():
+					stat.Limbs[limb].pain = 0.0
+					stat.Limbs[limb].bleedingRate = 0.0
+					stat.Limbs[limb].muscleHealth = 1.0
+					stat.Limbs[limb].skinHealth = 1.0
+
+				for organ in stat.organs.keys():
+					stat.organs[organ] = true
 			_:
 				user_print("Command not valid")
