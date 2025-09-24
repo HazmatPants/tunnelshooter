@@ -138,5 +138,11 @@ func parse_command(commandString: String):
 
 				for organ in stat.organs.keys():
 					stat.organs[organ] = true
+			"afflictions":
+				var stat = Global.player.healthCtl
+				var aff_string := ""
+				for affliction in stat.afflictions.keys():
+					aff_string += "name: %s, intensity: %s\n" % [affliction, stat.afflictions[affliction]["intensity"]]
+				user_print(aff_string)
 			_:
 				user_print("Command not valid")

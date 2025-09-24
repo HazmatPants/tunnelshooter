@@ -33,6 +33,8 @@ var base_rhand_pos
 @onready var playerGUI = $"../PlayerGUI"
 
 var left_hand: RigidBody3D = null
+var inspecting: bool = false
+
 
 var bobbing_time := 0.0
 @export var bobbing_speed := 14.0
@@ -423,6 +425,9 @@ func _physics_process(delta):
 				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
+		if Input.is_action_just_pressed("inspect"):
+			inspecting = !inspecting
+
 
 func _process(delta: float) -> void:
 	if tinnitus > 2:

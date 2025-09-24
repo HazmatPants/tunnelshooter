@@ -139,15 +139,18 @@ func _process(delta: float) -> void:
 	if bloodLossRate > 0.0:
 		set_affliction("bleeding", bloodLossRate / 100)
 
+	if bloodVolume < 4500:
+		set_affliction("hypovolemia", (4000 - bloodVolume) / 5000)
+
 	if afflictions.has("bleeding"):
-		if bloodLossRate < 0.00001:
+		if bloodLossRate < 0.001:
 			afflictions.erase("bleeding")
 
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()
 
 	for affliction in afflictions.keys():
-		clamp(afflictions[affliction]["intensity"], 0.0, 1.0)
+		afflictions[affliction]["intensity"] = clampf(afflictions[affliction]["intensity"], 0.0, 1.0)
 		if afflictions[affliction]["intensity"] <= 0:
 			afflictions.erase(affliction)
 

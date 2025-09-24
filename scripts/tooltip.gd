@@ -8,7 +8,7 @@ var descText := ""
 
 var active_this_frame := false
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	position = lerp(position, get_global_mouse_position() + Vector2(16, 0), 0.1)
 	if not active_this_frame:
 		modulate.a = lerp(modulate.a, 0.0, 0.25)

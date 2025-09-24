@@ -21,6 +21,7 @@ var aggro_timer: float = 0.0
 var state: String = "idle"
 var ammo: int = 30
 var chamber: bool = false
+var aggro_time: float = 2.0
 
 const sfx_fire := [
 	preload("res://assets/audio/sfx/weapons/turret/fire1.wav"),
@@ -50,15 +51,15 @@ func _ready() -> void:
 	get_tree().current_scene.call_deferred("add_child", ap_alarm)
 	ap_alarm.global_position = global_position
 
-var search_turn: float = 0.15
+var last_spotted_rot: Vector3 = Vector3.ZERO
 func _process(delta: float) -> void:
 	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 2
 	var target_basis: Basis
 	if state == "shoot":
-		if aggro_timer > 3.5:
+		if aggro_timer > aggro_time - 0.5:
 			target_basis = Transform3D().looking_at(target - global_transform.origin).basis
 		else:
-			target_basis = Basis.from_euler(Vector3(rotation.x, rotation.y + search_turn, rotation.z))
+			target_basis = Basis.from_euler(last_spotted_rot)
 		if aggro_timer <= 0:
 			state = "idle"
 			playsound(sfx_deactivate)
@@ -67,10 +68,11 @@ func _process(delta: float) -> void:
 
 	global_transform.basis = global_transform.basis.slerp(target_basis, 3.0 * delta)
 
-	if muzzleRay.is_colliding() and parts["laser"]:
+	if muzzleRay.is_colliding():
 		var collider = muzzleRay.get_collider()
 		if collider:
-			if collider.name == "PlayerShootRad" and not Global.player.dead:
+			if collider.name == "PlayerShootRad" and not Global.player.dead and parts["laser"]:
+				last_spotted_rot = rotation
 				if not chamber:
 					if ammo > 0:
 						playsound(sfx_chamber, 10)
@@ -80,7 +82,7 @@ func _process(delta: float) -> void:
 					ap_alarm.playing = true
 					playsound(sfx_activate)
 					play_random_sfx(sfx_alert)
-				aggro_timer = 4
+				aggro_timer = aggro_time
 				if state == "shoot":
 					if shoot_cooldown >= fire_rate:
 						if chamber:
@@ -98,7 +100,7 @@ func _process(delta: float) -> void:
 						else:
 							playsound(sfx_dryfire)
 							shoot_cooldown = 0.0
-					if aggro_timer < 4:
+					if aggro_timer < aggro_time:
 						shoot_cooldown = -0.5
 						playsound(sfx_activate)
 						ap_alarm.play()
@@ -111,9 +113,7 @@ func _process(delta: float) -> void:
 				ap_alarm.playing = false
 				shoot_cooldown = -0.5
 				aggro_timer -= delta
-				if abs(fmod(aggro_timer, 1.0)) < 0.000001:
-					playsound(sfx_scan)
-					search_turn = -search_turn
+
 
 	shoot_cooldown += delta
 

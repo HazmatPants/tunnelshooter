@@ -32,7 +32,7 @@ func hit(_bullet):
 
 	bleedingRate += randf_range(1.0, 3.0) * bleedingRateMult
 	pain += randf_range(0.025, 0.1) * (1.0 - Global.player.healthCtl.adrenaline)
-	Global.player.healthCtl.adrenaline += 0.025
+	Global.player.healthCtl.adrenaline += 0.05
 	muscleHealth -= randf_range(0.01, 0.1)
 	skinHealth -= randf_range(0.01, 0.2)
 	play_random_sfx(sfx_flesh_hit, 10)

@@ -63,8 +63,8 @@ var LimbDisplayNames: Dictionary = {
 const sfx_heartBeat = preload("res://assets/audio/sfx/player/heart_thump.ogg")
 const sfx_ECG = preload("res://assets/audio/sfx/player/ECG.wav")
 const sfx_ECG_loop = preload("res://assets/audio/sfx/player/ECG_loop.wav")
-const sfx_menu_open = preload("res://assets/audio/sfx/ui/woundon.ogg")
-const sfx_menu_close = preload("res://assets/audio/sfx/ui/menu_close.ogg")
+const sfx_menu_open = preload("res://assets/audio/sfx/ui/health_menu_open.ogg")
+const sfx_menu_close = preload("res://assets/audio/sfx/ui/health_menu_close.ogg")
 
 var ap_ecg = AudioStreamPlayer.new()
 var limbposs = {}
@@ -99,7 +99,9 @@ func _process(delta: float) -> void:
 		handle_tooltips()
 
 		lung_anim(delta)
-		scale.y = lerp(scale.y, 1.0, 0.3)
+		scale.x = lerp(scale.x, 1.0, 0.4)
+		if scale.x > 0.9:
+			scale.y = lerp(scale.y, 1.0, 0.4)
 		Heart.scale = lerp(Heart.scale, Vector2(1.0, 1.0), 0.2)
 		if healthCtl.heartRate < 1:
 			$Panel/ECG/Gradient.position.x += 2
@@ -129,7 +131,7 @@ func _process(delta: float) -> void:
 		update_limbs()
 
 	else:
-		scale.y = 0.0
+		scale = Vector2(0.0, 0.1)
 
 func _HeartBeat():
 	Heart.scale = Vector2(1.2, 1.2)
