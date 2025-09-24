@@ -104,7 +104,7 @@ script = ExtResource("2_j0tbg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.642069, 0)
 script = ExtResource("3_ox7cw")
 isHead = true
-bleedingRateMult = 2.0
+bleedingRateMult = 10.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head"]
 layers = 2
