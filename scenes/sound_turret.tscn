@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://e1ljdlxt07hf"]
+
+[ext_resource type="Script" uid="uid://cpettmou7ae2k" path="res://scripts/sound_turret.gd" id="1_yifdt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3mc5"]
+metallic = 0.97
+roughness = 0.69
+
+[sub_resource type="BoxMesh" id="BoxMesh_el7wl"]
+material = SubResource("StandardMaterial3D_x3mc5")
+size = Vector3(0.781, 0.34, 0.781)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x3mc5"]
+size = Vector3(0.781, 0.34, 0.781)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_485p4"]
+material = SubResource("StandardMaterial3D_x3mc5")
+top_radius = 0.4
+bottom_radius = 0.02
+height = 0.43
+
+[sub_resource type="BoxMesh" id="BoxMesh_yifdt"]
+material = SubResource("StandardMaterial3D_x3mc5")
+size = Vector3(0.551, 0.34, 0.551)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_76emg"]
+size = Vector3(0.551, 0.34, 0.551)
+
+[node name="SoundTurret" type="StaticBody3D"]
+collision_layer = 2
+script = ExtResource("1_yifdt")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4285034, 0)
+mesh = SubResource("BoxMesh_el7wl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4285034, 0)
+shape = SubResource("BoxShape3D_x3mc5")
+
+[node name="casingPos" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.118959, 0.130286, 0)
+
+[node name="BarrelPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07403657, 0)
+
+[node name="Barrel" type="MeshInstance3D" parent="BarrelPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, -0.1984587)
+mesh = SubResource("CylinderMesh_485p4")
+skeleton = NodePath("../..")
+
+[node name="Ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011456609, 0)
+target_position = Vector3(0, 0, -30)
+collide_with_areas = true
+
+[node name="Body2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.092889875, 0)
+mesh = SubResource("BoxMesh_yifdt")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.092889875, 0)
+shape = SubResource("BoxShape3D_76emg")

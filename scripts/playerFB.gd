@@ -35,7 +35,6 @@ var base_rhand_pos
 var left_hand: RigidBody3D = null
 var inspecting: bool = false
 
-
 var bobbing_time := 0.0
 @export var bobbing_speed := 14.0
 @export var bobbing_amount := 0.05
@@ -182,6 +181,8 @@ const sfx_foot_wander = {
 }
 
 const sfx_deny = preload("res://assets/audio/sfx/ui/suit_denydevice.wav")
+const sfx_inspect = preload("res://assets/audio/sfx/ui/ui_open.wav")
+const sfx_uninspect = preload("res://assets/audio/sfx/ui/ui_close.wav")
 
 signal Death
 
@@ -208,7 +209,7 @@ func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0):
 		plr.stream = sound
 		plr.volume_db = volume
 		plr.bus = "SFX"
-		plr.pitch_scale = randf_range(0.95, 1.05)
+		get_tree().current_scene.add_child(plr)
 		plr.play()
 
 func footstep_sound(type: String="step", volume: float=0.0):
@@ -414,7 +415,7 @@ func _physics_process(delta):
 	
 	if sprinting:
 		right_hand_position.transform = lerp(right_hand_position.transform, sprint_rhand_pos.transform, 0.1)
-	else:
+	elif not inspecting:
 		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.6)
 	if left_hand:
 		left_hand.global_transform = lerp(left_hand.global_transform, left_hand_position.global_transform, 0.8)
@@ -425,9 +426,19 @@ func _physics_process(delta):
 				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
-		if Input.is_action_just_pressed("inspect"):
-			inspecting = !inspecting
+	if Input.is_action_just_pressed("inspect"):
+		inspecting = !inspecting
+		playsound(sfx_inspect if inspecting else sfx_uninspect, false)
+		set_input_lock("inspect", inspecting)
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if inspecting else Input.MOUSE_MODE_CAPTURED
 
+	if inspecting:
+		var inspect_transform: Transform3D = camera.transform	
+		inspect_transform.origin += Vector3(0, 0, -0.2)
+		inspect_transform.basis = Basis.from_euler(camera.transform.basis.get_euler() / 10)
+		right_hand_position.transform = lerp(right_hand_position.transform, inspect_transform, 0.6)
+	else:
+		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.7)
 
 func _process(delta: float) -> void:
 	if tinnitus > 2:
@@ -452,6 +463,8 @@ func _process(delta: float) -> void:
 
 func damage_ears(amount: float):
 	tinnitus += amount
+	healthCtl.Limbs["Head"].pain += amount
+	viewpunch_velocity += Vector3(100.0, 0, 0)
 	if tinnitus > 0.03:
 		hearing_damage += amount / 20
 

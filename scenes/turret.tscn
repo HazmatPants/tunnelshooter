@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://crf0rainai2gr"]
 
-[ext_resource type="Script" uid="uid://dhqie3tqm620w" path="res://scripts/turret.gd" id="1_x3mc5"]
+[ext_resource type="Script" uid="uid://cpettmou7ae2k" path="res://scripts/sound_turret.gd" id="1_el7wl"]
 [ext_resource type="Script" uid="uid://df5xd37qbslfc" path="res://scripts/turret_part.gd" id="2_el7wl"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_el7wl"]
@@ -49,9 +49,7 @@ size = Vector3(0.205, 0.34, 1.65057)
 
 [node name="Turret" type="StaticBody3D"]
 collision_layer = 2
-script = ExtResource("1_x3mc5")
-
-[node name="Gun" type="StaticBody3D" parent="."]
+script = ExtResource("1_el7wl")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.493952, 0)
