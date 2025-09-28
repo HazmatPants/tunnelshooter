@@ -250,8 +250,8 @@ func _unhandled_input(event):
 	if is_input_enabled():
 		if event is InputEventMouseMotion and mouse_look_enabled:
 			var mouse_sens = mouse_sensitivity if not Input.is_action_pressed("zoom") else mouse_sensitivity / 4
-			look_rotation.x -= event.relative.x * mouse_sens
-			look_rotation.y -= event.relative.y * mouse_sens
+			look_rotation.x -= event.relative.x * (mouse_sens * healthCtl.consciousness)
+			look_rotation.y -= event.relative.y * (mouse_sens * healthCtl.consciousness)
 			look_rotation.y = clampf(look_rotation.y, -1.1, 1.5)
 		if event is InputEventKey and event.keycode == KEY_ESCAPE and event.is_pressed():
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
@@ -306,7 +306,6 @@ func _physics_process(delta):
 
 	horizontal_velocity = horizontal_velocity.lerp(desired_velocity, accel * delta)
 
-	# Apply smoothed XZ back to velocity
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.z
 	

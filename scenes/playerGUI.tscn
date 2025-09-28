@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dc7l8xehcc418"]
+[gd_scene load_steps=29 format=3 uid="uid://dc7l8xehcc418"]
 
 [ext_resource type="Script" uid="uid://bch43lv5jeax1" path="res://scripts/player_gui.gd" id="1_cvfx2"]
 [ext_resource type="Texture2D" uid="uid://ra82yd2smxab" path="res://assets/textures/ui/loudwarn.png" id="2_8q740"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://ct72clt2kjpmf" path="res://scripts/tooltip.gd" id="12_8rw1s"]
 [ext_resource type="Texture2D" uid="uid://ca7dshqmqa1kv" path="res://assets/textures/ui/painimage.png" id="12_calrp"]
 [ext_resource type="Texture2D" uid="uid://dqo7to14qax7a" path="res://assets/textures/ui/painGradient.png" id="12_cle1p"]
+[ext_resource type="Texture2D" uid="uid://b02np1k785vdp" path="res://assets/textures/ui/painicon.png" id="14_cpy2a"]
+[ext_resource type="Script" uid="uid://ds3r5ad5b0r5f" path="res://scripts/brain_damage.gd" id="16_60st2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -167,6 +169,41 @@ offset_left = 2.0
 offset_top = 0.247999
 offset_right = 42.0
 offset_bottom = 23.248
+
+[node name="Pain" type="TextureRect" parent="."]
+clip_children = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.15, 1.15)
+pivot_offset = Vector2(512, 512)
+texture = ExtResource("12_calrp")
+
+[node name="Pain" type="TextureRect" parent="Pain"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1024.0
+offset_top = -1024.0
+offset_right = 1024.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.505, 0.505)
+pivot_offset = Vector2(1024, 1024)
+texture = ExtResource("12_cle1p")
 
 [node name="HealthGUI" type="Control" parent="."]
 layout_mode = 3
@@ -633,45 +670,19 @@ modulate = Color(0, 1, 0, 1)
 layout_mode = 2
 text = "Stamina: 100%"
 
-[node name="PainLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
+[node name="Pain" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Pain"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("14_cpy2a")
+expand_mode = 2
+
+[node name="PainLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Pain"]
 modulate = Color(0, 1, 0, 1)
 layout_mode = 2
 text = "Pain: 100%"
-
-[node name="Pain" type="TextureRect" parent="."]
-clip_children = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -512.0
-offset_top = -512.0
-offset_right = 512.0
-offset_bottom = 512.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.15, 1.15)
-pivot_offset = Vector2(512, 512)
-texture = ExtResource("12_calrp")
-
-[node name="Pain" type="TextureRect" parent="Pain"]
-modulate = Color(1, 0, 0, 1)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1024.0
-offset_top = -1024.0
-offset_right = 1024.0
-offset_bottom = 1024.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.505, 0.505)
-pivot_offset = Vector2(1024, 1024)
-texture = ExtResource("12_cle1p")
 
 [node name="Blackout" type="ColorRect" parent="."]
 visible = false
@@ -718,6 +729,16 @@ step = 0.0
 value = 1.0
 nine_patch_stretch = true
 texture_progress = ExtResource("8_epmk8")
+
+[node name="BrainDamage" type="ColorRect" parent="."]
+clip_children = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("16_60st2")
 
 [node name="DevConsole" type="LineEdit" parent="."]
 visible = false

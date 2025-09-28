@@ -22,7 +22,7 @@ var skinHealth: float = 1.0
 func _process(delta: float) -> void:
 	bleedingRate -= 0.0025 * delta
 	bleedingRate = clampf(bleedingRate, 0.0, INF)
-	pain -= 0.0025 * (1.0 - Global.player.healthCtl.adrenaline) * delta
+	pain -= 0.01 * (1.0 - Global.player.healthCtl.adrenaline) * delta
 	pain = clampf(pain, 0.0, 1.0)
 
 func hit(_bullet):
