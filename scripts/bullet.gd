@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var speed: float = 360
+@export var max_spread := Vector2(0.01, 0.01)
 @export var bounces: int = 1
 
 var last_pos: Vector3
@@ -12,14 +13,46 @@ const sfx_ricochet := [
 	preload("res://assets/audio/sfx/weapons/bullet/ricochet/bullet_ricochet_4.wav"),
 ]
 
+const sfx_supersonic_crack := [
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_01.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_02.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_03.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_04.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_05.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_06.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_07.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_07.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_08.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_09.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_10.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_11.wav"),
+	preload("res://assets/audio/sfx/weapons/bullet/snap/supersonic_snap_12.wav")
+]
+
+var crack_played := false
+
 func _ready() -> void:
 	last_pos = global_position
+	rotate_y(randf_range(-max_spread.x, max_spread.x))
+	rotate_z(randf_range(-max_spread.y, max_spread.y))
 
 func _physics_process(delta: float) -> void:
 	var motion = transform.basis.x * speed * delta
+	var new_pos = global_position + motion
+
+	if speed > 343.0: # supersonic
+		if not crack_played:
+			var closest = Geometry3D.get_closest_point_to_segment(Global.player.global_position, global_position, new_pos)
+			var dist = Global.player.global_position.distance_to(closest)
+			if dist < 5.0:
+				play_random_sfx(sfx_supersonic_crack)
+				Global.player.healthCtl.adrenaline += 0.025
+				Global.player.healthCtl.consciousness -= 0.05
+				Global.playerGUI.shock()
+				crack_played = true
+
 	var collision = move_and_collide(motion)
 
-	#var new_pos = global_position
 	#_draw_segment(last_pos, new_pos)
 	#last_pos = new_pos
 
@@ -50,26 +83,22 @@ func _on_hit(collision: KinematicCollision3D) -> void:
 	var collider = collision.get_collider()
 	if collider and collider.has_method("hit"):
 		collider.hit(self)
-		place_decal(collision)
-		queue_free()
-	else:
-		place_decal(collision)
-		queue_free()
+	place_decal(collision)
+	queue_free()
 
-func play_random_sfx(sound_list, volume: float=0):
+func play_random_sfx(sound_list, volume: float=0, pos: Vector3=global_position):
 	var idx = randi() % sound_list.size()
-	playsound(sound_list[idx], volume)
+	playsound(sound_list[idx], volume, pos)
 
-func playsound(stream: AudioStream, volume: float=0):
+func playsound(stream: AudioStream, volume: float=0, pos: Vector3=global_position):
 	var ap = AudioStreamPlayer3D.new()
 	ap.max_db = volume
 	get_tree().current_scene.add_child(ap)
-	ap.global_transform = global_transform
+	ap.global_position = pos
 	ap.stream = stream
 	ap.bus = "SFX"
 	ap.play()
-	await ap.finished
-	ap.queue_free()
+	ap.finished.connect(ap.queue_free)
 
 func _draw_segment(from: Vector3, to: Vector3):
 	var line = ImmediateMesh.new()

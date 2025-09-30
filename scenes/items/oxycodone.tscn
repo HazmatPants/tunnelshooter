@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://ch3tuais31wbv"]
+[gd_scene load_steps=17 format=4 uid="uid://ch3tuais31wbv"]
 
 [ext_resource type="Script" uid="uid://uapxs3651s5e" path="res://scripts/item.gd" id="1_12oxs"]
 [ext_resource type="Texture2D" uid="uid://d0xbvqvbodwlq" path="res://assets/models/oxycodone_oxycodone.png" id="2_of0vw"]
@@ -122,23 +122,111 @@ shadow_mesh = SubResource("ArrayMesh_2tmas")
 height = 0.3706621
 radius = 0.11035156
 
+[sub_resource type="Animation" id="Animation_of0vw"]
+resource_name = "use"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh/Cylinder_001")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1.6470377, 0, 0.13333334, 1, 0.07047403, 2.2606459, -0.26301256, 0.4, 1, 1.330541, 0.9736056, -4.9656453, 0.7666667, 1, 1.330541, 0.9736056, -4.9656453, 1, 1, 0, 1.6470377, 0)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh/Cylinder_001:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.4, 0.7666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.3638543, 0.018819606, -0.10221558), Vector3(-1.1268598, 2.2330265, -2.5431044), Vector3(-1.1268598, 2.2330265, -2.5431044), Vector3(0, 0, 0)]
+}
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mesh")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.4, 1, 0, 0, 0, 0.56666666, 1, -0.15, 0.093, -0.2, 0.6666667, 1, -0.2, 0.093, -0.2, 0.7666667, 1, -0.2, 0.093, -0.2, 1, 1, 0, 0, 0)
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Mesh:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.56666666, 0.6666667, 0.7666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -2.8797932, 0), Vector3(0, -2.8797932, 0), Vector3(0.25556302, -3.084159, -1.3471514), Vector3(0.25481808, -3.0839968, -1.8622663), Vector3(0.25481808, -3.0839968, -1.8622663), Vector3(0, -2.8797932, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_obnye"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh/Cylinder_001:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.6470377, 0)]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh/Cylinder_001")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 1.6470377, 0)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mesh:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -2.8797932, 0)]
+}
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Mesh")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_obnye"]
+_data = {
+&"RESET": SubResource("Animation_obnye"),
+&"use": SubResource("Animation_of0vw")
+}
+
 [node name="Oxycodone" type="RigidBody3D"]
 script = ExtResource("1_12oxs")
 
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(-0.09659258, 0, -0.025881914, 0, 0.1, 0, 0.025881914, 0, -0.09659258, 0, 0, 0)
+[node name="Mesh" type="Node3D" parent="."]
+transform = Transform3D(-0.09659258, 0, -0.02588191, 0, 0.1, 0, 0.025881914, 0, -0.09659257, 0, 0, 0)
 
-[node name="Cylinder" type="MeshInstance3D" parent="Node3D"]
+[node name="Cylinder" type="MeshInstance3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1.5160313, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_obnye")
 skeleton = NodePath("")
 
-[node name="Cylinder_001" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(1.1257532, 0, 0, 0, 0.31064305, 0, 0, 0, 1.1257527, 0, 1.7034945, 0)
+[node name="Cylinder_001" type="MeshInstance3D" parent="Mesh"]
+transform = Transform3D(-0.08574575, 0, 1.1224812, 0, 0.31064254, 0, -1.1224811, 0, -0.08574576, 0, 1.6470377, 0)
 mesh = SubResource("ArrayMesh_iyind")
 skeleton = NodePath("")
 
-[node name="Cylinder_002" type="MeshInstance3D" parent="Node3D"]
+[node name="Cylinder_002" type="MeshInstance3D" parent="Mesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0034098723, 0, 0)
 mesh = SubResource("ArrayMesh_8txwr")
 skeleton = NodePath("")
@@ -149,3 +237,9 @@ shape = SubResource("CylinderShape3D_obnye")
 
 [node name="Function" type="Node" parent="."]
 script = ExtResource("3_of0vw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_obnye")
+}
+blend_times = [&"use", &"RESET", 0.1, &"use", &"use", 0.2]

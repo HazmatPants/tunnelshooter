@@ -44,6 +44,7 @@ var breathingRate: float = 90
 var maxBR: float = 200
 var restBR: float = 10
 var opioidAmount: float = 0.0
+var bloodClotSpeed: float = 0.003
 const oxygenUseRate: float = 0.15
 const brainOxygenThreshold: float = 0.10
 const conscOxygenTheshold: float = 0.90
@@ -101,21 +102,21 @@ func _process(delta: float) -> void:
 	
 	stamina -= physicalWork / 250
 
-	physicalWork += adrenaline / 100
-
 	if physicalWork < 0.1:
 		stamina += (1.0 - stamina) * 0.3 * delta
 
 	stamina = clamp(stamina, 0.0001, min(consciousness, 1.0))
 
-	adrenaline = lerp(adrenaline, 0.0, 0.0025)
+	adrenaline = lerp(adrenaline, 0.0, 0.0)
 
 	if heartRate < 40:
 		adrenaline += 0.001
 
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
-	consciousness -= (conscOxygenTheshold - bloodOxygen) * 0.15 * delta
+	consciousness -= clampf((conscOxygenTheshold - bloodOxygen) * 0.15 * delta, 0.0, INF)
+
+	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
 
 	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 1.0 - opioidAmount / 2, 1.0))
 	if consciousness <= unconsciousThreshold:
@@ -127,6 +128,8 @@ func _process(delta: float) -> void:
 
 	if bloodOxygen < brainOxygenThreshold:
 		brainHealth -= (brainOxygenThreshold - bloodOxygen) * 0.05 * delta
+
+	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.05 * delta)
 
 	if bloodVolume <= 2500:
 		brainHealth -= (2500 - bloodVolume) * 0.00002 * delta

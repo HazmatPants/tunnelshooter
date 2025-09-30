@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b6e7d6pfq0oyt"]
+[gd_scene load_steps=29 format=3 uid="uid://b6e7d6pfq0oyt"]
 
 [ext_resource type="Script" uid="uid://dy7uicypdd4mx" path="res://scripts/playerFB.gd" id="1_oxfux"]
 [ext_resource type="Script" uid="uid://dvqi222awr8qj" path="res://scripts/damage_ctl.gd" id="2_j0tbg"]
@@ -75,6 +75,9 @@ size = Vector3(0.265, 0.14, 0.505)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j0tbg"]
 size = Vector3(1.2, 2.35, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uhjnw"]
+size = Vector3(10, 10, 10)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -372,3 +375,9 @@ shape = SubResource("BoxShape3D_ox7cw")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerShootRad"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.167969, 0)
 shape = SubResource("BoxShape3D_j0tbg")
+
+[node name="NearmissZone" type="Area3D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NearmissZone"]
+shape = SubResource("BoxShape3D_uhjnw")

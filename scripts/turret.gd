@@ -1,6 +1,6 @@
 extends StaticBody3D
 
-@export var fire_rate: float = 0.33
+@export var fire_rate: float = 0.2
 
 @onready var muzzleRay = $MuzzleRay
 @onready var laserRay = $Laser/LaserRay
@@ -19,7 +19,7 @@ const bullet = preload("res://scenes/bullet.tscn")
 var shoot_cooldown: float = 1.0
 var aggro_timer: float = 0.0
 var state: String = "idle"
-var ammo: int = 30
+var ammo: int = 60
 var chamber: bool = false
 var aggro_time: float = 2.0
 
@@ -90,10 +90,10 @@ func _process(delta: float) -> void:
 							shoot_bullet()
 							shoot_cooldown = 0.0
 							chamber = false
-							var max_range = 500.0
-							var dist = global_position.distance_to(Global.player.global_position)
-							var t = clamp(1.0 - (dist / max_range), 0.0, 1.0)
-							Global.player.damage_ears(t / 100)
+							#var max_range = 500.0
+							#var dist = global_position.distance_to(Global.player.global_position)
+							#var t = clamp(1.0 - (dist / max_range), 0.0, 1.0)
+							#Global.player.damage_ears(t / 100)
 							if ammo > 0:
 								chamber = true
 								ammo -= 1

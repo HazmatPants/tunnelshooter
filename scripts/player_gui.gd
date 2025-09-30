@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var mp: AudioStreamPlayer = $MusicPlayer
 @onready var mp2: AudioStreamPlayer = $MusicPlayer2
 @onready var tooltip: Control = $Tooltip
+@onready var shockOverlay: TextureRect = $Shock
 
 var hint_queue: Array[String] = []
 var hint_tween: Tween = null
@@ -62,7 +63,7 @@ func _start_hint_tween(text: String) -> void:
 
 var time = 0
 var last_brainHealth: float = 0
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var total_pain = Global.player.healthCtl.get_limb_total("pain")
 	var painImageSine = 2.0 - total_pain
 	painImageSine += (sin((PI * time) / 30) * 1 / 2 * PI)
@@ -100,10 +101,16 @@ func _process(_delta: float) -> void:
 		$Blackout/TextureProgressBar.visible = false
 		$Blackout/TextureProgressBar.modulate.a = 0.0
 		$Blackout/Label.modulate.a = 0.0
-	
+
 	last_brainHealth = Global.player.healthCtl.brainHealth
+
+	if shockOverlay.modulate.a > 0:
+		shockOverlay.modulate.a -= 1 * delta
 
 func _death():
 	$Blackout/Label.text = ""
 	mp2.stream = bgm_death
 	mp2.play()
+
+func shock():
+	shockOverlay.modulate.a = 1.0

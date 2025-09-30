@@ -1,7 +1,7 @@
 extends Node
 
 @onready var frontRay: RayCast3D
-@onready var itemUseProgress := Global.playerGUI.get_node("ItemUseProgress") 
+@onready var itemUseProgress: TextureProgressBar = Global.playerGUI.get_node("ItemUseProgress") 
 
 var hovered_item
 
@@ -12,6 +12,7 @@ var items := {
 
 const sfx_pickup := preload("res://assets/audio/sfx/ui/inventory/pickup.wav")
 
+var used := false
 func _process(delta: float) -> void:
 	frontRay = Global.player.frontRay
 	if frontRay:
@@ -23,13 +24,11 @@ func _process(delta: float) -> void:
 				if Input.is_action_just_pressed("interact"):
 					if items["RHand"] == null:
 						items["RHand"] = collider
+						items["RHand"].get_node("CollisionShape3D").disabled = true
 						collider.gravity_scale = 0.0
-					elif items["LHand"] == null:
-						items["LHand"] = collider
-						collider.gravity_scale = 0.0
-					Global.playerGUI.pickup_text.text = ""
-					hovered_item = null
-					playsound(sfx_pickup)
+						Global.playerGUI.pickup_text.text = ""
+						hovered_item = null
+						playsound(sfx_pickup)
 			elif hovered_item:
 				Global.playerGUI.pickup_text.text = ""
 				hovered_item = null
@@ -39,18 +38,29 @@ func _process(delta: float) -> void:
 		if items["RHand"]:
 			if Global.player.inspecting:
 				items["RHand"].gravity_scale = 1.0
+				items["RHand"].get_node("CollisionShape3D").disabled = false
 				var direction = Global.player.camera.global_transform.basis.z * -1.0
 				if Global.player.camera.rotation_degrees.x > 0:
 					items["RHand"].apply_central_impulse(direction * 6)
 				else:
 					items["RHand"].apply_central_impulse(direction)
 				items["RHand"] = null
+			else:
+				items["RHand"].anim.current_animation = "use"
+				itemUseProgress.max_value = items["RHand"].anim.current_animation_length / 2
 
-	if Input.is_action_pressed("lmb"):
+	if Input.is_action_just_released("lmb"):
+		if items["RHand"]:
+			if not used:
+				items["RHand"].anim.stop()
+			used = false
+
+	if Input.is_action_pressed("lmb") and not used:
 		if items["RHand"]:
 			itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
 			itemUseProgress.value += delta
-			if itemUseProgress.value >= 1.0:
+			if itemUseProgress.value >= itemUseProgress.max_value:
+				used = true
 				items["RHand"].call("use")
 				itemUseProgress.value = 0.0
 	else:

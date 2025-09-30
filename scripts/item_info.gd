@@ -4,7 +4,9 @@ extends Control
 @onready var Description := $VBoxContainer/Description
 
 var item_descs := {
-	"Oxycodone": "An opioid analgesic (painkiller) used to treat moderate to severe pain."
+	"Oxycodone": "An opioid analgesic (painkiller) used to treat moderate to severe pain.",
+	"Procoagulant": "A serum that promotes blood clotting, slowing down bleeding across the body.",
+	"Adrenaline": "Quickly increases heart rate and awareness."
 }
 
 var timer: float = 0.0

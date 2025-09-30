@@ -1,7 +1,15 @@
 extends RigidBody3D
 
+@onready var anim: AnimationPlayer = $AnimationPlayer
+
+var condition: float = 1.0
+
 func _ready() -> void:
 	add_to_group(&"items")
+
+func _process(_delta: float) -> void:
+	if condition <= 0.0:
+		queue_free()
 
 func use():
 	$Function.call("use")
