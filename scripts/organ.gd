@@ -21,19 +21,19 @@ func hit(_bullet):
 	if isLung:
 		Global.player.healthCtl.organs[name] = false
 		if name == "LLung":
+			Global.player.healthCtl.organs["LLung"] = false
 			if Global.player.healthCtl.organs["RLung"]:
 				Global.player.healthCtl.bloodOxygen /= 2
 				Global.player.healthCtl.add_affliction("lungCollapsed", 1)
 			else:
 				Global.player.healthCtl.add_affliction("respiratoryFailure", 1)
 		if name == "RLung":
+			Global.player.healthCtl.organs["RLung"] = false
 			if Global.player.healthCtl.organs["LLung"]:
 				Global.player.healthCtl.bloodOxygen /= 2
 				Global.player.healthCtl.add_affliction("lungCollapsed", 1)
 			else:
 				Global.player.healthCtl.add_affliction("respiratoryFailure", 1)
-
-		
 
 	Global.player.healthCtl.Limbs["Thorax"].bleedingRate += randf_range(5.0, 10.0)
 	Global.player.healthCtl.Limbs["Thorax"].pain += randf_range(0.1, 0.4)

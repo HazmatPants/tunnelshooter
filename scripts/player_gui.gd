@@ -71,7 +71,7 @@ func _process(_delta: float) -> void:
 	$Pain/Pain.modulate.a = total_pain
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
-	$Blackout.modulate.a = 1.0 - Global.player.healthCtl.consciousness
+	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - Global.player.healthCtl.consciousness, 0.1)
 	if Global.player.healthCtl.brainHealth < last_brainHealth:
 		if $Blackout.visible and not Global.player.dead: # dying
 			$Blackout/TextureProgressBar.modulate = Color(1, 0, 0, $Blackout/TextureProgressBar.modulate.a)

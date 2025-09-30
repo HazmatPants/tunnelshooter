@@ -67,7 +67,10 @@ func _process(delta: float) -> void:
 			if not consciousness <= unconsciousThreshold:
 				playsound(sfx_heartBeatAmbient, lerp(-20, 15, 1.0 - min(stamina, bloodOxygen)))
 			var bloodFraction = bloodVolume / 5000.0
-			bloodOxygen += 0.025 * bloodFraction
+			if organs["RLung"] and organs["LLung"]:
+				bloodOxygen += 0.025 * bloodFraction
+			elif organs["RLung"] or organs["LLung"]:
+				bloodOxygen += 0.015 * bloodFraction
 			beatTimer -= beatInterval
 	else:
 		beatTimer = 0.0
@@ -114,7 +117,7 @@ func _process(delta: float) -> void:
 
 	consciousness -= (conscOxygenTheshold - bloodOxygen) * 0.15 * delta
 
-	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 1.0))
+	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 1.0 - opioidAmount / 2, 1.0))
 	if consciousness <= unconsciousThreshold:
 		Engine.time_scale = 5.0
 		Global.player.set_input_lock("unconscious", true)
@@ -168,6 +171,11 @@ func _process(delta: float) -> void:
 	if afflictions.has("bleeding"):
 		if bloodLossRate < 0.001:
 			afflictions.erase("bleeding")
+
+	if opioidAmount > 0.8:
+		set_affliction("respiratoryFailure", 1.0)
+		organs["LLung"] = false
+		organs["RLung"] = false
 
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()
