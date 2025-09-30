@@ -3,15 +3,7 @@ extends StaticBody3D
 @export var fire_rate: float = 0.33
 
 @onready var Ray = $Ray
-@onready var laserRay = $Laser/LaserRay
-@onready var laserMesh = $LaserBeam
-@onready var casingPos = $casingPos
 
-const muzzleflash = preload("res://scenes/muzzleflash.tscn")
-const casing = preload("res://scenes/9mm_casing.tscn")
-const bullet = preload("res://scenes/bullet.tscn")
-
-var aggro_timer: float = 0.0
 var activated: bool = false
 var shot: bool = false
 
@@ -19,7 +11,6 @@ const sfx_charge := preload("res://assets/audio/sfx/weapons/soundturret/sound_tu
 const sfx_hit := preload("res://assets/audio/sfx/weapons/soundturret/sound_turret_hit.wav")
 const sfx_blocked := preload("res://assets/audio/sfx/weapons/soundturret/sound_turret_blocked.wav")
 
-var last_spotted_rot: Vector3 = Vector3.ZERO
 func _process(delta: float) -> void:
 	var target = Global.player.get_node("Head").global_transform.origin
 	var target_basis: Basis
@@ -47,7 +38,7 @@ func shoot():
 		var collider = Ray.get_collider()
 		if collider:
 			if collider.name == "PlayerShootRad" and not Global.player.dead:
-				playsound(sfx_hit)
+				playsound(sfx_hit, 100)
 				await get_tree().create_timer(0.05).timeout
 				Global.player.viewpunch_velocity += Vector3(260.0, 0, 0)
 				Global.player.healthCtl.consciousness -= 0.85

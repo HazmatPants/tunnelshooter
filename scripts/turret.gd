@@ -113,7 +113,10 @@ func _process(delta: float) -> void:
 				ap_alarm.playing = false
 				shoot_cooldown = -0.5
 				aggro_timer -= delta
-
+	elif state == "shoot":
+		ap_alarm.playing = false
+		shoot_cooldown = -0.5
+		aggro_timer -= delta
 
 	shoot_cooldown += delta
 

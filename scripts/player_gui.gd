@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 @onready var hint_label: Label = $HintText
-@onready var hearing_damage_icon: TextureRect = $HearingDamageIcon
+@onready var pickup_text: Label = $PickupText
 @onready var mp: AudioStreamPlayer = $MusicPlayer
 @onready var mp2: AudioStreamPlayer = $MusicPlayer2
 @onready var tooltip: Control = $Tooltip
@@ -11,14 +11,10 @@ var hint_tween: Tween = null
 var is_showing: bool = false
 var current_hint: String = ""
 
-var hearing_damage_icon_base_pos
-
 var bgm_dying = preload("res://assets/audio/music/dying.wav")
 var bgm_death = preload("res://assets/audio/music/death.wav")
 
 func _ready() -> void:
-	hearing_damage_icon_base_pos = hearing_damage_icon.position
-	
 	Global.player.Death.connect(_death)
 	
 	$Blackout.visible = true
@@ -67,20 +63,6 @@ func _start_hint_tween(text: String) -> void:
 var time = 0
 var last_brainHealth: float = 0
 func _process(_delta: float) -> void:
-	var alpha = clamp(Global.player.tinnitus * 100, Global.player.hearing_damage / 10, 1.0)
-	var damage = clamp(Global.player.hearing_damage * 100, 0.0, 1.0)
-	
-	var color = Color(1.0, 1.0 - damage, 1.0 - damage, alpha)
-	hearing_damage_icon.modulate = color
-
-	hearing_damage_icon.position = hearing_damage_icon_base_pos + Vector2(
-		randf_range(-1, 1), 
-		randf_range(-1, 1)
-		) * (Global.player.tinnitus * 50)
-
-	$tinnitus.text = "Tinnitus: " + str(Global.player.tinnitus)
-	$hearingdamage.text = "Damage: " + str(Global.player.hearing_damage)
-	
 	var total_pain = Global.player.healthCtl.get_limb_total("pain")
 	var painImageSine = 2.0 - total_pain
 	painImageSine += (sin((PI * time) / 30) * 1 / 2 * PI)

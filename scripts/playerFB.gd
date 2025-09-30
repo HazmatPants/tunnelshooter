@@ -20,13 +20,14 @@ var mouse_look_enabled := true
 var look_rotation: Vector2 = Vector2.ZERO
 
 @onready var camera: Camera3D = $Head/Camera3D
-@onready var interactray: RayCast3D = $Head/Camera3D/InteractRay
+@onready var frontRay: RayCast3D = $Head/Camera3D/FrontRay
 @onready var footstepRay: RayCast3D = $FootstepRay
 @onready var grab_position: Node3D = $Head/Camera3D/GrabPoint
 @onready var right_hand_position: Node3D = $Head/Camera3D/RHandPosition
 @onready var left_hand_position: Node3D = $Head/Camera3D/LHandPosition
 @onready var holster_position: Node3D = $HolsterPosition
 @onready var healthCtl: Node = $HealthCtl
+@onready var inventory: Node = $Inventory
 var sprint_rhand_pos: Node3D = Node3D.new()
 var base_rhand_pos
 
@@ -181,8 +182,6 @@ const sfx_foot_wander = {
 }
 
 const sfx_deny = preload("res://assets/audio/sfx/ui/suit_denydevice.wav")
-const sfx_inspect = preload("res://assets/audio/sfx/ui/ui_open.wav")
-const sfx_uninspect = preload("res://assets/audio/sfx/ui/ui_close.wav")
 
 signal Death
 
@@ -280,7 +279,7 @@ func _physics_process(delta):
 			elif Input.is_action_pressed("move_right"):
 				target_roll = -deg_to_rad(strafe_roll_amount)
 
-	current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * strafe_roll_speed)
+	current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * strafe_roll_speed) * healthCtl.stamina
 
 	input_dir = input_dir.normalized()
 	var sprinting = Input.is_action_pressed("sprint") and is_on_floor() and not crouching
@@ -425,19 +424,15 @@ func _physics_process(delta):
 				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
-	if Input.is_action_just_pressed("inspect"):
-		inspecting = !inspecting
-		playsound(sfx_inspect if inspecting else sfx_uninspect, false)
-		set_input_lock("inspect", inspecting)
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if inspecting else Input.MOUSE_MODE_CAPTURED
+	inspecting = Input.is_action_pressed("rmb")
 
 	if inspecting:
-		var inspect_transform: Transform3D = camera.transform	
-		inspect_transform.origin += Vector3(0, 0, -0.2)
-		inspect_transform.basis = Basis.from_euler(camera.transform.basis.get_euler() / 10)
-		right_hand_position.transform = lerp(right_hand_position.transform, inspect_transform, 0.6)
+		var inspect_transform: Transform3D = base_rhand_pos
+		inspect_transform.origin += Vector3(-0.1, 0.25, 0.1)
+		inspect_transform.basis = Basis.from_euler(base_rhand_pos.basis.get_euler() + Vector3(0, 0, -0.1))
+		right_hand_position.transform = lerp(right_hand_position.transform, inspect_transform, 0.2)
 	else:
-		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.7)
+		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.2)
 
 func _process(delta: float) -> void:
 	if tinnitus > 2:

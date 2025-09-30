@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://crf0rainai2gr"]
 
-[ext_resource type="Script" uid="uid://cpettmou7ae2k" path="res://scripts/sound_turret.gd" id="1_el7wl"]
+[ext_resource type="Script" uid="uid://dhqie3tqm620w" path="res://scripts/turret.gd" id="1_el7wl"]
 [ext_resource type="Script" uid="uid://df5xd37qbslfc" path="res://scripts/turret_part.gd" id="2_el7wl"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_el7wl"]
@@ -89,7 +89,7 @@ shape = SubResource("CylinderShape3D_6fjxm")
 
 [node name="LaserRay" type="RayCast3D" parent="Laser"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872798, -1.12228)
-target_position = Vector3(0, 0, -30)
+target_position = Vector3(0, 0, -100)
 collide_with_areas = true
 
 [node name="casingPos" type="Node3D" parent="."]
@@ -101,5 +101,5 @@ shape = SubResource("BoxShape3D_x3mc5")
 
 [node name="MuzzleRay" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.25038)
-target_position = Vector3(0, 0, -30)
+target_position = Vector3(0, 0, -100)
 collide_with_areas = true

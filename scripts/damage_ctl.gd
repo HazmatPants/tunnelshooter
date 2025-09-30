@@ -43,6 +43,7 @@ var targetHR: float = 80
 var breathingRate: float = 90
 var maxBR: float = 200
 var restBR: float = 10
+var opioidAmount: float = 0.0
 const oxygenUseRate: float = 0.15
 const brainOxygenThreshold: float = 0.10
 const conscOxygenTheshold: float = 0.90
@@ -54,6 +55,8 @@ var beatTimer: float = 0.0
 const sfx_heartBeatAmbient = preload("res://assets/audio/sfx/player/heart_amb.wav")
 
 signal HeartBeat
+signal affliction_added
+signal affliction_changed
 
 func _process(delta: float) -> void:
 	if not "cardiacArrest" in afflictions:
@@ -137,10 +140,30 @@ func _process(delta: float) -> void:
 		add_affliction("brainDead", 1.0)
 
 	if bloodLossRate > 0.0:
-		set_affliction("bleeding", bloodLossRate / 100)
+		set_affliction("bleeding", bloodLossRate / 16)
 
 	if bloodVolume < 4500:
-		set_affliction("hypovolemia", (4000 - bloodVolume) / 5000)
+		set_affliction("hypovolemia", (4500 - bloodVolume) / 5000)
+
+	if Limbs["Head"].pain > 0.05:
+		set_affliction("headache", Limbs["Head"].pain)
+	else:
+		afflictions.erase("headache")
+
+	if stamina <= 0.05:
+		set_affliction("incapacitated", 1.0)
+	else:
+		afflictions.erase("incapacitated")
+
+	if Global.player.hearing_damage > 0.0:
+		set_affliction("hearingDamage", Global.player.hearing_damage * 100)
+	else:
+		afflictions.erase("hearingDamage")
+
+	if brainHealth < 0.9:
+		set_affliction("brainDamage", 1.0 - brainHealth)
+	else:
+		afflictions.erase("brainDamage")
 
 	if afflictions.has("bleeding"):
 		if bloodLossRate < 0.001:
@@ -151,7 +174,7 @@ func _process(delta: float) -> void:
 
 	for affliction in afflictions.keys():
 		afflictions[affliction]["intensity"] = clampf(afflictions[affliction]["intensity"], 0.0, 1.0)
-		if afflictions[affliction]["intensity"] <= 0:
+		if afflictions[affliction]["intensity"] <= 0.0:
 			afflictions.erase(affliction)
 
 func playsound(stream: AudioStream, volume: float=0):
@@ -188,15 +211,19 @@ func get_limb_all(value: String):
 func add_affliction(aff_name: String, intensity: float=1):
 	if afflictions.has(aff_name):
 		afflictions[aff_name]["intensity"] = afflictions[aff_name]["intensity"] + intensity
+		affliction_changed.emit(afflictions)
 	else:
 		afflictions[aff_name] = {
 			"intensity": intensity
 		}
+		affliction_added.emit(afflictions)
 
 func set_affliction(aff_name: String, intensity: float=1):
 	if afflictions.has(aff_name):
 		afflictions[aff_name]["intensity"] = intensity
+		affliction_changed.emit(afflictions)
 	else:
 		afflictions[aff_name] = {
 			"intensity": intensity
 		}
+		affliction_added.emit(afflictions)
