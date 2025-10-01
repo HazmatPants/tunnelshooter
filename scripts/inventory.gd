@@ -12,7 +12,9 @@ var items := {
 
 const sfx_pickup := preload("res://assets/audio/sfx/ui/inventory/pickup.wav")
 
+var using := false
 var used := false
+var depleted := false
 func _process(delta: float) -> void:
 	frontRay = Global.player.frontRay
 	if frontRay:
@@ -46,23 +48,45 @@ func _process(delta: float) -> void:
 					items["RHand"].apply_central_impulse(direction)
 				items["RHand"] = null
 			else:
-				items["RHand"].anim.current_animation = "use"
-				itemUseProgress.max_value = items["RHand"].anim.current_animation_length / 2
+				if items["RHand"].useOverTime:
+					items["RHand"].anim.current_animation = "useStart"
+				else:
+					items["RHand"].anim.current_animation = "use"
+				itemUseProgress.max_value = items["RHand"].useTime
 
 	if Input.is_action_just_released("lmb"):
 		if items["RHand"]:
-			if not used:
+			if not used and not using:
 				items["RHand"].anim.stop()
+			if using and not depleted:
+				using = false
+				items["RHand"].anim.current_animation = "useEnd"
 			used = false
 
-	if Input.is_action_pressed("lmb") and not used:
+	if Input.is_action_pressed("lmb"):
 		if items["RHand"]:
-			itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
-			itemUseProgress.value += delta
-			if itemUseProgress.value >= itemUseProgress.max_value:
-				used = true
-				items["RHand"].call("use")
+			if not used:
+				itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
+				itemUseProgress.value += delta
+				if itemUseProgress.value >= itemUseProgress.max_value:
+					if items["RHand"].useOverTime:
+						using = true
+					used = true
+					items["RHand"].fnc.call("use")
+					itemUseProgress.value = 0.0
+			if using:
+				if items["RHand"].condition > 0.0:
+					items["RHand"].fnc.useTick(delta)
+				elif not depleted:
+					depleted = true
+					items["RHand"].anim.current_animation = "useDeplete"
+					await items["RHand"].anim.animation_finished
+					depleted = false
+					using = false
+					used = false
+					items["RHand"].queue_free()
 				itemUseProgress.value = 0.0
+				itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
 	else:
 		itemUseProgress.value = 0.0
 		itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)

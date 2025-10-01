@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 			var dist = Global.player.global_position.distance_to(closest)
 			if dist < 5.0:
 				play_random_sfx(sfx_supersonic_crack)
-				Global.player.healthCtl.adrenaline += 0.025
+				Global.player.healthCtl.adrenaline += 0.01
 				Global.player.healthCtl.consciousness -= 0.05
 				Global.playerGUI.shock()
 				crack_played = true

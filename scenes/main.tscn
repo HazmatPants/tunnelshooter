@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=22 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://ch3tuais31wbv" path="res://scenes/items/oxycodone.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://ccsq1w2t384e1" path="res://scenes/items/procoagulant.tscn" id="8_tipki"]
 [ext_resource type="PackedScene" uid="uid://bvha0vtegbsu8" path="res://scenes/items/adrenaline.tscn" id="9_85g3d"]
+[ext_resource type="PackedScene" uid="uid://ct4kl1fuygj05" path="res://scenes/items/bloodbag.tscn" id="10_choun"]
+[ext_resource type="PackedScene" uid="uid://dnnvi7rppihnc" path="res://scenes/items/morphine.tscn" id="11_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://bdkoa3j1mcgy7" path="res://scenes/items/methamphetamine.tscn" id="12_eb6dy"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -154,3 +157,12 @@ transform = Transform3D(1, 0, 0, 0, -0.089728676, 0.99596626, 0, -0.99596626, -0
 
 [node name="Adrenaline" parent="." instance=ExtResource("9_85g3d")]
 transform = Transform3D(1, 0, 0, 0, 0.10183765, 0.99480104, 0, -0.99480104, 0.10183765, -0.061185718, 0.74283147, -3.6882415)
+
+[node name="BloodBag" parent="." instance=ExtResource("10_choun")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0663683, 0.8912412, -2.5094626)
+
+[node name="Morphine" parent="." instance=ExtResource("11_ya4ey")]
+transform = Transform3D(1, 0, 0, 0, -0.027991503, 0.99960816, 0, -0.99960816, -0.027991503, 0.50724196, 0.634488, -3.5641518)
+
+[node name="Methamphetamine" parent="." instance=ExtResource("12_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, -0.09631478, 0.9953509, 0, -0.9953509, -0.09631478, 0, 0.42365718, -4.5032225)

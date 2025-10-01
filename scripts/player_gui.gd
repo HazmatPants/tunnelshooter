@@ -64,13 +64,17 @@ func _start_hint_tween(text: String) -> void:
 var time = 0
 var last_brainHealth: float = 0
 func _process(delta: float) -> void:
-	var total_pain = Global.player.healthCtl.get_limb_total("pain")
+	var total_pain = Global.player.healthCtl.get_limb_all("pain").values().max()
 	var painImageSine = 2.0 - total_pain
-	painImageSine += (sin((PI * time) / 30) * 1 / 2 * PI)
+	painImageSine += (sin((PI * time) / 30) * 2 / 2 * PI)
+	var painSine = 2.0 - total_pain
+	painSine += (sin((PI * time) / 30) * 1 / 2 * PI)
 	time += 1
-	$Pain/Pain.scale = $Pain/Pain.scale.lerp(Vector2(1.0, 1.0) * painImageSine, 0.01)
+	$Pain.scale = $Pain.scale.lerp(Vector2(2.0, 2.0) * painSine, 0.01)
+	$Pain/Pain.scale = $Pain/Pain.scale.lerp(Vector2(1.5, 1.5) * painImageSine * 2, 0.01)
 	$Pain/Pain.modulate.a = total_pain
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
+	$Pain.scale = $Pain.scale.clamp(Vector2(1.0, 1.0), Vector2(INF, INF))
 
 	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - Global.player.healthCtl.consciousness, 0.1)
 	if Global.player.healthCtl.brainHealth < last_brainHealth:

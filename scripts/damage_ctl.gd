@@ -44,6 +44,7 @@ var breathingRate: float = 90
 var maxBR: float = 200
 var restBR: float = 10
 var opioidAmount: float = 0.0
+var stimAmount: float = 0.0
 var bloodClotSpeed: float = 0.003
 const oxygenUseRate: float = 0.15
 const brainOxygenThreshold: float = 0.10
@@ -80,6 +81,8 @@ func _process(delta: float) -> void:
 
 	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR) * 1.3
 	targetHR += (get_limb_total("pain") / 16) * 60
+	targetHR -= stimAmount * 120
+	targetHR -= opioidAmount * 10
 	targetHR = clamp(targetHR, 0.0, maxHR)
 	var targetBR = (targetHR + adrenaline * 10) * 0.4
 	if bloodOxygen < 0.8:
@@ -101,13 +104,15 @@ func _process(delta: float) -> void:
 	physicalWork = clamp(physicalWork, 0.0, 1.0)
 	
 	stamina -= physicalWork / 250
+	stamina -= (get_limb_total("pain") / 16) / 100
+	stamina += stimAmount * delta
 
 	if physicalWork < 0.1:
 		stamina += (1.0 - stamina) * 0.3 * delta
 
 	stamina = clamp(stamina, 0.0001, min(consciousness, 1.0))
 
-	adrenaline = lerp(adrenaline, 0.0, 0.0)
+	adrenaline = lerp(adrenaline, 0.0, 0.0005)
 
 	if heartRate < 40:
 		adrenaline += 0.001
@@ -118,7 +123,12 @@ func _process(delta: float) -> void:
 
 	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
 
-	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 1.0 - opioidAmount / 2, 1.0))
+	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 2.0 - opioidAmount, 1.0))
+	if stimAmount > 0.0:
+		consciousness += stimAmount
+
+	consciousness = clamp(consciousness, 0.0, 1.0)
+
 	if consciousness <= unconsciousThreshold:
 		Engine.time_scale = 5.0
 		Global.player.set_input_lock("unconscious", true)
@@ -129,7 +139,7 @@ func _process(delta: float) -> void:
 	if bloodOxygen < brainOxygenThreshold:
 		brainHealth -= (brainOxygenThreshold - bloodOxygen) * 0.05 * delta
 
-	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.05 * delta)
+	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.025 * delta)
 
 	if bloodVolume <= 2500:
 		brainHealth -= (2500 - bloodVolume) * 0.00002 * delta
@@ -150,6 +160,8 @@ func _process(delta: float) -> void:
 
 	if bloodVolume < 4500:
 		set_affliction("hypovolemia", (4500 - bloodVolume) / 5000)
+	else:
+		afflictions.erase("hypovolemia")
 
 	if Limbs["Head"].pain > 0.05:
 		set_affliction("headache", Limbs["Head"].pain)
@@ -175,7 +187,12 @@ func _process(delta: float) -> void:
 		if bloodLossRate < 0.001:
 			afflictions.erase("bleeding")
 
-	if opioidAmount > 0.8:
+	opioidAmount -= 0.005 * delta
+	stimAmount -= 0.005 * delta
+	opioidAmount = clampf(opioidAmount, 0.0, 3.0)
+	stimAmount = clampf(stimAmount, 0.0, 1.0)
+
+	if opioidAmount > 2.8:
 		set_affliction("respiratoryFailure", 1.0)
 		organs["LLung"] = false
 		organs["RLung"] = false

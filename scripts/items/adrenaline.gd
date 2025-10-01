@@ -2,8 +2,15 @@ extends Node
 
 const sfx_use := preload("res://assets/audio/sfx/items/syringe.ogg")
 
+func _ready() -> void:
+	owner.useTime = 1.0
+
 func use():
-	Global.player.healthCtl.adrenaline += 0.5
-	
-	await get_tree().create_timer(1.5).timeout
-	owner.condition = 0.0
+	Global.player.healthCtl.Limbs["LUpperArm"].pain += 0.1
+	Global.player.healthCtl.Limbs["LUpperArm"].muscleHealth -= 0.05
+	owner.playsound(sfx_use)
+
+func useTick(delta: float):
+	Global.player.healthCtl.adrenaline += 0.1 * delta
+	Global.player.healthCtl.stimAmount += 0.07 * delta
+	owner.condition -= 0.25 * delta
