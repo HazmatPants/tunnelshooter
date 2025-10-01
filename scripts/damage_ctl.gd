@@ -29,6 +29,10 @@ var organs: Dictionary = { # true = lung working
 	"RLung": true
 }
 
+var bloodstream := {
+	
+}
+
 var bloodOxygen: float = 1.0
 var brainHealth: float = 1.0
 var consciousness: float = 1.0
@@ -83,12 +87,19 @@ func _process(delta: float) -> void:
 	targetHR += (get_limb_total("pain") / 16) * 60
 	targetHR -= stimAmount * 120
 	targetHR -= opioidAmount * 10
+
 	targetHR = clamp(targetHR, 0.0, maxHR)
 	var targetBR = (targetHR + adrenaline * 10) * 0.4
 	if bloodOxygen < 0.8:
 		targetHR += (0.8 - bloodOxygen) * 60.0
 	if stamina < 0.5:
 		targetHR += (0.5 - stamina) * 60.0
+
+	if bloodstream.has("KCl"):
+		targetHR = 0
+		bloodOxygen -= 0.02 * delta
+		for limb in Limbs.values():
+			limb.muscleHealth -= 0.01 * delta
 
 	heartRate = lerp(heartRate, targetHR, 0.0025)
 	breathingRate = lerp(breathingRate, targetBR, 0.0025)
@@ -147,10 +158,10 @@ func _process(delta: float) -> void:
 	brainHealth = clamp(brainHealth, 0.0, 1.0)
 
 	if brainHealth <= 0.15:
-		add_affliction("cardiacArrest", 1.0)
+		set_affliction("cardiacArrest", 1.0)
 
-	if heartRate <= 0.0:
-		add_affliction("cardiacArrest", 1.0)
+	if heartRate <= 10.0:
+		set_affliction("cardiacArrest", 1.0)
 
 	if brainHealth <= 0.0:
 		add_affliction("brainDead", 1.0)
@@ -238,7 +249,7 @@ func get_limb_all(value: String):
 
 func add_affliction(aff_name: String, intensity: float=1):
 	if afflictions.has(aff_name):
-		afflictions[aff_name]["intensity"] = afflictions[aff_name]["intensity"] + intensity
+		afflictions[aff_name]["intensity"] += intensity
 		affliction_changed.emit(afflictions)
 	else:
 		afflictions[aff_name] = {
@@ -255,3 +266,11 @@ func set_affliction(aff_name: String, intensity: float=1):
 			"intensity": intensity
 		}
 		affliction_added.emit(afflictions)
+
+func add_to_blood(liq_name: String, amount: float=0.1):
+	if bloodstream.has(liq_name):
+		bloodstream[liq_name]["amount"] += amount
+	else:
+		bloodstream[liq_name] = {
+			"amount": amount
+		}

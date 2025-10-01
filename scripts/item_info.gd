@@ -9,7 +9,8 @@ var item_names := {
 	"Adrenaline": "Adrenaline",
 	"BloodBag": "Blood Bag",
 	"Morphine": "Morphine",
-	"Methamphetamine": "Methamphetamine"
+	"Methamphetamine": "Methamphetamine",
+	"KCl": "Potassium Chloride"
 }
 
 var item_descs := {
@@ -18,7 +19,8 @@ var item_descs := {
 	"Adrenaline": "Quickly increases heart rate and awareness.",
 	"BloodBag": "Holds 750 ml of blood.",
 	"Morphine": "A very strong opioid analgesic (painkiller) used to treat severe pain. High overdose risk.",
-	"Methamphetamine": "A powerful stimulant that suppresses fatigue and pain."
+	"Methamphetamine": "A powerful stimulant that suppresses fatigue and pain.",
+	"KCl": "Induces cardiac arrest, ultimately resulting in death."
 }
 
 var timer: float = 0.0

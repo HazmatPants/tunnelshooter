@@ -424,7 +424,7 @@ func _physics_process(delta):
 				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
-	inspecting = Input.is_action_pressed("rmb")
+	inspecting = Input.is_action_pressed("rmb") and inventory.items["RHand"]
 
 	if inspecting:
 		var inspect_transform: Transform3D = base_rhand_pos

@@ -2,6 +2,7 @@ extends Node
 
 @onready var frontRay: RayCast3D
 @onready var itemUseProgress: TextureProgressBar = Global.playerGUI.get_node("ItemUseProgress") 
+@onready var itemConditionProgress: TextureProgressBar = Global.playerGUI.get_node("ItemConditionProgress") 
 
 var hovered_item
 
@@ -75,6 +76,8 @@ func _process(delta: float) -> void:
 					items["RHand"].fnc.call("use")
 					itemUseProgress.value = 0.0
 			if using:
+				itemConditionProgress.value = items["RHand"].condition
+				itemConditionProgress.position = Vector2(10, 640)
 				if items["RHand"].condition > 0.0:
 					items["RHand"].fnc.useTick(delta)
 				elif not depleted:
@@ -87,9 +90,17 @@ func _process(delta: float) -> void:
 					items["RHand"].queue_free()
 				itemUseProgress.value = 0.0
 				itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
+				itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 1.0, 0.1)
+		if depleted:
+			itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
 	else:
+		if items["RHand"] and Global.player.inspecting:
+			itemConditionProgress.position = Vector2(766, 518)
+			itemConditionProgress.value = items["RHand"].condition
+			itemConditionProgress.modulate.a = Global.playerGUI.get_node("ItemInfo").modulate.a
 		itemUseProgress.value = 0.0
 		itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
+		itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
 
 func playsound(stream: AudioStream, volume: float=0):
 	var ap = AudioStreamPlayer.new()

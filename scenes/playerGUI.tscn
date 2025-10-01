@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dc7l8xehcc418"]
+[gd_scene load_steps=31 format=3 uid="uid://dc7l8xehcc418"]
 
 [ext_resource type="Script" uid="uid://bch43lv5jeax1" path="res://scripts/player_gui.gd" id="1_cvfx2"]
 [ext_resource type="AudioStream" uid="uid://2vpiayiwu6uf" path="res://assets/audio/music/death.wav" id="2_y1buc"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://b02np1k785vdp" path="res://assets/textures/ui/painicon.png" id="14_cpy2a"]
 [ext_resource type="Script" uid="uid://ds3r5ad5b0r5f" path="res://scripts/brain_damage.gd" id="16_60st2"]
 [ext_resource type="Texture2D" uid="uid://dnuwjl5ltplea" path="res://assets/textures/ui/shock.png" id="16_gmikn"]
+[ext_resource type="Texture2D" uid="uid://cu250tmwi4y54" path="res://assets/textures/ui/crosshair.png" id="17_jjdev"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -129,19 +130,21 @@ grow_vertical = 0
 text = "12+1"
 
 [node name="PickupText" type="Label" parent="."]
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
+anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -23.0
+offset_top = 35.595
 offset_right = 20.0
+offset_bottom = 58.595
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 horizontal_alignment = 1
 
 [node name="ItemUseProgress" type="TextureProgressBar" parent="."]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -153,6 +156,27 @@ offset_right = 100.0
 offset_bottom = -28.345032
 grow_horizontal = 2
 grow_vertical = 0
+max_value = 1.0
+step = 0.0
+nine_patch_stretch = true
+texture_under = ExtResource("8_epmk8")
+texture_progress = ExtResource("8_epmk8")
+tint_under = Color(0, 0, 0, 1)
+
+[node name="ItemConditionProgress" type="TextureProgressBar" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 185.0
+offset_top = -61.0
+offset_right = 385.00012
+offset_bottom = -41.00006
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -1.5707964
 max_value = 1.0
 step = 0.0
 nine_patch_stretch = true
@@ -766,13 +790,26 @@ nine_patch_stretch = true
 texture_progress = ExtResource("8_epmk8")
 
 [node name="Shock" type="TextureRect" parent="."]
-modulate = Color(0, 0, 0, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("16_gmikn")
+
+[node name="Crosshair" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("17_jjdev")
 
 [node name="BrainDamage" type="ColorRect" parent="."]
 clip_children = 1

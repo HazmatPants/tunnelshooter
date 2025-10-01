@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=23 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ct4kl1fuygj05" path="res://scenes/items/bloodbag.tscn" id="10_choun"]
 [ext_resource type="PackedScene" uid="uid://dnnvi7rppihnc" path="res://scenes/items/morphine.tscn" id="11_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://bdkoa3j1mcgy7" path="res://scenes/items/methamphetamine.tscn" id="12_eb6dy"]
+[ext_resource type="PackedScene" uid="uid://cxenlm0n3q61f" path="res://scenes/items/potassium_chloride.tscn" id="13_trceg"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -37,10 +38,10 @@ material = SubResource("StandardMaterial3D_tbgi4")
 size = Vector3(0.02, 2, 2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_tbgi4"]
-size = Vector3(3, 4, 0.3)
+size = Vector3(10.07, 4, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
-size = Vector3(3, 4, 0.3)
+size = Vector3(10.07, 4, 0.3)
 
 [node name="Node3D" type="Node3D"]
 
@@ -134,13 +135,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8986, 1.61841, -67.2311)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.70361, 1.61841, -67.2311)
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84376, 2.52953, -10.1965)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5856843, 2.52953, -10.1965)
 collision_layer = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
 mesh = SubResource("BoxMesh_tbgi4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+transform = Transform3D(0.7873226, 0, 0.61654127, 0, 1, 0, -0.61654127, 0, 0.7873226, -29.692318, 2.52953, -21.438131)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4"]
+mesh = SubResource("BoxMesh_tbgi4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
 shape = SubResource("BoxShape3D_tefeu")
 
 [node name="SoundTurret" parent="." instance=ExtResource("6_tefeu")]
@@ -166,3 +177,6 @@ transform = Transform3D(1, 0, 0, 0, -0.027991503, 0.99960816, 0, -0.99960816, -0
 
 [node name="Methamphetamine" parent="." instance=ExtResource("12_eb6dy")]
 transform = Transform3D(1, 0, 0, 0, -0.09631478, 0.9953509, 0, -0.9953509, -0.09631478, 0, 0.42365718, -4.5032225)
+
+[node name="KCl" parent="." instance=ExtResource("13_trceg")]
+transform = Transform3D(1, 0, 0, 0, 0.123445556, 0.99235135, 0, -0.99235135, 0.123445556, 0.8971275, 0.96218395, -3.8777394)
