@@ -1,8 +1,8 @@
 # To-Do's
 > in order of priority
 
-- Limb-specific medical items
-- Move guns to new pickup system
-- Gun malfunctions
-- Weapon Modifications (muzzle attachments, powder loads, ammo type, etc.)
-- More guns
+1. Limb-specific medical items
+2. Move guns to new pickup system
+3. Gun malfunctions
+4. Weapon Modifications (muzzle attachments, powder loads, ammo type, etc.)
+5. More guns
