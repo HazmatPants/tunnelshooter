@@ -11,6 +11,5 @@ func use():
 	owner.playsound(sfx_use)
 
 func useTick(delta: float):
-	Global.player.healthCtl.adrenaline += 0.2 * delta
-	Global.player.healthCtl.stimAmount += 0.07 * delta
-	owner.condition -= 0.25 * delta
+	Global.player.healthCtl.opioidAmount += 1.5 * delta
+	owner.condition -= 0.1 * delta

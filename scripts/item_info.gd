@@ -10,17 +10,19 @@ var item_names := {
 	"BloodBag": "Blood Bag",
 	"Morphine": "Morphine",
 	"Methamphetamine": "Methamphetamine",
+	"Fentanyl": "Fentanyl",
 	"KCl": "Potassium Chloride"
 }
 
 var item_descs := {
-	"Oxycodone": "An opioid analgesic (painkiller) used to treat moderate to severe pain.",
+	"Oxycodone": "An opioid analgesic (painkiller) used to treat moderate pain. Low overdose risk.",
 	"Procoagulant": "A serum that promotes blood clotting, slowing down bleeding across the body.",
 	"Adrenaline": "Quickly increases heart rate and awareness.",
 	"BloodBag": "Holds 750 ml of blood.",
-	"Morphine": "A very strong opioid analgesic (painkiller) used to treat severe pain. High overdose risk.",
+	"Morphine": "A strong opioid analgesic (painkiller) used to treat severe pain. Moderate overdose risk (90%).",
 	"Methamphetamine": "A powerful stimulant that suppresses fatigue and pain.",
-	"KCl": "Induces cardiac arrest, ultimately resulting in death."
+	"KCl": "Induces cardiac arrest, ultimately resulting in death.",
+	"Fentanyl": "A VERY potent opioid analgesic (painkiller), 100 times stronger than morphine. Extreme overdose risk (20%).",
 }
 
 var timer: float = 0.0

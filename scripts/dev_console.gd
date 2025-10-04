@@ -2,18 +2,40 @@ extends LineEdit
 
 @onready var output = $CodeEdit
 
+var cmd_history: Array[String] = []
+var history_idx: int = 0
+
 func _ready() -> void:
 	visible = false
-	
-	text_submitted.connect(parse_command)
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("console"):
-		visible = !visible
-		Global.player.set_input_lock("console", visible)
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
-		text = ""
-		grab_focus()
+	text_submitted.connect(parse_command)
+	user_print("this console is used to debug the game. be careful.\ntype 'help' for a list of commands.")
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed():
+		match event.keycode:
+			KEY_QUOTELEFT:
+				visible = !visible
+				Global.player.set_input_lock("console", visible)
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if visible else Input.MOUSE_MODE_CAPTURED
+
+				call_deferred("grab_focus")
+			KEY_UP:
+				history_idx -= 1
+				text = get_history()
+			KEY_DOWN:
+				history_idx += 1
+				text = get_history()
+
+func get_history():
+	if cmd_history.is_empty():
+		return ""
+	if history_idx < 0:
+		history_idx = 0
+	if history_idx > cmd_history.size() - 1:
+		history_idx = cmd_history.size() - 1
+		return ""
+	return cmd_history[history_idx]
 
 func user_print(Text: String):
 	output.text += Text + "\n"
@@ -25,14 +47,19 @@ func parse_command(commandString: String):
 	if args.size() > 0:
 		match args[0]:
 			"help":
-				user_print("
-				status: returns internal health status values
-				getbodyvars: returns all variables in healthCtl Node 
-					!! WARNING: contains values that may crash the game if changed incorrectly!
-				getbodyvar <var>: gets a variable's value
-				setbodyvar <var> <value>: sets a variable's value
-				clear: clears the dev console output
-				")
+				var help_string = ""
+				help_string += "status: returns internal health status values\n"
+				help_string += "getbodyvars: returns all variables in healthCtl Node\n"
+				help_string += "	!! WARNING: contains values that may crash the game if changed incorrectly!\n"
+				help_string += "getbodyvar <var>: gets a body variable's value\n"
+				help_string += "setbodyvar <var> <value>: sets a body variable's value\n"
+				help_string += "getlimbvars <limb> <var> <value>: sets a limb variable's value\n"
+				help_string += "getlimbvar <limb> <var>: gets a limb variable's value\n"
+				help_string += "setlimbvar <limb> <var> <value>: sets a limb variable's value\n"
+				help_string += "clear: clears the dev console output\n"
+				help_string += "godmode: toggles godmode (invincibility to damage)\n"
+				help_string += "flashmode: toggles flashmode (super speed)\n"
+				user_print(help_string)
 			"status":
 				var stat = Global.player.healthCtl
 				var limbStat = {}
@@ -122,6 +149,83 @@ func parse_command(commandString: String):
 				
 				Global.player.healthCtl.set(targetvar, new_val)
 				user_print("Set '%s' = %s" % [targetvar, new_val])
+			"getlimbvars":
+				if args.size() < 2:
+					user_print("missing target limb argument\nUsage: getlimbvars <limb>")
+					return
+				var targetlimb = args[1]
+				var properties
+				if Global.player.healthCtl.Limbs.has(targetlimb):
+					properties = Global.player.healthCtl.Limbs[targetlimb].get_property_list()
+				else:
+					user_print("limb '%s' not found.\nValid limb names:\n%s" % [targetlimb, " ".join(Global.player.healthCtl.Limbs.keys())])
+					return
+				
+				var varsString = ""
+				
+				for property in properties:
+					if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+						varsString += property["name"] + ", "
+				
+				user_print(varsString)
+			"getlimbvar":
+				if args.size() < 2:
+					user_print("missing target limb argument\nUsage: getlimbvar <limb> <var>")
+					return
+				var targetlimb = args[1]
+				var properties
+				if Global.player.healthCtl.Limbs.has(targetlimb):
+					properties = Global.player.healthCtl.Limbs[targetlimb].get_property_list()
+				else:
+					user_print("limb '%s' not found.\nValid limb names:\n%s" % [targetlimb, " ".join(Global.player.healthCtl.Limbs.keys())])
+					return
+				if args.size() < 3:
+					user_print("missing target variable argument\nUsage: getlimbvar <limb> <var>")
+					return
+				var targetvar = args[2]
+				var exists := false
+				for property in properties:
+					if property.name == targetvar:
+						exists = true
+						break
+				
+				if not exists:
+					user_print("Variable '%s' does not exist on limb '%s'" % [targetvar, targetlimb])
+				
+				var targetvarval = Global.player.healthCtl.Limbs[targetlimb].get(targetvar)
+				user_print(str(targetvarval) + " (" + str(type_string(typeof(targetvarval))) + ")")
+			"setlimbvar":
+				if args.size() < 2:
+					user_print("missing target limb argument\nUsage: setlimbvar <limb> <var> <value>")
+					return
+				var targetlimb = args[1]
+				var properties
+				if Global.player.healthCtl.Limbs.has(targetlimb):
+					properties = Global.player.healthCtl.Limbs[targetlimb].get_property_list()
+				else:
+					user_print("limb '%s' not found.\nValid limb names:\n%s" % [targetlimb, " ".join(Global.player.healthCtl.Limbs.keys())])
+					return
+				if args.size() < 3:
+					user_print("missing target variable argument\nUsage: setlimbvar <limb> <var> <value>")
+					return
+				var targetvar = args[2]
+				if args.size() < 4:
+					user_print("missing new value argument\nUsage: setlimbvar <limb> <var> <value>")
+					return
+				var new_val = args[3]
+				
+				var exists := false
+				for property in properties:
+					if property.name == targetvar:
+						exists = true
+						break
+				
+				if not exists:
+					user_print("Limb variable '%s' does not exist" % targetvar)
+					return
+				
+				Global.player.healthCtl.Limbs[targetlimb].set(targetvar, new_val)
+				user_print("Set '%s' for '%s' = %s" % [targetvar, targetlimb, new_val])
 			"clear":
 				output.text = ""
 			"heal":
@@ -144,5 +248,17 @@ func parse_command(commandString: String):
 				for affliction in stat.afflictions.keys():
 					aff_string += "name: %s, intensity: %s\n" % [affliction, stat.afflictions[affliction]["intensity"]]
 				user_print(aff_string)
+			"godmode":
+				Global.godmode = !Global.godmode
+				user_print("godmode is now ON" if Global.godmode else "godmode is now OFF")
+			"flashmode":
+				Global.flashmode = !Global.flashmode
+				user_print("flashmode is now ON" if Global.flashmode else "flashmode is now OFF")
+
 			_:
 				user_print("Command not valid")
+				return
+
+	if commandString != cmd_history.back():
+		cmd_history.append(commandString)
+		history_idx = cmd_history.size()

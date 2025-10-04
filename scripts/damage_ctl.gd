@@ -95,6 +95,9 @@ func _process(delta: float) -> void:
 	if stamina < 0.5:
 		targetHR += (0.5 - stamina) * 60.0
 
+	if heartRate > 200:
+		consciousness -= 1 * delta
+
 	if bloodstream.has("KCl"):
 		targetHR = 0
 		bloodOxygen -= 0.02 * delta
@@ -134,9 +137,9 @@ func _process(delta: float) -> void:
 
 	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
 
-	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 2.0 - opioidAmount, 1.0))
+	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 5.0 - opioidAmount, 1.0))
 	if stimAmount > 0.0:
-		consciousness += stimAmount
+		consciousness += stimAmount * 2
 
 	consciousness = clamp(consciousness, 0.0, 1.0)
 
@@ -200,7 +203,6 @@ func _process(delta: float) -> void:
 
 	opioidAmount -= 0.005 * delta
 	stimAmount -= 0.005 * delta
-	opioidAmount = clampf(opioidAmount, 0.0, 3.0)
 	stimAmount = clampf(stimAmount, 0.0, 1.0)
 
 	if opioidAmount > 2.8:

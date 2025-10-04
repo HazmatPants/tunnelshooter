@@ -36,7 +36,7 @@ func shoot():
 	await get_tree().create_timer(sfx_charge.get_length()).timeout
 	if Ray.is_colliding():
 		var collider = Ray.get_collider()
-		if collider:
+		if collider and not Global.godmode:
 			if collider.name == "PlayerShootRad" and not Global.player.dead:
 				playsound(sfx_hit, 100)
 				await get_tree().create_timer(0.05).timeout
@@ -53,6 +53,8 @@ func shoot():
 
 func blocked():
 	playsound(sfx_blocked, 60)
+	if Global.godmode:
+		return
 	Global.player.healthCtl.consciousness -= 0.1
 	Global.player.viewpunch_velocity += Vector3(60.0, 0, 0)
 	Global.player.damage_ears(0.01)

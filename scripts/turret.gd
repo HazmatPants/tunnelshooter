@@ -53,10 +53,10 @@ func _ready() -> void:
 
 var last_spotted_rot: Vector3 = Vector3.ZERO
 func _process(delta: float) -> void:
-	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 2
+	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 3
 	var target_basis: Basis
 	if state == "shoot":
-		if aggro_timer > aggro_time - 0.5:
+		if aggro_timer > aggro_time - 1.0:
 			target_basis = Transform3D().looking_at(target - global_transform.origin).basis
 		else:
 			target_basis = Basis.from_euler(last_spotted_rot)

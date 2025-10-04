@@ -7,6 +7,8 @@ extends Node
 @onready var player = get_tree().get_current_scene().get_node("Player")
 @onready var playerGUI = get_tree().get_current_scene().get_node("PlayerGUI")
 
+var godmode: bool = false
+var flashmode: bool = false
 
 var bgm_pain: AudioStreamPlayer = AudioStreamPlayer.new()
 
@@ -17,3 +19,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	bgm_pain.volume_db = linear_to_db(clamp(player.healthCtl.get_limb_all("pain").values().max() - 0.1, 0.0, 1.0))
+
+	if godmode:
+		player.healthCtl.consciousness = 1.0
+		player.healthCtl.brainHealth = 1.0
+		player.healthCtl.stamina = 1.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b6e7d6pfq0oyt"]
+[gd_scene load_steps=30 format=3 uid="uid://b6e7d6pfq0oyt"]
 
 [ext_resource type="Script" uid="uid://dy7uicypdd4mx" path="res://scripts/playerFB.gd" id="1_oxfux"]
 [ext_resource type="Script" uid="uid://dvqi222awr8qj" path="res://scripts/damage_ctl.gd" id="2_j0tbg"]
@@ -7,8 +7,8 @@
 [ext_resource type="Script" uid="uid://c3d7w6ote68d8" path="res://scripts/limb.gd" id="3_ox7cw"]
 [ext_resource type="Script" uid="uid://cqnnnw0t1tca8" path="res://scripts/organ.gd" id="5_ox7cw"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_oxfux"]
-size = Vector3(0.825098, 2.19392, 0.4)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f5m3l"]
+height = 2.1291504
 
 [sub_resource type="SphereMesh" id="SphereMesh_oxfux"]
 radius = 0.27
@@ -73,6 +73,9 @@ size = Vector3(0.265, 0.385, 0.315)
 [sub_resource type="BoxMesh" id="BoxMesh_f5m3l"]
 size = Vector3(0.265, 0.14, 0.505)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bih0s"]
+size = Vector3(0.265, 0.14, 0.505)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_j0tbg"]
 size = Vector3(1.2, 2.35, 1.2)
 
@@ -90,11 +93,11 @@ sprint_bobbing_amount = 0.05
 transform = Transform3D(-4.37114e-08, 0, 1, -1, -4.37114e-08, -4.37114e-08, 4.37114e-08, -1, 1.91069e-15, 0.326172, -0.669252, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000439458, -0.173517, 0)
-shape = SubResource("BoxShape3D_oxfux")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000439458, -0.1672609, 0)
+shape = SubResource("CylinderShape3D_f5m3l")
 
 [node name="FootstepRay" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.26181, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1910673, 0)
 
 [node name="HealthCtl" type="Node" parent="."]
 script = ExtResource("2_j0tbg")
@@ -327,7 +330,7 @@ skeleton = NodePath("../../root/@EditorNode@22274/@Panel@14/@VBoxContainer@15/Do
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
-shape = SubResource("BoxShape3D_ox7cw")
+shape = SubResource("BoxShape3D_bih0s")
 
 [node name="RLeg" type="Node3D" parent="."]
 transform = Transform3D(0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0, 1, 0.116, -0.374, 0)
@@ -368,7 +371,7 @@ skeleton = NodePath("../../root/@EditorNode@22274/@Panel@14/@VBoxContainer@15/Do
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
-shape = SubResource("BoxShape3D_ox7cw")
+shape = SubResource("BoxShape3D_bih0s")
 
 [node name="PlayerShootRad" type="Area3D" parent="."]
 

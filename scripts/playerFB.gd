@@ -227,7 +227,8 @@ func footstep_sound(type: String="step", volume: float=0.0):
 		elif type == "wander":
 			sound_list = sfx_foot_wander.get(material, sfx_foot_wander["default"])
 
-		play_random_sfx(sound_list, volume)
+		play_random_sfx(sound_list, volume, false)
+		print(type)
 
 func _ready():
 	default_height = $CollisionShape3D.position.y
@@ -255,7 +256,6 @@ func _unhandled_input(event):
 		if event is InputEventKey and event.keycode == KEY_ESCAPE and event.is_pressed():
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 	rotation.y = look_rotation.x
-	camera.rotation.x = look_rotation.y
 
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
@@ -286,6 +286,7 @@ func _physics_process(delta):
 	
 	var speed = sprint_speed if sprinting else move_speed if not crouching else crouch_move_speed
 	speed *= healthCtl.stamina
+	speed *= 4.0 if Global.flashmode else 1.0
 	var desired_velocity = input_dir * speed
 	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
 	
@@ -332,6 +333,8 @@ func _physics_process(delta):
 			crouching = false
 			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, default_height, 0.1)
 	
+	footstepRay.position.y = $CollisionShape3D.position.y - 1
+	
 	move_and_slide()
 
 	var vel = get_real_velocity()
@@ -350,8 +353,8 @@ func _physics_process(delta):
 	if not is_moving and not was_moving:
 		stop_timer += delta
 		if stop_timer > 0.05:
-			var volume: float = -1 if crouching else 0
-			footstep_sound("wander", volume)
+			var volume: float = 0.1 if crouching else 0.4
+			footstep_sound("wander", linear_to_db(volume))
 			viewpunch_velocity += step_viewpunch / 2
 			stop_timer = -999  # prevent multiple plays
 
@@ -376,12 +379,13 @@ func _physics_process(delta):
 		camera.position.y = lerp(camera.position.y, base_camera_position.y, delta * 10.0)
 		bobbing_time = 0.0
 
+
 	if is_on_floor() and input_dir.length() > 0:
 		var bob_value = sin(bobbing_time)
 
 		if bob_value < 0.0 and last_bob_value >= 0.0 and footstep_cooldown <= 0.0:
-			var volume: float = -1 if crouching else 0
-			footstep_sound("step", volume)
+			var volume: float = 0.1 if crouching else 0.4
+			footstep_sound("step", linear_to_db(volume))
 			viewpunch_velocity += step_viewpunch
 			footstep_cooldown = current_footstep_interval
 			step_side = not step_side
