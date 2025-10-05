@@ -322,6 +322,7 @@ func _physics_process(delta):
 			if Input.is_action_just_pressed("jump"):
 				healthCtl.physicalWork += 0.2 * (2.0 - healthCtl.stamina)
 				var jump_height = jump_velocity * healthCtl.stamina
+				jump_height *= 3.0 if Global.flashmode else 1.0
 				velocity.y = jump_height
 				viewpunch_velocity += jump_viewpunch
 				footstep_sound("impact")

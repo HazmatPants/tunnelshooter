@@ -209,6 +209,10 @@ func _process(delta: float) -> void:
 		set_affliction("respiratoryFailure", 1.0)
 		organs["LLung"] = false
 		organs["RLung"] = false
+	else:
+		afflictions.erase("respiratoryFailure")
+		organs["LLung"] = true
+		organs["RLung"] = true
 
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()
