@@ -144,6 +144,7 @@ func shoot_bullet():
 	get_tree().current_scene.call_deferred("add_child", b)
 	b.global_transform = muzzleRay.global_transform
 	b.rotation_degrees.y += 90
+	b.shooter = self
 
 	var f = muzzleflash.instantiate()
 	get_tree().current_scene.add_child(f)

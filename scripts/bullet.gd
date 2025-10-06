@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var max_spread := Vector2(0.01, 0.01)
 @export var bounces: int = 1
 
+var shooter: Node3D = null
 var last_pos: Vector3
 
 const sfx_ricochet := [
@@ -44,7 +45,7 @@ func _physics_process(delta: float) -> void:
 		if not crack_played:
 			var closest = Geometry3D.get_closest_point_to_segment(Global.player.global_position, global_position, new_pos)
 			var dist = Global.player.global_position.distance_to(closest)
-			if dist < 5.0:
+			if dist < 5.0 and shooter.name != "Player":
 				play_random_sfx(sfx_supersonic_crack)
 				Global.player.healthCtl.adrenaline += 0.01
 				Global.player.healthCtl.consciousness -= 0.05

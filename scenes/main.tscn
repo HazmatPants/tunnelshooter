@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=28 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cxenlm0n3q61f" path="res://scenes/items/potassium_chloride.tscn" id="13_trceg"]
 [ext_resource type="PackedScene" uid="uid://dmfro6v5cer2m" path="res://scenes/items/fentanyl.tscn" id="14_a8y0u"]
 [ext_resource type="PackedScene" uid="uid://djiavrjfxah80" path="res://scenes/items/naloxone.tscn" id="15_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://bd4siua5myuh0" path="res://scenes/ss_320.tscn" id="16_jbj1t"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -204,3 +205,7 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.00
 
 [node name="Naloxone" parent="." instance=ExtResource("15_jkv2x")]
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.2, 1.989, -9.907)
+
+[node name="SS320" parent="." instance=ExtResource("16_jbj1t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7544127, 1.304814, -5.3909836)
+metadata/IsGun = false

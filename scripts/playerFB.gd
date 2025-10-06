@@ -429,12 +429,14 @@ func _physics_process(delta):
 				left_hand.gravity_scale = 1.0
 				left_hand.sleeping = false
 				left_hand = null
-	inspecting = Input.is_action_pressed("rmb") and inventory.items["RHand"]
+
+	if inventory.items["RHand"]:
+		inspecting = Input.is_action_pressed("inspect")
 
 	if inspecting:
 		var inspect_transform: Transform3D = base_rhand_pos
 		inspect_transform.origin += Vector3(-0.1, 0.25, 0.1)
-		inspect_transform.basis = Basis.from_euler(base_rhand_pos.basis.get_euler() + Vector3(0, 0, -0.1))
+		inspect_transform.basis = Basis.from_euler(base_rhand_pos.basis.get_euler() + Vector3(0, 1, -0.1))
 		right_hand_position.transform = lerp(right_hand_position.transform, inspect_transform, 0.2)
 	else:
 		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.2)

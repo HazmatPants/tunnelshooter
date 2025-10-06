@@ -35,25 +35,26 @@ func _process(delta: float) -> void:
 			elif hovered_item:
 				Global.playerGUI.pickup_text.text = ""
 				hovered_item = null
+	if Input.is_action_just_pressed("drop"):
+		if items["RHand"]:
+			items["RHand"].gravity_scale = 1.0
+			items["RHand"].get_node("CollisionShape3D").disabled = false
+			var direction = Global.player.camera.global_transform.basis.z * -1.0
+			if Global.player.camera.rotation_degrees.x > 0:
+				items["RHand"].apply_central_impulse(direction * 6)
+			else:
+				items["RHand"].apply_central_impulse(direction)
+			items["RHand"] = null
 	if items["RHand"]:
 		items["RHand"].global_transform = lerp(items["RHand"].global_transform, Global.player.right_hand_position.global_transform, 0.5)
-	if Input.is_action_just_pressed("lmb"):
-		if items["RHand"]:
-			if Global.player.inspecting:
-				items["RHand"].gravity_scale = 1.0
-				items["RHand"].get_node("CollisionShape3D").disabled = false
-				var direction = Global.player.camera.global_transform.basis.z * -1.0
-				if Global.player.camera.rotation_degrees.x > 0:
-					items["RHand"].apply_central_impulse(direction * 6)
-				else:
-					items["RHand"].apply_central_impulse(direction)
-				items["RHand"] = null
-			else:
-				if items["RHand"].useOverTime:
-					items["RHand"].anim.current_animation = "useStart"
-				else:
-					items["RHand"].anim.current_animation = "use"
-				itemUseProgress.max_value = items["RHand"].useTime
+		if items["RHand"].has_meta("IsGun"):
+			return
+	if Input.is_action_just_pressed("lmb") and items["RHand"]:
+		if items["RHand"].useOverTime:
+			items["RHand"].anim.current_animation = "useStart"
+		else:
+			items["RHand"].anim.current_animation = "use"
+		itemUseProgress.max_value = items["RHand"].useTime
 
 	if Input.is_action_just_released("lmb"):
 		if items["RHand"]:

@@ -187,8 +187,8 @@ func _process(delta: float) -> void:
 	else:
 		afflictions.erase("incapacitated")
 
-	if Global.player.hearing_damage > 0.0:
-		set_affliction("hearingDamage", Global.player.hearing_damage * 100)
+	if Global.player.tinnitus > 0.0:
+		set_affliction("hearingDamage", Global.player.tinnitus * 10)
 	else:
 		afflictions.erase("hearingDamage")
 

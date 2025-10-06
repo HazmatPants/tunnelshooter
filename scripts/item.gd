@@ -1,12 +1,12 @@
 extends RigidBody3D
 
 @export var useOverTime:bool = false
+@export var useTime: float = 1.0
 
 @onready var fnc: Node = $Function
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
 var condition: float = 1.0
-var useTime: float = 1.0
 
 var plunger_base_transform: Transform3D
 var liquid_base_transform: Transform3D

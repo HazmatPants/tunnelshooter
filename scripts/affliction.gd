@@ -32,8 +32,8 @@ var aff_names := {
 	"headache2": "Severe Headache",
 	"incapacitated": "Incapacitated",
 	"hearingDamage1": "Tinnitus",
-	"hearingDamage2": "Hearing Loss",
-	"hearingDamage3": "Severe Hearing Loss",
+	"hearingDamage2": "Hearing Damage",
+	"hearingDamage3": "Severe Hearing Damageh",
 	"brainDamage": "Brain Damage"
 }
 

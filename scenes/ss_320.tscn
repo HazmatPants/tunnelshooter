@@ -1,7 +1,8 @@
-[gd_scene load_steps=30 format=4 uid="uid://bd4siua5myuh0"]
+[gd_scene load_steps=32 format=4 uid="uid://bd4siua5myuh0"]
 
 [ext_resource type="Script" uid="uid://cc4iweqokmawh" path="res://scripts/semi_gun.gd" id="1_8p8bs"]
 [ext_resource type="Texture2D" uid="uid://taj2mkpf6yxi" path="res://assets/models/ss320_Image_0.png" id="1_mecvt"]
+[ext_resource type="Script" uid="uid://uapxs3651s5e" path="res://scripts/item.gd" id="1_o4etu"]
 [ext_resource type="Texture2D" uid="uid://conjghxvg1cqm" path="res://assets/models/ss320_Image_1.png" id="2_8p8bs"]
 [ext_resource type="Texture2D" uid="uid://c6jkbkvo0av7" path="res://assets/models/ss320_Image_2.png" id="3_i80ub"]
 [ext_resource type="Texture2D" uid="uid://jej0dxlsr005" path="res://assets/textures/decals/laser.png" id="5_i80ub"]
@@ -450,70 +451,76 @@ _data = {
 &"sliderelease": SubResource("Animation_ypqfq")
 }
 
-[node name="SS320" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_y44uq"]
+size = Vector3(0.741, 0.501, 0.095)
+
+[node name="SS320" type="RigidBody3D"]
+script = ExtResource("1_o4etu")
+
+[node name="SS320" type="Node3D" parent="."]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 script = ExtResource("1_8p8bs")
 
-[node name="Gun" type="Node3D" parent="."]
-transform = Transform3D(0.999999, 0.000954387, 0, -0.000954387, 0.999999, 0, 0, 0, 1, -0.00983862, -0.041509, 0)
+[node name="Gun" type="Node3D" parent="SS320"]
+transform = Transform3D(0.9999989, 0.00095438724, 0, -0.00095438724, 0.9999989, 0, 0, 0, 1, -0.00983862, -0.041509, 0)
 
-[node name="Object_14" type="MeshInstance3D" parent="Gun"]
+[node name="Object_14" type="MeshInstance3D" parent="SS320/Gun"]
 mesh = SubResource("ArrayMesh_nuyb4")
 skeleton = NodePath("")
 
-[node name="Round" type="Node3D" parent="Gun"]
+[node name="Round" type="Node3D" parent="SS320/Gun"]
 transform = Transform3D(1.12574e-07, 0.945, 0, -0.945, 1.12574e-07, 0, 0, 0, 0.945, 0.0312831, 0.0967994, 0)
 
-[node name="Object_18" type="MeshInstance3D" parent="Gun/Round"]
+[node name="Object_18" type="MeshInstance3D" parent="SS320/Gun/Round"]
 mesh = SubResource("ArrayMesh_bamfy")
 skeleton = NodePath("")
 
-[node name="Slide" type="Node3D" parent="Gun"]
+[node name="Slide" type="Node3D" parent="SS320/Gun"]
 
-[node name="Object_16" type="MeshInstance3D" parent="Gun/Slide"]
+[node name="Object_16" type="MeshInstance3D" parent="SS320/Gun/Slide"]
 mesh = SubResource("ArrayMesh_gwvis")
 skeleton = NodePath("")
 
-[node name="Cylinder" type="MeshInstance3D" parent="Gun/Slide"]
+[node name="Cylinder" type="MeshInstance3D" parent="SS320/Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, 0.140412, 0.109818, 0)
 mesh = SubResource("ArrayMesh_eixqn")
 skeleton = NodePath("")
 
-[node name="Cylinder_001" type="MeshInstance3D" parent="Gun/Slide"]
+[node name="Cylinder_001" type="MeshInstance3D" parent="SS320/Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, -0.00804708, 0.109677, -0.001946)
 mesh = SubResource("ArrayMesh_b05p5")
 skeleton = NodePath("")
 
-[node name="Cylinder_002" type="MeshInstance3D" parent="Gun/Slide"]
+[node name="Cylinder_002" type="MeshInstance3D" parent="SS320/Gun/Slide"]
 transform = Transform3D(8.07247e-07, 0.000845772, 0, -0.000845772, 8.07247e-07, 0, 0, 0, 0.000845772, -0.00804708, 0.109677, 0.001946)
 mesh = SubResource("ArrayMesh_t3423")
 skeleton = NodePath("")
 
-[node name="Magazine" type="Node3D" parent="Gun"]
+[node name="Magazine" type="Node3D" parent="SS320/Gun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00132797, -0.00152212, 0)
 
-[node name="MagazineInsert" type="Node3D" parent="Gun"]
+[node name="MagazineInsert" type="Node3D" parent="SS320/Gun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0108295, -0.159705, 0)
 
-[node name="LaserRay" type="RayCast3D" parent="Gun"]
+[node name="LaserRay" type="RayCast3D" parent="SS320/Gun"]
 transform = Transform3D(1, -0.000954392, 0, 0.000954392, 1, 0, 0, 0, 1, 0.152215, 0.0784018, 0)
 target_position = Vector3(30, 0, 0)
 debug_shape_thickness = 1
 
-[node name="MuzzleRay" type="RayCast3D" parent="Gun"]
+[node name="MuzzleRay" type="RayCast3D" parent="SS320/Gun"]
 transform = Transform3D(1, -0.000954392, 0, 0.000954392, 1, 0, 0, 0, 1, 0.152196, 0.0982428, 0)
 target_position = Vector3(30, 0, 0)
 debug_shape_thickness = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SS320"]
 libraries = {
 &"": SubResource("AnimationLibrary_o4etu")
 }
 
-[node name="CasePos" type="Node3D" parent="."]
+[node name="CasePos" type="Node3D" parent="SS320"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0497501, 0.0680076, 0.00058762)
 
-[node name="LaserPoint" type="Decal" parent="."]
+[node name="LaserPoint" type="Decal" parent="SS320"]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0.1444, 0, 0)
 size = Vector3(1, 1, 1)
 texture_albedo = ExtResource("5_i80ub")
@@ -521,4 +528,8 @@ texture_emission = ExtResource("5_i80ub")
 emission_energy = 16.0
 modulate = Color(0, 1, 0, 1)
 
-[node name="LaserMesh" type="MeshInstance3D" parent="."]
+[node name="LaserMesh" type="MeshInstance3D" parent="SS320"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20755163, 0.038369186, 0)
+shape = SubResource("BoxShape3D_y44uq")

@@ -6,6 +6,8 @@ extends Control
 var item_names := {
 	"BloodBag": "Blood Bag",
 	"KCl": "Potassium Chloride",
+	
+	"SS320" : "SS-320",
 }
 
 var item_descs := {
@@ -18,6 +20,9 @@ var item_descs := {
 	"KCl": "Induces cardiac arrest, ultimately resulting in death.",
 	"Fentanyl": "A VERY potent opioid analgesic (painkiller), 100 times stronger than morphine. Extreme overdose risk (20%).",
 	"Naloxone": "An opioid antagonist, used to treat the effects of overdose and withdrawal.",
+
+	"SS320": "A semi-automatic striker-fired handgun.",
+
 }
 
 var timer: float = 0.0
@@ -29,7 +34,7 @@ func _process(delta: float) -> void:
 				Title.text = item_names[Global.player.inventory.items["RHand"].name]
 			else:
 				Title.text = Global.player.inventory.items["RHand"].name
-			Description.text = item_descs[Global.player.inventory.items["RHand"].name] + "\n\n%s%% Left" % str(int(Global.player.inventory.items["RHand"].condition * 100.0))
+			Description.text = item_descs[Global.player.inventory.items["RHand"].name] + "\n\n%s%% Condition" % str(int(Global.player.inventory.items["RHand"].condition * 100.0))
 			modulate.a = lerp(modulate.a, 1.0, 0.2)
 	else:
 		timer = 0.0

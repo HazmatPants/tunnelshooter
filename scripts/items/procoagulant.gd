@@ -7,7 +7,6 @@ func _ready() -> void:
 
 func use():
 	Global.player.healthCtl.Limbs["LUpperArm"].pain += 0.1
-	Global.player.healthCtl.Limbs["LUpperArm"].muscleHealth -= 0.05
 	owner.playsound(sfx_use)
 
 func useTick(delta: float):
