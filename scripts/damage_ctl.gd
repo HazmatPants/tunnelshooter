@@ -59,6 +59,7 @@ const unconsciousThreshold: float = 0.25
 var beatTimer: float = 0.0
 
 const sfx_heartBeatAmbient = preload("res://assets/audio/sfx/player/heart_amb.wav")
+const sfx_heartBeatAmbientHeavy = preload("res://assets/audio/sfx/player/heart_thump_heavy.ogg")
 
 signal HeartBeat
 signal affliction_added
@@ -71,7 +72,12 @@ func _process(delta: float) -> void:
 		if beatTimer >= beatInterval:
 			HeartBeat.emit()
 			if not consciousness <= unconsciousThreshold:
-				playsound(sfx_heartBeatAmbient, lerp(-20, 15, 1.0 - min(stamina, bloodOxygen)))
+				if heartRate >= 110:
+					playsound(sfx_heartBeatAmbientHeavy, lerp(-20, 15, max(1.0 - min(stamina, bloodOxygen), heartRate / 480)))
+				elif heartRate <= 60:
+					playsound(sfx_heartBeatAmbientHeavy, lerp(-20, 15, max(1.0 - min(stamina, bloodOxygen), 1.0 - heartRate / 120)))
+				else:
+					playsound(sfx_heartBeatAmbient, lerp(-20, 15, 1.0 - min(stamina, bloodOxygen)))
 			var bloodFraction = bloodVolume / 5000.0
 			if organs["RLung"] and organs["LLung"]:
 				bloodOxygen += 0.025 * bloodFraction
@@ -134,6 +140,7 @@ func _process(delta: float) -> void:
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
 	consciousness -= clampf((conscOxygenTheshold - bloodOxygen) * 0.15 * delta, 0.0, INF)
+	consciousness -= (get_limb_total("pain") / 16) / 500
 
 	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
 

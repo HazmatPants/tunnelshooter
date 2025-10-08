@@ -1,12 +1,12 @@
 extends Node3D
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var muzzleRay: RayCast3D = $"Gun/MuzzleRay"
+@onready var muzzleRay: RayCast3D = $Gun/MuzzleRay
 @onready var casingPos: Node3D = $CasePos
-@onready var magPos: Node3D = $"Gun/Magazine"
-@onready var magInsertPos: Node3D = $"Gun/MagazineInsert"
+@onready var magPos: Node3D = $Gun/Magazine
+@onready var magInsertPos: Node3D = $Gun/MagazineInsert
 
-@onready var laserRay: RayCast3D = $"Gun/LaserRay"
+@onready var laserRay: RayCast3D = $Gun/LaserRay
 @onready var laserPoint: Decal = $LaserPoint
 
 var ammo_label: Label
@@ -21,23 +21,25 @@ var casing = preload("res://scenes/9mm_casing.tscn")
 
 const sfx_dryfire := preload("res://assets/audio/sfx/weapons/gun/dry_fire.wav")
 const sfx_shoot := [
-	preload("res://assets/audio/sfx/weapons/gun/gun_fire_1.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/gun_fire_2.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/gun_fire_3.wav")
+	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_1.wav"),
+	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_2.wav"),
+	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_3.wav"),
+	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_4.wav"),
+	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_5.wav")
 ]
 
-const sfx_holster := [
-	preload("res://assets/audio/sfx/player/holster1.wav"),
-	preload("res://assets/audio/sfx/player/holster2.wav"),
-	preload("res://assets/audio/sfx/player/holster3.wav"),
-	preload("res://assets/audio/sfx/player/holster4.wav")
-]
-const sfx_unholster := [
-	preload("res://assets/audio/sfx/player/unholster1.wav"),
-	preload("res://assets/audio/sfx/player/unholster2.wav"),
-	preload("res://assets/audio/sfx/player/unholster3.wav"),
-	preload("res://assets/audio/sfx/player/unholster4.wav")
-]
+#const sfx_holster := [
+	#preload("res://assets/audio/sfx/player/holster1.wav"),
+	#preload("res://assets/audio/sfx/player/holster2.wav"),
+	#preload("res://assets/audio/sfx/player/holster3.wav"),
+	#preload("res://assets/audio/sfx/player/holster4.wav")
+#]
+#const sfx_unholster := [
+	#preload("res://assets/audio/sfx/player/unholster1.wav"),
+	#preload("res://assets/audio/sfx/player/unholster2.wav"),
+	#preload("res://assets/audio/sfx/player/unholster3.wav"),
+	#preload("res://assets/audio/sfx/player/unholster4.wav")
+#]
 
 const sfx_slideback := [
 	preload("res://assets/audio/sfx/weapons/gun/slide_back_1.wav"),
@@ -72,6 +74,18 @@ var hammer: bool = false
 var slidelock: bool = false
 
 var laserMesh = MeshInstance3D.new()
+var crosshair
+
+var rot_offset := Vector3.ZERO
+func _unhandled_input(event):
+	if Input.is_key_pressed(KEY_K):
+		Global.player.mouse_look_enabled = false
+		if event is InputEventMouseMotion:
+			rot_offset.y -= event.relative.x * 0.01
+			rot_offset.z -= event.relative.y * 0.01
+	else:
+		Global.player.mouse_look_enabled = true
+		rot_offset = Vector3.ZERO
 
 func _ready() -> void:
 	get_tree().current_scene.call_deferred("add_child", laserMesh)
@@ -81,6 +95,10 @@ func _ready() -> void:
 	magazine.inserted = true
 	ammo_label = Global.playerGUI.get_node("AmmoLabel")
 
+	crosshair = Global.playerGUI.get_node("Crosshair")
+
+var shakiness: float = 0.0
+
 var first_input: String = ""
 var magAction: String = "none"
 func _process(_delta: float) -> void:
@@ -88,16 +106,24 @@ func _process(_delta: float) -> void:
 		magazine.get_node("CollisionShape3D").disabled = true
 		magazine.global_transform = magPos.global_transform
 		return
+	shakiness = lerp(shakiness, 1.0, 0.00001)
 	if Input.is_action_pressed("rmb") and Global.player.is_input_enabled():
+		crosshair.modulate.a = lerp(crosshair.modulate.a, 0.0, 0.1)
+		var target_t: Transform3D = Global.player.grab_position.global_transform
+		target_t.basis = Basis.from_euler(target_t.basis.get_euler() + rot_offset)
 		if Input.is_action_pressed("pullslide"):
 			var target = Global.player.grab_position.global_transform
 			var targetEuler = target.basis.get_euler() + Vector3(0, 0, 0.4)
 			target.basis = Basis.from_euler(targetEuler)
-			global_transform = lerp(global_transform, target, 0.2)
+			global_transform = lerp(global_transform, target, 0.2 * Global.player.healthCtl.consciousness)
 		else:
-			global_transform = lerp(global_transform, Global.player.grab_position.global_transform, 0.2)
+			global_transform = lerp(global_transform, target_t, 0.2 * Global.player.healthCtl.consciousness)
 	else:
-		global_transform = lerp(global_transform, Global.player.right_hand_position.global_transform, 0.2)
+		var target_t: Transform3D = Global.player.right_hand_position.global_transform
+		target_t.basis = Basis.from_euler(target_t.basis.get_euler() + rot_offset)
+		shakiness = lerp(shakiness, max(0.0, Global.player.healthCtl.get_limb_total("pain") / 16), 0.01)
+		crosshair.modulate.a = lerp(crosshair.modulate.a, 1.0, 0.1)
+		global_transform = lerp(global_transform, target_t, 0.2 * Global.player.healthCtl.consciousness)
 	if magazine:
 		magazine.get_node("CollisionShape3D").disabled = true
 		if magAction == "none":
@@ -106,12 +132,21 @@ func _process(_delta: float) -> void:
 			magazine.global_transform = lerp(magazine.global_transform, magInsertPos.global_transform, 0.3)
 		elif magAction == "insert":
 			magazine.global_transform = lerp(magazine.global_transform, magPos.global_transform, 0.3)
-	scale = Vector3(3, 3, 3)
+
+
 	rotation.z += recoil
 	rotation.y += hrecoil
 
-	recoil = lerp(recoil, 0.0, 0.5)
-	hrecoil = lerp(hrecoil, 0.0, 0.5)
+	rotation.y = lerp(rotation.y, rotation.y + randf_range(-shakiness, shakiness), 0.1)
+	rotation.z = lerp(rotation.z, rotation.z + randf_range(-shakiness, shakiness), 0.1)
+	position.x = lerp(position.x, position.x + randf_range(-shakiness, shakiness), 0.01)
+	position.y = lerp(position.y, position.y + randf_range(-shakiness, shakiness), 0.01)
+	position.z = lerp(position.z, position.z + randf_range(-shakiness, shakiness), 0.01)
+
+	recoil = lerp(recoil, 0.0, 0.5 * Global.player.healthCtl.consciousness)
+	hrecoil = lerp(hrecoil, 0.0, 0.5 * Global.player.healthCtl.consciousness)
+
+	scale = Vector3(3, 3, 3)
 
 	if laser:
 		laserRay.enabled = true
@@ -140,13 +175,14 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed("lmb") and Global.player.is_input_enabled():
 		if not slidelock:
+			shakiness += 0.01
 			if hammer:
 				if chamber:
 					playsound(sfx_dryfire)
 					play_random_sfx(sfx_slideback)
 					anim.play("shoot")
 					chamber = false
-					playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 18)
+					playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 10)
 					if "ear-pro" in Global.player.equipment:
 						Global.player.damage_ears(0.00005)
 					else:
@@ -159,14 +195,11 @@ func _process(_delta: float) -> void:
 
 					spawn_casing()
 
-					Global.player.viewpunch_velocity += Vector3(300, 0, 0)
+					Global.player.viewpunch_velocity += Vector3(80, 0, 0)
 					recoil += randf_range(0.18, 0.22)
 					hrecoil += randf_range(-0.1, 0.1)
 
-					Global.player.look_rotation += Vector2(
-						randf_range(-0.1, 0.1), 
-						randf_range(0.1, 0.2)
-					)
+
 					Global.player.viewpunch_rotation += Vector3(
 						randf_range(-1.0, 1.0), 
 						randf_range(-1.0, 1.0),

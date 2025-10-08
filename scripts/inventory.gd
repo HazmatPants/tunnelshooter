@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 	if frontRay:
 		if frontRay.is_colliding():
 			var collider: Node = frontRay.get_collider()
-			if collider.is_in_group(&"items") and not items["RHand"] == collider and not items["LHand"] == collider:
+			if collider and collider.is_in_group(&"items") and not items["RHand"] == collider and not items["LHand"] == collider:
 				hovered_item = collider
 				Global.playerGUI.pickup_text.text = hovered_item.name
 				if Input.is_action_just_pressed("interact"):
