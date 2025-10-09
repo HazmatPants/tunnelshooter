@@ -12,6 +12,8 @@ func _ready() -> void:
 	user_print("this console is used to debug the game. be careful.\ntype 'help' for a list of commands.")
 
 func _input(event: InputEvent) -> void:
+	if not Global.console_enabled:
+		return
 	if event is InputEventKey and event.is_pressed():
 		match event.keycode:
 			KEY_QUOTELEFT:

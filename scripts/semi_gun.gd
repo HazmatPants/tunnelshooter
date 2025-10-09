@@ -28,6 +28,12 @@ const sfx_shoot := [
 	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_5.wav")
 ]
 
+const sfx_shoot2 := [
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_2.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_3.wav")
+]
+
 #const sfx_holster := [
 	#preload("res://assets/audio/sfx/player/holster1.wav"),
 	#preload("res://assets/audio/sfx/player/holster2.wav"),
@@ -109,8 +115,9 @@ func _process(_delta: float) -> void:
 	if not Global.is_initialized:
 		return
 	if Global.player.inventory.items["RHand"] != owner or Global.player.inspecting:
-		magazine.get_node("CollisionShape3D").disabled = true
-		magazine.global_transform = magPos.global_transform
+		if magazine:
+			magazine.get_node("CollisionShape3D").disabled = true
+			magazine.global_transform = magPos.global_transform
 		return
 	shakiness = lerp(shakiness, 1.0, 0.00001)
 	if Input.is_action_pressed("rmb") and Global.player.is_input_enabled():
@@ -139,6 +146,8 @@ func _process(_delta: float) -> void:
 		elif magAction == "insert":
 			magazine.global_transform = lerp(magazine.global_transform, magPos.global_transform, 0.3)
 
+	if not Global.hand_shake_enabled:
+		shakiness = 0.0
 
 	rotation.z += recoil
 	rotation.y += hrecoil
@@ -189,6 +198,7 @@ func _process(_delta: float) -> void:
 					anim.play("shoot")
 					chamber = false
 					playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 10)
+					playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], 16)
 					if "ear-pro" in Global.player.equipment:
 						Global.player.damage_ears(0.00005)
 					else:

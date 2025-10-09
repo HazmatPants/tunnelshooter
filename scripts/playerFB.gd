@@ -463,6 +463,8 @@ func _process(delta: float) -> void:
 		AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
 
 func damage_ears(amount: float):
+	if not Global.hearing_damage_enabled:
+		return
 	tinnitus += amount
 	healthCtl.Limbs["Head"].pain += amount
 	viewpunch_velocity += Vector3(100.0, 0, 0)

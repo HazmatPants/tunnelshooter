@@ -1,7 +1,9 @@
 extends Node
 
-@export var music_enabled: bool = false
-@export var infinite_ammo: bool = true
+@export var infinite_ammo: bool = false
+@export var console_enabled: bool = false
+@export var hearing_damage_enabled: bool = true
+@export var hand_shake_enabled: bool = true
 
 var playerScene
 var player
@@ -42,3 +44,12 @@ func _process(_delta: float) -> void:
 		player.healthCtl.consciousness = 1.0
 		player.healthCtl.brainHealth = 1.0
 		player.healthCtl.stamina = 1.0
+
+func playsound(stream: AudioStream, volume: float=0):
+	var ap = AudioStreamPlayer.new()
+	ap.volume_db = volume
+	get_tree().current_scene.add_child(ap)
+	ap.stream = stream
+	ap.play()
+	await ap.finished
+	ap.queue_free()
