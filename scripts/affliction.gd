@@ -15,7 +15,8 @@ var aff_icons := {
 	"headache": preload("res://assets/textures/ui/afflictions/headache.png"),
 	"incapacitated": preload("res://assets/textures/ui/afflictions/incapacitated.png"),
 	"hearingDamage": preload("res://assets/textures/ui/afflictions/hearingDamage.png"),
-	"brainDamage": preload("res://assets/textures/ui/afflictions/braindamage.png")
+	"brainDamage": preload("res://assets/textures/ui/afflictions/braindamage.png"),
+	"bradycardia": preload("res://assets/textures/ui/afflictions/bradycardia.png")
 }
 
 var aff_names := {
@@ -24,6 +25,7 @@ var aff_names := {
 	"bleeding1": "Minor Bleeding",
 	"bleeding2": "Bleeding",
 	"bleeding3": "Heavy Bleeding",
+	"bleeding4": "Catastrophic Bleeding",
 	"heartPierced": "Heart Pierced",
 	"lungCollapsed": "Collapsed Lung",
 	"respiratoryFailure": "Respiratory Failure",
@@ -34,7 +36,8 @@ var aff_names := {
 	"hearingDamage1": "Tinnitus",
 	"hearingDamage2": "Hearing Damage",
 	"hearingDamage3": "Severe Hearing Damageh",
-	"brainDamage": "Brain Damage"
+	"brainDamage": "Brain Damage",
+	"bradycardia": "Bradycardia"
 }
 
 var aff_descs := {
@@ -43,6 +46,7 @@ var aff_descs := {
 	"bleeding1": "Losing a little blood. Shouldn't be lethal.",
 	"bleeding2": "Losing blood. May be lethal without treatment",
 	"bleeding3": "Quickly losing blood. Will be lethal without treatment",
+	"bleeding4": "Blood is spraying out of you. Death imminent.",
 	"heartPierced": "A bullet penetrated your heart.",
 	"lungCollapsed": "A bullet penetrated one of your lungs.",
 	"respiratoryFailure": "Your lungs are not working.",
@@ -53,7 +57,8 @@ var aff_descs := {
 	"hearingDamage1": "Your ears are ringing.",
 	"hearingDamage2": "You can't hear higher frequencies very well.",
 	"hearingDamage3": "You can barely hear anything.",
-	"brainDamage": "..."
+	"brainDamage": "...",
+	"bradycardia": "Your heart is beating abnormally slow."
 }
 
 var aff_name: String = ""
@@ -69,7 +74,10 @@ func _process(_delta: float) -> void:
 		var tooltip_desc := ""
 		var tooltip_title := ""
 		if aff_name == "bleeding":
-			if intensity > 0.25:
+			if intensity > 0.5:
+				tooltip_title = aff_names["bleeding4"]
+				tooltip_desc = aff_descs["bleeding4"]
+			elif intensity > 0.25:
 				tooltip_title = aff_names["bleeding3"]
 				tooltip_desc = aff_descs["bleeding3"]
 			elif intensity > 0.25:

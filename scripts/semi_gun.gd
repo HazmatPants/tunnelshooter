@@ -92,6 +92,10 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion:
 			rot_offset.y -= event.relative.x * 0.01
 			rot_offset.z -= event.relative.y * 0.01
+			if muzzleRay.is_colliding():
+				if muzzleRay.get_collider().owner.name == "Player":
+					shakiness += 0.005
+					Global.player.healthCtl.adrenaline += 0.005
 	else:
 		Global.player.mouse_look_enabled = true
 		rot_offset = Vector3.ZERO
@@ -197,13 +201,17 @@ func _process(_delta: float) -> void:
 					play_random_sfx(sfx_slideback)
 					anim.play("shoot")
 					chamber = false
-					playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 10)
-					playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], 16)
-					if "ear-pro" in Global.player.equipment:
-						Global.player.damage_ears(0.00005)
+					if Global.quiet_guns:
+						playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], -6)
 					else:
-						Global.player.damage_ears(0.01)
-						Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
+						playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 10)
+						playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], 16)
+					if not Global.quiet_guns:
+						if "ear-pro" in Global.player.equipment:
+							Global.player.damage_ears(0.00005)
+						else:
+							Global.player.damage_ears(0.01)
+							Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 
 					var Flash = muzzleflash.instantiate()
 					get_tree().current_scene.add_child(Flash)
@@ -211,16 +219,17 @@ func _process(_delta: float) -> void:
 
 					spawn_casing()
 
-					Global.player.viewpunch_velocity += Vector3(80, 0, 0)
-					recoil += randf_range(0.18, 0.22)
-					hrecoil += randf_range(-0.1, 0.1)
+					if not Global.no_recoil:
+						Global.player.viewpunch_velocity += Vector3(80, 0, 0)
+						recoil += randf_range(0.18, 0.22)
+						hrecoil += randf_range(-0.1, 0.1)
 
 
-					Global.player.viewpunch_rotation += Vector3(
-						randf_range(-1.0, 1.0), 
-						randf_range(-1.0, 1.0),
-						randf_range(-1.0, 1.0)
-					) * 5
+						Global.player.viewpunch_rotation += Vector3(
+							randf_range(-1.0, 1.0), 
+							randf_range(-1.0, 1.0),
+							randf_range(-1.0, 1.0)
+						) * 5
 
 					shoot_bullet()
 					

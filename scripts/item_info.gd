@@ -20,6 +20,7 @@ var item_descs := {
 	"KCl": "Induces cardiac arrest, ultimately resulting in death.",
 	"Fentanyl": "A VERY potent opioid analgesic (painkiller), 100 times stronger than morphine. Extreme overdose risk (20%).",
 	"Naloxone": "An opioid antagonist, used to treat the effects of overdose and withdrawal.",
+	"Diazepam": "An anxiolytic drug, reduces anxiety and helps you stay calm. Reduces seizures and hand shaking, but reduces heart rate.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
 

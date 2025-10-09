@@ -12,6 +12,8 @@ extends CharacterBody3D
 @export var crouch_move_speed := 2.0
 @export var crouch_bobbing_speed := 8.0
 
+var hand_shakiness := 0.01
+
 var crouching := false
 var default_height
 
@@ -442,6 +444,10 @@ func _physics_process(delta):
 		right_hand_position.transform = lerp(right_hand_position.transform, base_rhand_pos, 0.2)
 
 func _process(delta: float) -> void:
+	hand_shakiness = lerp(hand_shakiness, 0.01, 0.0001)
+	hand_shakiness = clampf(hand_shakiness, 0.0, 0.01)
+	healthCtl.heartRate -= (0.01 - hand_shakiness) * 25
+	
 	if tinnitus > 2:
 		tinnitus = 2
 	ap_tinnitus.volume_linear = tinnitus * 2
@@ -463,11 +469,12 @@ func _process(delta: float) -> void:
 		AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
 
 func damage_ears(amount: float):
-	if not Global.hearing_damage_enabled:
+	if Global.quiet_guns:
 		return
 	tinnitus += amount
 	healthCtl.Limbs["Head"].pain += amount
-	viewpunch_velocity += Vector3(100.0, 0, 0)
+	if not Global.no_recoil:
+		viewpunch_velocity += Vector3(100.0, 0, 0)
 	if tinnitus > 0.03:
 		hearing_damage += amount / 20
 

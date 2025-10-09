@@ -2,8 +2,9 @@ extends Node
 
 @export var infinite_ammo: bool = false
 @export var console_enabled: bool = false
-@export var hearing_damage_enabled: bool = true
+@export var quiet_guns: bool = false
 @export var hand_shake_enabled: bool = true
+@export var no_recoil: bool = false
 
 var playerScene
 var player

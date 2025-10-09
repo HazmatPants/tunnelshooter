@@ -34,9 +34,11 @@ func _cheatsButton_pressed(idx: int):
 		2:
 			Global.console_enabled = popup.is_item_checked(idx)
 		3:
-			Global.hearing_damage_enabled = !popup.is_item_checked(idx)
+			Global.quiet_guns = popup.is_item_checked(idx)
 		4:
 			Global.hand_shake_enabled = !popup.is_item_checked(idx)
+		5:
+			Global.no_recoil = popup.is_item_checked(idx)
 
 func _click():
 	Global.playsound(preload("res://assets/audio/sfx/ui/ui_popup.ogg"))

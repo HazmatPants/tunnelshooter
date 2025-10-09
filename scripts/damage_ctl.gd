@@ -181,6 +181,8 @@ func _process(delta: float) -> void:
 
 	if heartRate <= 10.0:
 		set_affliction("cardiacArrest", 1.0)
+		if afflictions.has("bradycardia"):
+			afflictions.erase("bradycardia")
 
 	if brainHealth <= 0.0:
 		add_affliction("brainDead", 1.0)
@@ -202,6 +204,11 @@ func _process(delta: float) -> void:
 		set_affliction("incapacitated", 1.0)
 	else:
 		afflictions.erase("incapacitated")
+
+	if heartRate <= 55 and heartRate > 10:
+		set_affliction("bradycardia", 1.0 - heartRate / 55)
+	else:
+		afflictions.erase("bradycardia")
 
 	if Global.player.tinnitus > 0.0:
 		set_affliction("hearingDamage", Global.player.tinnitus * 10)

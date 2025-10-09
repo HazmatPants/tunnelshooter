@@ -6,5 +6,5 @@ func _ready() -> void:
 	owner.useTime = 0.5
 
 func use():
-	Global.player.healthCtl.opioidAmount += 0.15
-	owner.condition -= 0.0333
+	Global.player.hand_shakiness -= 0.005
+	owner.condition -= 0.1
