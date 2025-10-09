@@ -53,6 +53,8 @@ func _ready() -> void:
 
 var last_spotted_rot: Vector3 = Vector3.ZERO
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 3
 	var target_basis: Basis
 	if state == "shoot":

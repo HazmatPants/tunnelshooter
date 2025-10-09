@@ -12,6 +12,8 @@ const sfx_hit := preload("res://assets/audio/sfx/weapons/soundturret/sound_turre
 const sfx_blocked := preload("res://assets/audio/sfx/weapons/soundturret/sound_turret_blocked.wav")
 
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	var target = Global.player.get_node("Head").global_transform.origin
 	var target_basis: Basis
 	target_basis = Transform3D().looking_at(target - global_transform.origin).basis

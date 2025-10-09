@@ -19,24 +19,7 @@ extends Control
 	"RFoot": $Body/RFoot,
 }
 
-@onready var PhysicalLimbs: Dictionary = { # real node3d Limbs
-	"Head": Global.player.get_node("Head"),
-	"Neck": Global.player.get_node("Neck"),
-	"Thorax": Global.player.get_node("Thorax"),
-	"Abdomen": Global.player.get_node("Abdomen"),
-	"LUpperArm": Global.player.get_node("LArm/LUpperArm"),
-	"LForearm": Global.player.get_node("LArm/LUpperArm/LForearmPivot/LForearm"),
-	"LHand": Global.player.get_node("LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot/LHand"),
-	"RUpperArm": Global.player.get_node("RArm/RUpperArm"),
-	"RForearm": Global.player.get_node("RArm/RUpperArm/RForearmPivot/RForearm"),
-	"RHand": Global.player.get_node("RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot/RHand"),
-	"LThigh": Global.player.get_node("LLeg/LThigh"),
-	"LCrus": Global.player.get_node("LLeg/LThigh/LCrusPivot/LCrus"),
-	"LFoot": Global.player.get_node("LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"),
-	"RThigh": Global.player.get_node("RLeg/RThigh"),
-	"RCrus": Global.player.get_node("RLeg/RThigh/RCrusPivot/RCrus"),
-	"RFoot": Global.player.get_node("RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"),
-}
+var PhysicalLimbs: Dictionary = {}
 
 var LimbDisplayNames: Dictionary = {
 	"Head": "Head",
@@ -58,7 +41,7 @@ var LimbDisplayNames: Dictionary = {
 }
 
 @onready var Heart = $Body/Thorax/Heart
-@onready var healthCtl = Global.player.healthCtl
+var healthCtl
 
 const sfx_heartBeat = preload("res://assets/audio/sfx/player/heart_thump.ogg")
 const sfx_ECG = preload("res://assets/audio/sfx/player/ECG.wav")
@@ -73,8 +56,31 @@ func _ready() -> void:
 	visible = false
 	ap_ecg.volume_db = -45
 	ap_ecg.stream = sfx_ECG
-	healthCtl.HeartBeat.connect(_HeartBeat)
 	get_tree().current_scene.call_deferred("add_child", ap_ecg)
+
+	await Global.initialized
+
+	healthCtl = Global.player.healthCtl
+	healthCtl.HeartBeat.connect(_HeartBeat)
+
+	PhysicalLimbs = {
+		"Head": Global.player.get_node("Head"),
+		"Neck": Global.player.get_node("Neck"),
+		"Thorax": Global.player.get_node("Thorax"),
+		"Abdomen": Global.player.get_node("Abdomen"),
+		"LUpperArm": Global.player.get_node("LArm/LUpperArm"),
+		"LForearm": Global.player.get_node("LArm/LUpperArm/LForearmPivot/LForearm"),
+		"LHand": Global.player.get_node("LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot/LHand"),
+		"RUpperArm": Global.player.get_node("RArm/RUpperArm"),
+		"RForearm": Global.player.get_node("RArm/RUpperArm/RForearmPivot/RForearm"),
+		"RHand": Global.player.get_node("RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot/RHand"),
+		"LThigh": Global.player.get_node("LLeg/LThigh"),
+		"LCrus": Global.player.get_node("LLeg/LThigh/LCrusPivot/LCrus"),
+		"LFoot": Global.player.get_node("LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"),
+		"RThigh": Global.player.get_node("RLeg/RThigh"),
+		"RCrus": Global.player.get_node("RLeg/RThigh/RCrusPivot/RCrus"),
+		"RFoot": Global.player.get_node("RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"),
+	}
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("healthmenu"):

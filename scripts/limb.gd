@@ -20,6 +20,8 @@ var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
 
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	bleedingRate -= Global.player.healthCtl.bloodClotSpeed * delta
 	bleedingRate = clampf(bleedingRate, 0.0, INF)
 	var pain_sub = ((0.01 * (1.0 - Global.player.healthCtl.adrenaline)) * 

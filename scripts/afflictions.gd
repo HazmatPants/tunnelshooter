@@ -7,11 +7,14 @@ var afflictions := {}
 signal resize
 
 func _ready() -> void:
+	await Global.initialized
 	afflictions = Global.player.healthCtl.afflictions.duplicate(true)
 	
 	Global.player.healthCtl.affliction_added.connect(refresh_afflictions)
 
 func _process(_delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	afflictions = Global.player.healthCtl.afflictions.duplicate(true)
 	size.x = afflictions.size() * 64
 	resize.emit()

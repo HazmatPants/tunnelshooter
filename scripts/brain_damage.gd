@@ -1,6 +1,6 @@
 extends ColorRect
 
-@onready var stat = Global.player.healthCtl
+var stat
 
 var photopsia_timer: float = 0.0
 
@@ -10,7 +10,13 @@ const photopsia_textures := [
 	preload("res://assets/textures/ui/braindamage/photopsia/flash3.png")
 ]
 
+func _ready() -> void:
+	await Global.initialized
+	stat = Global.player.healthCtl
+
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	if stat.brainHealth <= 0.75:
 		photopsia_timer += delta
 		if photopsia_timer > randf_range(3.0, 10.0):

@@ -1,8 +1,8 @@
 extends Node
 
-@onready var frontRay: RayCast3D
-@onready var itemUseProgress: TextureProgressBar = Global.playerGUI.get_node("ItemUseProgress") 
-@onready var itemConditionProgress: TextureProgressBar = Global.playerGUI.get_node("ItemConditionProgress") 
+var frontRay: RayCast3D
+var itemUseProgress: TextureProgressBar
+var itemConditionProgress: TextureProgressBar 
 
 var hovered_item
 
@@ -13,10 +13,20 @@ var items := {
 
 const sfx_pickup := preload("res://assets/audio/sfx/ui/inventory/pickup.wav")
 
+var initialized: bool = false
+
+func _ready() -> void:
+	await Global.initialized
+	initialized = true
+	itemUseProgress = Global.playerGUI.get_node("ItemUseProgress") 
+	itemConditionProgress = Global.playerGUI.get_node("ItemConditionProgress") 
+
 var using := false
 var used := false
 var depleted := false
 func _process(delta: float) -> void:
+	if not initialized:
+		return
 	frontRay = Global.player.frontRay
 	if frontRay:
 		if frontRay.is_colliding():

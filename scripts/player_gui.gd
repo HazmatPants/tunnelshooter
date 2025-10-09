@@ -16,6 +16,7 @@ var bgm_dying = preload("res://assets/audio/music/dying.wav")
 var bgm_death = preload("res://assets/audio/music/death.wav")
 
 func _ready() -> void:
+	await Global.initialized
 	Global.player.Death.connect(_death)
 	
 	$Blackout.visible = true
@@ -64,6 +65,8 @@ func _start_hint_tween(text: String) -> void:
 var time = 0
 var last_brainHealth: float = 0
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	var total_pain = Global.player.healthCtl.get_limb_all("pain").values().max()
 	var painImageSine = 2.0 - total_pain
 	painImageSine += (sin((PI * time) / 30) * 2 / 2 * PI)

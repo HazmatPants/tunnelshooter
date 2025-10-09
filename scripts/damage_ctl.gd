@@ -65,7 +65,16 @@ signal HeartBeat
 signal affliction_added
 signal affliction_changed
 
+var initialized: bool = false
+
+func _ready() -> void:
+	await Global.initialized
+	Global.request_ready()
+	initialized = true
+
 func _process(delta: float) -> void:
+	if not initialized:
+		return
 	if not "cardiacArrest" in afflictions:
 		beatTimer += delta
 		var beatInterval = 60.0 / heartRate

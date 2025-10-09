@@ -27,6 +27,8 @@ var item_descs := {
 
 var timer: float = 0.0
 func _process(delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	if Global.player.inspecting and Global.player.inventory.items["RHand"]:
 		timer += delta
 		if timer > 0.5:

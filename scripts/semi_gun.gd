@@ -76,8 +76,11 @@ var slidelock: bool = false
 var laserMesh = MeshInstance3D.new()
 var crosshair
 
+
 var rot_offset := Vector3.ZERO
 func _unhandled_input(event):
+	if not Global.is_initialized:
+		return
 	if Input.is_key_pressed(KEY_K):
 		Global.player.mouse_look_enabled = false
 		if event is InputEventMouseMotion:
@@ -93,6 +96,7 @@ func _ready() -> void:
 	magazine.gravity_scale = 0.0
 	magazine.position = magPos.position
 	magazine.inserted = true
+	await Global.initialized
 	ammo_label = Global.playerGUI.get_node("AmmoLabel")
 
 	crosshair = Global.playerGUI.get_node("Crosshair")
@@ -102,6 +106,8 @@ var shakiness: float = 0.0
 var first_input: String = ""
 var magAction: String = "none"
 func _process(_delta: float) -> void:
+	if not Global.is_initialized:
+		return
 	if Global.player.inventory.items["RHand"] != owner or Global.player.inspecting:
 		magazine.get_node("CollisionShape3D").disabled = true
 		magazine.global_transform = magPos.global_transform
