@@ -42,12 +42,19 @@ func shoot():
 			if collider.name == "PlayerShootRad" and not Global.player.dead:
 				playsound(sfx_hit, 100)
 				await get_tree().create_timer(0.05).timeout
-				Global.player.viewpunch_velocity += Vector3(260.0, 0, 0)
-				Global.player.healthCtl.consciousness -= 0.85
-				Global.player.healthCtl.Limbs["Head"].pain = 1.0
-				Global.player.healthCtl.Limbs["Head"].muscleHealth -= 0.33
-				Global.player.healthCtl.brainHealth -= 0.40
-				Global.player.damage_ears(1)
+				if "ear-pro" in Global.player.equipment:
+					Global.player.viewpunch_velocity += Vector3(100.0, 0, 0)
+					Global.player.healthCtl.consciousness -= 0.2
+					Global.player.healthCtl.Limbs["Head"].pain = 0.1
+					Global.player.healthCtl.Limbs["Head"].muscleHealth -= 0.1
+					Global.player.damage_ears(0.05)
+				else:
+					Global.player.viewpunch_velocity += Vector3(260.0, 0, 0)
+					Global.player.healthCtl.consciousness -= 0.85
+					Global.player.healthCtl.Limbs["Head"].pain = 1.0
+					Global.player.healthCtl.Limbs["Head"].muscleHealth -= 0.33
+					Global.player.healthCtl.brainHealth -= 0.40
+					Global.player.damage_ears(1)
 			else:
 				blocked()
 		else:

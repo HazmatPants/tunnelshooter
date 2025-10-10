@@ -33,6 +33,7 @@ var bloodstream := {
 	
 }
 
+var lifesupport: float = 0.0
 var bloodOxygen: float = 1.0
 var brainHealth: float = 1.0
 var consciousness: float = 1.0
@@ -122,8 +123,27 @@ func _process(delta: float) -> void:
 	heartRate = lerp(heartRate, targetHR, 0.0025)
 	breathingRate = lerp(breathingRate, targetBR, 0.0025)
 
+	if lifesupport > 0.0:
+		var plss_sfx
+		lifesupport -= delta
+		bloodOxygen += 0.01
+		set_affliction("lifeSupport", 1.0 - lifesupport / 120)
+		if not has_node("PLSSSFX"):
+			plss_sfx = AudioStreamPlayer.new()
+			plss_sfx.name = "PLSSSFX"
+			plss_sfx.volume_linear = 0.1
+			plss_sfx.autoplay = true
+			plss_sfx.stream = preload("res://assets/audio/sfx/items/plss_loop.ogg")
+			add_child(plss_sfx)
+		else:
+			plss_sfx = get_node("PLSSSFX")
+	else:
+		if has_node("PLSSSFX"):
+			get_node("PLSSSFX").queue_free()
+		afflictions.erase("lifeSupport")
+
 	bloodOxygen -= physicalWork * oxygenUseRate * delta
-	bloodOxygen = clamp(bloodOxygen, 0.0, bloodVolume / 5000.0)
+	bloodOxygen = clamp(bloodOxygen, 0.0, bloodVolume / 5000.0 if lifesupport <= 0.0 else 1.0)
 
 	var bloodLossRate = get_limb_total("bleedingRate")
 	bloodVolume -= bloodLossRate * delta
@@ -240,6 +260,11 @@ func _process(delta: float) -> void:
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()
 
+	if get_limb_all("dislocated").values().has(true):
+		set_affliction("dislocation", 1.0)
+	else:
+		afflictions.erase("dislocation")
+
 	for affliction in afflictions.keys():
 		afflictions[affliction]["intensity"] = clampf(afflictions[affliction]["intensity"], 0.0, 1.0)
 		if afflictions[affliction]["intensity"] <= 0.0:
@@ -254,7 +279,7 @@ func playsound(stream: AudioStream, volume: float=0):
 	await ap.finished
 	ap.queue_free()
 
-func get_limb_total(value: String):
+func get_limb_total(value: String) -> float:
 	var total: float = 0.0
 	for limb in Limbs.values():
 		if limb is Dictionary:
@@ -265,7 +290,7 @@ func get_limb_total(value: String):
 
 	return total
 
-func get_limb_all(value: String):
+func get_limb_all(value: String) -> Dictionary:
 	var total: Dictionary = {}
 	for limb in Limbs.values():
 		if limb is Dictionary:

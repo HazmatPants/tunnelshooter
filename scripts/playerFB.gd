@@ -6,7 +6,7 @@ extends CharacterBody3D
 @export var decceleration := 8.0
 @export var mouse_sensitivity := 0.004
 @export var jump_velocity := 4.5
-@export var gravity := Vector3.DOWN * 9.8
+@export var gravity := Vector3.DOWN * 10
 
 @export var crouch_height: float = 0.4
 @export var crouch_move_speed := 2.0
@@ -85,6 +85,7 @@ var rotating: bool = false
 var last_mouse_pos := Vector2.ZERO
 
 var ap_tinnitus = AudioStreamPlayer.new()
+var ap_wind = AudioStreamPlayer.new()
 var tinnitus: float = 0.0
 var hearing_damage: float = 0.0
 
@@ -183,6 +184,14 @@ const sfx_foot_wander = {
 	]
 }
 
+const sfx_land_heavy := [
+	preload("res://assets/audio/sfx/physics/land/landheavy1.ogg"),
+	preload("res://assets/audio/sfx/physics/land/landheavy2.ogg")
+]
+
+const sfx_land_mid := preload("res://assets/audio/sfx/physics/land/landmedium1.ogg")
+const sfx_land_small := preload("res://assets/audio/sfx/physics/land/landsmall1.ogg")
+
 const sfx_deny = preload("res://assets/audio/sfx/ui/suit_denydevice.wav")
 
 signal Death
@@ -230,7 +239,6 @@ func footstep_sound(type: String="step", volume: float=0.0):
 			sound_list = sfx_foot_wander.get(material, sfx_foot_wander["default"])
 
 		play_random_sfx(sound_list, volume, false)
-		print(type)
 
 func _ready():
 	default_height = $CollisionShape3D.position.y
@@ -244,7 +252,13 @@ func _ready():
 	ap_tinnitus.autoplay = true
 	ap_tinnitus.bus = "Tinnitus"
 	get_tree().current_scene.call_deferred("add_child", ap_tinnitus)
-	
+
+	ap_wind.stream = preload("res://assets/audio/sfx/player/windLoop.ogg")
+	ap_wind.volume_linear = 0.0
+	ap_wind.autoplay = true
+	ap_wind.bus = "SFX"
+	get_tree().current_scene.call_deferred("add_child", ap_wind)
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	base_camera_position = camera.position
 
@@ -259,6 +273,7 @@ func _unhandled_input(event):
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 	rotation.y = look_rotation.x
 
+var fall_velocity: float = 0.0
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
 	var forward = -transform.basis.z.normalized()
@@ -318,8 +333,10 @@ func _physics_process(delta):
 
 	if not is_on_floor():
 		velocity += gravity * delta
+		fall_velocity = velocity.y
 	else:
-		velocity.y = 0
+		velocity.y = 0.0
+		fall_velocity = 0.0
 		if is_input_enabled():
 			if Input.is_action_just_pressed("jump"):
 				healthCtl.physicalWork += 0.2 * (2.0 - healthCtl.stamina)
@@ -359,14 +376,22 @@ func _physics_process(delta):
 			var volume: float = 0.1 if crouching else 0.4
 			footstep_sound("wander", linear_to_db(volume))
 			viewpunch_velocity += step_viewpunch / 2
-			stop_timer = -999  # prevent multiple plays
+			stop_timer = -999
 
 	was_moving = is_moving
 
-	# Landing detection
+	ap_wind.volume_linear = clampf(abs(velocity.length() / 16) - 0.3, 0.0, INF)
+
 	if not was_on_floor and is_on_floor():
 		viewpunch_velocity += land_viewpunch
 		footstep_sound("impact")
+		do_fall_damage()
+		if abs(fall_velocity) > 10:
+			play_random_sfx(sfx_land_heavy, 0, false)
+		elif abs(fall_velocity) > 5:
+			playsound(sfx_land_mid, false)
+		else:
+			playsound(sfx_land_small, false)
 
 	viewpunch_rotation += viewpunch_velocity * delta
 	viewpunch_velocity = lerp(viewpunch_velocity, Vector3.ZERO, delta * viewpunch_damping)
@@ -493,3 +518,22 @@ func set_input_lock(source: String, locked: bool):
 
 func is_input_enabled() -> bool:
 	return input_lock_reasons.is_empty()
+
+func do_fall_damage():
+	for limb in healthCtl.Limbs.values():
+		if limb.isLeg:
+			if abs(fall_velocity) > 14:
+				viewpunch_velocity += Vector3(-300.0, 0, 0)
+				if randf() > 0.5:
+					limb.pain += randf_range(0.01, abs(fall_velocity / 50))
+					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+				if randf() > 0.75:
+					limb.dislocated = true
+					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+					limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
+					playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false)
+			elif abs(fall_velocity) > 10:
+				if randf() > 0.5:
+					viewpunch_velocity += Vector3(-200.0, 0, 0)
+					limb.muscleHealth -= randf_range(abs(fall_velocity / 125), abs(fall_velocity / 100))
+					limb.pain += randf_range(0.01, abs(fall_velocity / 100))

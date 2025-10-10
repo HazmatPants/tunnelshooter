@@ -219,6 +219,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.338454, 0.294744, 0)
 [node name="LUpperArm" type="StaticBody3D" parent="LArm"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.135136, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm"]
 mesh = SubResource("BoxMesh_lu8km")
@@ -232,6 +233,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.211459, 0)
 [node name="LForearm" type="StaticBody3D" parent="LArm/LUpperArm/LForearmPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.182486, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm/LForearmPivot/LForearm"]
 mesh = SubResource("BoxMesh_lu8km")
@@ -245,6 +247,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.187598, 0)
 [node name="LHand" type="StaticBody3D" parent="LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0835183, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LArm/LUpperArm/LForearmPivot/LForearm/LHandPivot/LHand"]
 mesh = SubResource("BoxMesh_61f7w")
@@ -258,6 +261,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.338, 0.295, 0)
 [node name="RUpperArm" type="StaticBody3D" parent="RArm"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.135136, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm"]
 mesh = SubResource("BoxMesh_lu8km")
@@ -271,6 +275,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.211459, 0)
 [node name="RForearm" type="StaticBody3D" parent="RArm/RUpperArm/RForearmPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.182486, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm/RForearmPivot/RForearm"]
 mesh = SubResource("BoxMesh_lu8km")
@@ -284,6 +289,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.187598, 0)
 [node name="RHand" type="StaticBody3D" parent="RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0835183, 0)
 script = ExtResource("3_ox7cw")
+isArm = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RArm/RUpperArm/RForearmPivot/RForearm/RHandPivot/RHand"]
 mesh = SubResource("BoxMesh_61f7w")
@@ -297,6 +303,7 @@ transform = Transform3D(0.997564, 0.0697565, 0, -0.0697565, 0.997564, 0, 0, 0, 1
 [node name="LThigh" type="StaticBody3D" parent="LLeg"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh"]
 mesh = SubResource("BoxMesh_ox7cw")
@@ -310,6 +317,7 @@ transform = Transform3D(0.996194, -0.0871557, 0, 0.0871557, 0.996194, 0, 0, 0, 1
 [node name="LCrus" type="StaticBody3D" parent="LLeg/LThigh/LCrusPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00627396, -0.177442, 0)
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh/LCrusPivot/LCrus"]
 mesh = SubResource("BoxMesh_ox7cw")
@@ -322,6 +330,7 @@ transform = Transform3D(0.999947, 0.0102624, 0, -0.0102624, 0.999947, 0, 0, 0, 1
 
 [node name="LFoot" type="StaticBody3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot"]
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LLeg/LThigh/LCrusPivot/LCrus/LFootPivot/LFoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)
@@ -338,6 +347,7 @@ transform = Transform3D(0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0, 1
 [node name="RThigh" type="StaticBody3D" parent="RLeg"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.234194, 0)
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh"]
 mesh = SubResource("BoxMesh_ox7cw")
@@ -351,6 +361,7 @@ transform = Transform3D(0.996194, 0.0871557, 0, -0.0871557, 0.996194, 0, 0, 0, 1
 [node name="RCrus" type="StaticBody3D" parent="RLeg/RThigh/RCrusPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00627396, -0.177442, 0)
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh/RCrusPivot/RCrus"]
 mesh = SubResource("BoxMesh_ox7cw")
@@ -363,6 +374,7 @@ transform = Transform3D(0.999947, 0.0102624, 0, -0.0102624, 0.999947, 0, 0, 0, 1
 
 [node name="RFoot" type="StaticBody3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot"]
 script = ExtResource("3_ox7cw")
+isLeg = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00399999, 0, -0.0980819)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=33 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -17,6 +17,8 @@
 [ext_resource type="PackedScene" uid="uid://djiavrjfxah80" path="res://scenes/items/naloxone.tscn" id="15_jkv2x"]
 [ext_resource type="PackedScene" uid="uid://bd4siua5myuh0" path="res://scenes/ss_320.tscn" id="16_jbj1t"]
 [ext_resource type="PackedScene" uid="uid://bwsb5c052emdc" path="res://scenes/items/diazepam.tscn" id="17_muem4"]
+[ext_resource type="PackedScene" uid="uid://jam06q4dgjam" path="res://scenes/items/headphones.tscn" id="18_dp3eg"]
+[ext_resource type="PackedScene" uid="uid://c7oxlks2ilnne" path="res://scenes/items/plss.tscn" id="19_0ld40"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -47,6 +49,12 @@ size = Vector3(10.07, 4, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
 size = Vector3(10.07, 4, 0.3)
 
+[sub_resource type="BoxMesh" id="BoxMesh_dp3eg"]
+size = Vector3(28.64, 4, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ld40"]
+size = Vector3(28.64, 4, 0.3)
+
 [sub_resource type="BoxMesh" id="BoxMesh_a8y0u"]
 size = Vector3(3, 0.1, 0.3)
 
@@ -56,7 +64,7 @@ size = Vector3(3, 0.1, 0.3)
 [node name="Node3D" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7455751, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8912523, 0)
 strafe_roll_amount = 4.0
 strafe_roll_speed = 1.0
 equipment = []
@@ -154,6 +162,16 @@ mesh = SubResource("BoxMesh_tbgi4")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 shape = SubResource("BoxShape3D_tefeu")
 
+[node name="StaticBody3D6" type="StaticBody3D" parent="."]
+transform = Transform3D(-3.090862e-08, -1, -7.4620004e-08, -0.49999997, -4.916851e-08, 0.8660253, -0.8660253, 6.4077646e-08, -0.49999997, 6.5856843, 7.5039196, 31.275202)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D6"]
+mesh = SubResource("BoxMesh_dp3eg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D6"]
+shape = SubResource("BoxShape3D_0ld40")
+
 [node name="StaticBody3D5" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9932013, 1.6474423, -9.91077)
 collision_layer = 3
@@ -213,3 +231,9 @@ metadata/IsGun = false
 
 [node name="Diazepam" parent="." instance=ExtResource("17_muem4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.743108, 1.8490454, -9.884777)
+
+[node name="Headphones" parent="." instance=ExtResource("18_dp3eg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.298204, 0.821619, -7.8609085)
+
+[node name="PLSS" parent="." instance=ExtResource("19_0ld40")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.817156, 0.6424719, -7.7715993)

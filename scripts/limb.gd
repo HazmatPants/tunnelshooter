@@ -4,6 +4,7 @@ extends Node3D
 @export var isArm: bool = false
 @export var isLeg: bool = false
 @export var bleedingRateMult: float = 1.0
+var dislocated: bool = false
 
 const sfx_flesh_hit := [
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_1.wav"),
@@ -27,9 +28,10 @@ func _process(delta: float) -> void:
 	var pain_sub = ((0.01 * (1.0 - Global.player.healthCtl.adrenaline)) * 
 		1.0 + (Global.player.healthCtl.opioidAmount +
 		Global.player.healthCtl.stimAmount * 10) / 10)
+
+	pain += (1.0 - muscleHealth) / 1000 * delta
 	pain -= clampf(pain_sub, 0.0, INF) * delta
 
-	pain += (1.0 - muscleHealth) / 1200
 
 	pain = clampf(pain, 0.0, 1.0)
 	if muscleHealth > 0.2:

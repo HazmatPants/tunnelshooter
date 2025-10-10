@@ -8,3 +8,4 @@ func _ready() -> void:
 func use():
 	Global.player.hand_shakiness -= 0.005
 	owner.condition -= 0.1
+	owner.playsound(sfx_use)

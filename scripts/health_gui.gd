@@ -180,9 +180,18 @@ func check_tooltip(node: Control, tt_title: String, tt_desc: String=""):
 		Global.playerGUI.tooltip.request_tooltip(tt_title, tt_desc)
 
 func limb_tooltip(limb: Control):
-	check_tooltip(limb, LimbDisplayNames[limb.name], 
-	"Muscle Health: %s%%\nSkin Health: %s%%\nBlood Loss Rate: %s L/m\nPain: %s%%" % 
-	[str(int(round(PhysicalLimbs[limb.name].muscleHealth * 100))), str(int(round(PhysicalLimbs[limb.name].skinHealth * 100))), str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)), str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
+	var tt_text = "[color=green]Muscle Health: %s%%\nSkin Health: %s%%\nBlood Loss Rate: %s L/m\nPain: %s%%[/color]" % (
+	[str(int(round(PhysicalLimbs[limb.name].muscleHealth * 100))),
+	str(int(round(PhysicalLimbs[limb.name].skinHealth * 100))),
+	str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)),
+	str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
+	if limb.dislocated:
+		if Global.player.healthCtl.get_limb_all("pain").values().max() < 0.9:
+			tt_text += "\n[color=red]Dislocated\nClick to attempt reduction[/color]"
+		else:
+			tt_text += "\n[color=red]Dislocated\nToo much pain!![/color]"
+	check_tooltip(limb, LimbDisplayNames[limb.name], tt_text)
+
 
 func handle_tooltips():
 	check_tooltip($Panel/VBoxContainer/Brain/VBoxContainer/BrainHealthLabel, "Brain Integrity (%)")
@@ -226,3 +235,4 @@ func update_limbs():
 		Limbs[limb].pain = PhysicalLimbs[limb].pain
 		Limbs[limb].muscleHealth = PhysicalLimbs[limb].muscleHealth
 		Limbs[limb].skinHealth = PhysicalLimbs[limb].skinHealth 
+		Limbs[limb].dislocated = PhysicalLimbs[limb].dislocated 

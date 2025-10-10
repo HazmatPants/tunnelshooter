@@ -21,8 +21,11 @@ var item_descs := {
 	"Fentanyl": "A VERY potent opioid analgesic (painkiller), 100 times stronger than morphine. Extreme overdose risk (20%).",
 	"Naloxone": "An opioid antagonist, used to treat the effects of overdose and withdrawal.",
 	"Diazepam": "An anxiolytic drug, reduces anxiety and helps you stay calm. Reduces seizures and hand shaking, but reduces heart rate.",
+	"PLSS": "Personal Life Support System.\nA device that attaches to your thigh and pumps oxygen into your blood.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
+
+	"Headphones": "A pair of headphones designed to suppress loud sounds.",
 
 }
 

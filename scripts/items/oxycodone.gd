@@ -8,3 +8,4 @@ func _ready() -> void:
 func use():
 	Global.player.healthCtl.opioidAmount += 0.15
 	owner.condition -= 0.0333
+	owner.playsound(sfx_use)

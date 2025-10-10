@@ -272,6 +272,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(576, 324)
+mouse_filter = 1
 script = ExtResource("3_57hkc")
 
 [node name="Background" type="Panel" parent="HealthGUI"]
@@ -296,6 +297,7 @@ offset_right = 340.405
 offset_bottom = 209.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Head" type="ColorRect" parent="HealthGUI/Body"]
 layout_mode = 1
@@ -310,7 +312,6 @@ offset_right = 40.0
 offset_bottom = -125.23
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="Neck" type="ColorRect" parent="HealthGUI/Body"]
@@ -326,7 +327,6 @@ offset_right = 30.0
 offset_bottom = -111.935
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="Thorax" type="ColorRect" parent="HealthGUI/Body"]
@@ -342,18 +342,17 @@ offset_right = 40.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="Heart" type="Panel" parent="HealthGUI/Body/Thorax"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.144
+anchor_bottom = 1.0
 offset_left = 27.595
 offset_top = 9.0
 offset_right = -32.405
-offset_bottom = 26.928
+offset_bottom = -27.0
 pivot_offset = Vector2(10, 10)
 theme = SubResource("Theme_q0f5p")
 theme_override_styles/panel = SubResource("StyleBoxFlat_fay7l")
@@ -396,7 +395,6 @@ offset_right = 40.0
 offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="LUpperArm" type="ColorRect" parent="HealthGUI/Body"]
@@ -412,7 +410,6 @@ offset_right = 118.0
 offset_bottom = -73.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="LForearm" type="ColorRect" parent="HealthGUI/Body"]
@@ -458,7 +455,6 @@ offset_right = -45.33
 offset_bottom = -73.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="RForearm" type="ColorRect" parent="HealthGUI/Body"]
@@ -504,7 +500,6 @@ offset_right = 40.0
 offset_bottom = 89.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="LCrus" type="ColorRect" parent="HealthGUI/Body"]
@@ -550,7 +545,6 @@ offset_right = -3.0
 offset_bottom = 89.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("5_fay7l")
 
 [node name="RCrus" type="ColorRect" parent="HealthGUI/Body"]
@@ -621,7 +615,6 @@ texture = ExtResource("5_kx3gu")
 expand_mode = 1
 
 [node name="Gradient" type="TextureRect" parent="HealthGUI/Panel/ECG"]
-clip_children = 1
 layout_mode = 0
 offset_left = -120.0
 offset_top = -43.0
@@ -891,9 +884,11 @@ layout_mode = 2
 mouse_filter = 2
 color = Color(0, 0.647059, 0, 1)
 
-[node name="Description" type="Label" parent="Tooltip/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+[node name="Description" type="RichTextLabel" parent="Tooltip/Panel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = SubResource("Theme_8rw1s")
+bbcode_enabled = true
 text = "Description"
+fit_content = true
+scroll_active = false

@@ -16,7 +16,9 @@ var aff_icons := {
 	"incapacitated": preload("res://assets/textures/ui/afflictions/incapacitated.png"),
 	"hearingDamage": preload("res://assets/textures/ui/afflictions/hearingDamage.png"),
 	"brainDamage": preload("res://assets/textures/ui/afflictions/braindamage.png"),
-	"bradycardia": preload("res://assets/textures/ui/afflictions/bradycardia.png")
+	"bradycardia": preload("res://assets/textures/ui/afflictions/bradycardia.png"),
+	"lifeSupport": preload("res://assets/textures/ui/afflictions/lifeSupport.png"),
+	"dislocation": preload("res://assets/textures/ui/afflictions/dislocation.png"),
 }
 
 var aff_names := {
@@ -35,9 +37,11 @@ var aff_names := {
 	"incapacitated": "Incapacitated",
 	"hearingDamage1": "Tinnitus",
 	"hearingDamage2": "Hearing Damage",
-	"hearingDamage3": "Severe Hearing Damageh",
+	"hearingDamage3": "Severe Hearing Damage",
 	"brainDamage": "Brain Damage",
-	"bradycardia": "Bradycardia"
+	"bradycardia": "Bradycardia",
+	"lifeSupport": "Life Support",
+	"dislocation": "Dislocated Joint",
 }
 
 var aff_descs := {
@@ -58,7 +62,9 @@ var aff_descs := {
 	"hearingDamage2": "You can't hear higher frequencies very well.",
 	"hearingDamage3": "You can barely hear anything.",
 	"brainDamage": "...",
-	"bradycardia": "Your heart is beating abnormally slow."
+	"bradycardia": "Your heart is beating abnormally slow.",
+	"lifeSupport": "A device is providing you with oxygen",
+	"dislocation": "A joint has broken out of place. Try not to use the affected limb.",
 }
 
 var aff_name: String = ""
@@ -74,10 +80,10 @@ func _process(_delta: float) -> void:
 		var tooltip_desc := ""
 		var tooltip_title := ""
 		if aff_name == "bleeding":
-			if intensity > 0.5:
+			if intensity > 0.75:
 				tooltip_title = aff_names["bleeding4"]
 				tooltip_desc = aff_descs["bleeding4"]
-			elif intensity > 0.25:
+			elif intensity > 0.5:
 				tooltip_title = aff_names["bleeding3"]
 				tooltip_desc = aff_descs["bleeding3"]
 			elif intensity > 0.25:

@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://ceyvwjpgnkuxh"]
+[gd_scene load_steps=9 format=3 uid="uid://ceyvwjpgnkuxh"]
 
 [ext_resource type="FontFile" uid="uid://boeoafodkpa6u" path="res://assets/fonts/PerfectDOSVGA437.ttf" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://bs2x8vmcbx5km" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="AudioStream" uid="uid://dovcw887no7cl" path="res://assets/audio/music/SU_2.wav" id="3_bqqt6"]
+[ext_resource type="AudioStream" uid="uid://dylbk2ixkecpw" path="res://assets/audio/music/TH_HI - KICK.wav" id="4_wu84c"]
 
 [sub_resource type="Theme" id="Theme_bqqt6"]
 default_font = ExtResource("1_ekxnf")
@@ -138,3 +140,13 @@ popup/item_4/id = 4
 popup/item_5/text = "No Recoil"
 popup/item_5/checkable = 1
 popup/item_5/id = 5
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_bqqt6")
+volume_db = -8.0
+autoplay = true
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_wu84c")
+volume_db = -8.0
+autoplay = true
