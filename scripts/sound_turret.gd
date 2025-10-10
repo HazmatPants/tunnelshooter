@@ -39,7 +39,7 @@ func shoot():
 	if Ray.is_colliding():
 		var collider = Ray.get_collider()
 		if collider and not Global.godmode:
-			if collider.name == "PlayerShootRad" and not Global.player.dead:
+			if collider.name == "PlayerShootRad" and not Global.player.dead and not "ear-pro" in Global.player.equipment:
 				playsound(sfx_hit, 100)
 				await get_tree().create_timer(0.05).timeout
 				if "ear-pro" in Global.player.equipment:
