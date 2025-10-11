@@ -52,6 +52,8 @@ const sfx_menu_close = preload("res://assets/audio/sfx/ui/health_menu_close.ogg"
 var ap_ecg = AudioStreamPlayer.new()
 var limbposs = {}
 
+var hovered_limb: String = ""
+
 func _ready() -> void:
 	visible = false
 	ap_ecg.volume_db = -45
@@ -103,6 +105,9 @@ func _process(delta: float) -> void:
 
 	if visible:
 		handle_tooltips()
+		
+		if hovered_limb:
+			$Panel/VBoxContainer/HoveredLimbLabel.text = "\n" + LimbDisplayNames[hovered_limb]
 
 		lung_anim(delta)
 		scale.x = lerp(scale.x, 1.0, 0.4)

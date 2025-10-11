@@ -45,6 +45,7 @@ func _process(delta: float) -> void:
 			elif hovered_item:
 				Global.playerGUI.pickup_text.text = ""
 				hovered_item = null
+
 	if Input.is_action_just_pressed("drop"):
 		if items["RHand"]:
 			items["RHand"].gravity_scale = 1.0
@@ -59,52 +60,117 @@ func _process(delta: float) -> void:
 		items["RHand"].global_transform = lerp(items["RHand"].global_transform, Global.player.right_hand_position.global_transform, 0.5)
 		if items["RHand"].has_meta("IsGun"):
 			return
+
 	if Input.is_action_just_pressed("lmb") and items["RHand"]:
-		if items["RHand"].useOverTime:
-			items["RHand"].anim.current_animation = "useStart"
+		if not items["RHand"].isLimbSpecific:
+			if items["RHand"].useOverTime:
+				items["RHand"].anim.current_animation = "useStart"
+			else:
+				items["RHand"].anim.current_animation = "use"
+			itemUseProgress.max_value = items["RHand"].useTime
 		else:
-			items["RHand"].anim.current_animation = "use"
-		itemUseProgress.max_value = items["RHand"].useTime
+			Global.playerGUI.show_hint("Hover over a limb in the health display and hold Right Click to use this item.")
+
+	if Input.is_action_just_pressed("rmb") and items["RHand"]:
+		if items["RHand"].isLimbSpecific and Global.playerGUI.get_node("HealthGUI").hovered_limb:
+			if items["RHand"].useOverTime:
+				items["RHand"].anim.current_animation = "useStart"
+			else:
+				items["RHand"].anim.current_animation = "use"
+			itemUseProgress.max_value = items["RHand"].useTime
+		else:
+			Global.playerGUI.show_hint("Hover over a limb in the health display and hold Right Click to use this item.")
+
+	if Input.is_action_pressed("rmb"):
+		if items["RHand"]:
+			if items["RHand"].isLimbSpecific and Global.playerGUI.get_node("HealthGUI").hovered_limb:
+				var limb = Global.playerGUI.get_node("HealthGUI").hovered_limb
+				if not used:
+					itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
+					itemUseProgress.value += delta
+					if itemUseProgress.value >= itemUseProgress.max_value:
+						if items["RHand"].useOverTime:
+							using = true
+							items["RHand"].fnc.use()
+						else:
+							items["RHand"].fnc.use(limb)
+						used = true
+						itemUseProgress.value = 0.0
+				if using:
+					itemConditionProgress.value = items["RHand"].condition
+					itemConditionProgress.position = Vector2(10, 640)
+					if items["RHand"].condition > 0.0:
+						items["RHand"].fnc.useTick(delta, limb)
+						items["RHand"].anim.current_animation = "useLoop"
+					elif not depleted:
+						if items["RHand"].deleteOnDeplete:
+							depleted = true
+							items["RHand"].anim.current_animation = "useDeplete"
+							await items["RHand"].anim.animation_finished
+							depleted = false
+							using = false
+							used = false
+							items["RHand"].queue_free()
+						else:
+							using = false
+							items["RHand"].anim.current_animation = "useEnd"
+					itemUseProgress.value = 0.0
+					itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
+					itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 1.0, 0.1)
+			if depleted:
+				itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
+
+	if Input.is_action_just_released("rmb"):
+		if items["RHand"]:
+			if items["RHand"].isLimbSpecific:
+				if not used and not using:
+					items["RHand"].anim.stop()
+				if using and not depleted:
+					using = false
+					items["RHand"].anim.current_animation = "useEnd"
+				used = false
 
 	if Input.is_action_just_released("lmb"):
 		if items["RHand"]:
-			if not used and not using:
-				items["RHand"].anim.stop()
-			if using and not depleted:
-				using = false
-				items["RHand"].anim.current_animation = "useEnd"
-			used = false
+			if not items["RHand"].isLimbSpecific:
+				if not used and not using:
+					items["RHand"].anim.stop()
+				if using and not depleted:
+					using = false
+					items["RHand"].anim.current_animation = "useEnd"
+				used = false
 
 	if Input.is_action_pressed("lmb"):
 		if items["RHand"]:
-			if not used:
-				itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
-				itemUseProgress.value += delta
-				if itemUseProgress.value >= itemUseProgress.max_value:
-					if items["RHand"].useOverTime:
-						using = true
-					used = true
-					items["RHand"].fnc.call("use")
+			if not items["RHand"].isLimbSpecific:
+				if not used:
+					itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
+					itemUseProgress.value += delta
+					if itemUseProgress.value >= itemUseProgress.max_value:
+						if items["RHand"].useOverTime:
+							using = true
+						used = true
+						items["RHand"].fnc.call("use")
+						itemUseProgress.value = 0.0
+				if using:
+					itemConditionProgress.value = items["RHand"].condition
+					itemConditionProgress.position = Vector2(10, 640)
+					if items["RHand"].condition > 0.0:
+						items["RHand"].fnc.useTick(delta)
+					elif not depleted:
+						depleted = true
+						items["RHand"].anim.current_animation = "useDeplete"
+						await items["RHand"].anim.animation_finished
+						depleted = false
+						using = false
+						used = false
+						items["RHand"].queue_free()
 					itemUseProgress.value = 0.0
-			if using:
-				itemConditionProgress.value = items["RHand"].condition
-				itemConditionProgress.position = Vector2(10, 640)
-				if items["RHand"].condition > 0.0:
-					items["RHand"].fnc.useTick(delta)
-				elif not depleted:
-					depleted = true
-					items["RHand"].anim.current_animation = "useDeplete"
-					await items["RHand"].anim.animation_finished
-					depleted = false
-					using = false
-					used = false
-					items["RHand"].queue_free()
-				itemUseProgress.value = 0.0
-				itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
-				itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 1.0, 0.1)
-		if depleted:
-			itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
-	else:
+					itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
+					itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 1.0, 0.1)
+			if depleted:
+				itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
+	elif not Input.is_action_pressed("rmb"):
 		if items["RHand"] and Global.player.inspecting:
 			itemConditionProgress.position = Vector2(766, 518)
 			itemConditionProgress.value = items["RHand"].condition

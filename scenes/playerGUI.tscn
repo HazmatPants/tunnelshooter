@@ -736,6 +736,10 @@ modulate = Color(0, 1, 0, 1)
 layout_mode = 2
 text = "Pain: 100%"
 
+[node name="HoveredLimbLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+layout_mode = 2
+
 [node name="Blackout" type="ColorRect" parent="."]
 visible = false
 anchors_preset = 15

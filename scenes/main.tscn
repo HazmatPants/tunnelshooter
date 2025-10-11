@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=36 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -19,6 +19,9 @@
 [ext_resource type="PackedScene" uid="uid://bwsb5c052emdc" path="res://scenes/items/diazepam.tscn" id="17_muem4"]
 [ext_resource type="PackedScene" uid="uid://jam06q4dgjam" path="res://scenes/items/headphones.tscn" id="18_dp3eg"]
 [ext_resource type="PackedScene" uid="uid://c7oxlks2ilnne" path="res://scenes/items/plss.tscn" id="19_0ld40"]
+[ext_resource type="PackedScene" uid="uid://35g474si3mj" path="res://scenes/items/bandage.tscn" id="20_gqmmt"]
+[ext_resource type="PackedScene" uid="uid://dltflry3ixy0n" path="res://scenes/items/icepack.tscn" id="21_yc10j"]
+[ext_resource type="PackedScene" uid="uid://d0foaechfn8t6" path="res://scenes/items/protein_gel.tscn" id="22_jscy8"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -56,10 +59,10 @@ size = Vector3(28.64, 4, 0.3)
 size = Vector3(28.64, 4, 0.3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_a8y0u"]
-size = Vector3(3, 0.1, 0.3)
+size = Vector3(3.68, 0.1, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jkv2x"]
-size = Vector3(3, 0.1, 0.3)
+size = Vector3(3.68, 0.1, 0.3)
 
 [node name="Node3D" type="Node3D"]
 
@@ -173,7 +176,7 @@ mesh = SubResource("BoxMesh_dp3eg")
 shape = SubResource("BoxShape3D_0ld40")
 
 [node name="StaticBody3D5" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9932013, 1.6474423, -9.91077)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.273826, 1.6474423, -9.91077)
 collision_layer = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5"]
@@ -202,7 +205,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.113087, 1.4489521, -29.00
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.5827336, 1.989, -9.907393)
 
 [node name="BloodBag" parent="." instance=ExtResource("10_choun")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.6228685, 2.0886836, -9.903673)
+transform = Transform3D(-4.371139e-08, 0, 1, -0.17168838, 0.9851513, -7.504737e-09, -0.9851513, -0.17168838, -4.3062332e-08, 5.19334, 2.1068656, -9.903673)
 
 [node name="Fentanyl" parent="." instance=ExtResource("14_a8y0u")]
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.7137933, 1.989, -9.907393)
@@ -220,7 +223,7 @@ transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.1268845, 1.989, -9.907393)
 
 [node name="Oxycodone" parent="." instance=ExtResource("7_o6xl0")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.0077205, 1.8490454, -9.895307)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.7713723, 1.8490454, -9.895307)
 
 [node name="Naloxone" parent="." instance=ExtResource("15_jkv2x")]
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.2268844, 1.989, -9.907)
@@ -230,10 +233,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7544127, 1.304814, -5.39098
 metadata/IsGun = false
 
 [node name="Diazepam" parent="." instance=ExtResource("17_muem4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.743108, 1.8490454, -9.884777)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5067596, 1.8490454, -9.884777)
 
 [node name="Headphones" parent="." instance=ExtResource("18_dp3eg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.298204, 0.821619, -7.8609085)
 
 [node name="PLSS" parent="." instance=ExtResource("19_0ld40")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.817156, 0.6424719, -7.7715993)
+
+[node name="Bandage" parent="." instance=ExtResource("20_gqmmt")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.2507877, 1.8974423, -9.89041)
+
+[node name="IcePack" parent="." instance=ExtResource("21_yc10j")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0.2284868, 0.973547, -9.987476e-09, 0.973547, -0.2284868, -4.255509e-08, 5.719823, 2.068109, -9.884838)
+
+[node name="ProteinGel" parent="." instance=ExtResource("22_jscy8")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.5653725, 2.0259602, -9.916858)

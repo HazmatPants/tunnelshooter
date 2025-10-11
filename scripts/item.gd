@@ -1,7 +1,9 @@
 extends RigidBody3D
 
-@export var useOverTime:bool = false
+@export var useOverTime: bool = false
+@export var isLimbSpecific: bool = false
 @export var useTime: float = 1.0
+@export var deleteOnDeplete: bool = false
 
 @onready var fnc: Node = $Function
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -20,6 +22,8 @@ func _ready() -> void:
 	add_to_group(&"items")
 
 func _process(_delta: float) -> void:
+	condition = clampf(condition, 0.0, 1.0)
+	
 	if useOverTime:
 		if has_node("Mesh/Plunger"):
 			var plunger_target_transform = plunger_base_transform

@@ -207,29 +207,6 @@ tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.05, -0.729, 0.8666667, 1, 0, 0.05, -0.64, 1.1666664, 1, 0, 0.397, -0.467, 1.566667, 1, 0, -3.059, 1.244)
 
-[sub_resource type="Animation" id="Animation_jt10y"]
-resource_name = "useStart"
-length = 1.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Mesh:rotation")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.53333336, 1.0333333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.31939524, 0, 0.09250245), Vector3(0.31939524, 0, 0.09250245)]
-}
-tracks/1/type = "position_3d"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Mesh")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.73333335, 1, 0, 0.582, -0.274, 0.96666664, 1, 0, 0, -0.64, 1.0666667, 1, 0, 0, -0.64)
-
 [sub_resource type="Animation" id="Animation_awab4"]
 resource_name = "useEnd"
 length = 1.3
@@ -253,6 +230,29 @@ tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0.53333336, 1, 0, 0, -0.64, 0.7, 1, 0, 0.582, -0.274, 0.96666664, 1, 0, 0.62114555, -0.23190913, 1.0999999, 1, 0, 0, 0, 1.2, 1, 0, 0, 0)
 
+[sub_resource type="Animation" id="Animation_jt10y"]
+resource_name = "useStart"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 1.0333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.31939524, 0, 0.09250245), Vector3(0.31939524, 0, 0.09250245)]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.73333335, 1, 0, 0.582, -0.274, 0.96666664, 1, 0, 0, -0.64, 1.0666667, 1, 0, 0, -0.64)
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3jqnv"]
 _data = {
 &"RESET": SubResource("Animation_63m8y"),
@@ -264,6 +264,7 @@ _data = {
 [node name="BloodBag" type="RigidBody3D"]
 script = ExtResource("1_5y7ar")
 useOverTime = true
+deleteOnDeplete = true
 
 [node name="Mesh" type="Node3D" parent="."]
 transform = Transform3D(0.49, 0, 0, 0, 0.49, 0, 0, 0, 0.49, 0, 0, 0)

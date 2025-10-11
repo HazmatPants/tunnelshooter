@@ -264,6 +264,7 @@ _data = {
 [node name="Procoagulant" type="RigidBody3D"]
 script = ExtResource("1_jt10y")
 useOverTime = true
+deleteOnDeplete = true
 
 [node name="Mesh" type="Node3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

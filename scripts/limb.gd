@@ -4,6 +4,7 @@ extends Node3D
 @export var isArm: bool = false
 @export var isLeg: bool = false
 @export var bleedingRateMult: float = 1.0
+@export var muscleHealMult: float = 1.0
 var dislocated: bool = false
 
 const sfx_flesh_hit := [
@@ -32,12 +33,13 @@ func _process(delta: float) -> void:
 	pain += (1.0 - muscleHealth) / 1000 * delta
 	pain -= clampf(pain_sub, 0.0, INF) * delta
 
+	muscleHealMult = lerp(muscleHealMult, 1.0, 0.005)
 
 	pain = clampf(pain, 0.0, 1.0)
 	if muscleHealth > 0.2:
-		muscleHealth += 0.0005 * delta
+		muscleHealth += (0.0005 * muscleHealMult) * delta
 	else:
-		muscleHealth += 0.0001 * delta
+		muscleHealth += (0.0001 * muscleHealMult) * delta
 	if skinHealth > 0.2:
 		skinHealth += 0.0005 * delta
 	else:

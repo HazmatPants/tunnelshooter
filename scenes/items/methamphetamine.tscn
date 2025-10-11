@@ -264,6 +264,7 @@ _data = {
 [node name="Methamphetamine" type="RigidBody3D"]
 script = ExtResource("1_bl4df")
 useOverTime = true
+deleteOnDeplete = true
 
 [node name="Mesh" type="Node3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

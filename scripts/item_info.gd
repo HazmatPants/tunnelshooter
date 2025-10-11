@@ -22,6 +22,9 @@ var item_descs := {
 	"Naloxone": "An opioid antagonist, used to treat the effects of overdose and withdrawal.",
 	"Diazepam": "An anxiolytic drug, reduces anxiety and helps you stay calm. Reduces seizures and hand shaking, but reduces heart rate.",
 	"PLSS": "Personal Life Support System.\nA device that attaches to your thigh and pumps oxygen into your blood.",
+	"Bandage": "A roll of fabric used to cover wounds and slow bleeding.",
+	"IcePack": "A bag of a chemical that cools itself, helps with bruises, muscle damage, and pain.",
+	"ProteinGel": "A tube of gel containing protein, promotes muscle healing.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
 

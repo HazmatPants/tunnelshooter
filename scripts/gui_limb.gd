@@ -30,19 +30,21 @@ func _ready() -> void:
 	limb_icon.custom_minimum_size = Vector2(24, 24)
 	limb_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+var was_colliding: bool = false
+var is_colliding: bool = false
 func _process(_delta: float) -> void:
 	position.x = base_pos.x + randf_range(-0.25, 0.25) * pain
 	position.y = base_pos.y + randf_range(-0.25, 0.25) * pain
 	var damage = clamp(muscleHealth, 0.0, 1.0)
-	
 	var color = Color(1.0, damage, damage, 1.0)
-	modulate = color
+	modulate = lerp(modulate, color, 0.1)
 	if dislocated:
 		limb_icon.modulate = Color.RED
 		limb_icon.texture = preload("res://assets/textures/ui/afflictions/dislocation.png")
 	else:
 		limb_icon.texture = null
-	if Rect2(Vector2(), size).has_point(get_local_mouse_position()):
+	is_colliding = Rect2(Vector2(), size).has_point(get_local_mouse_position())
+	if is_colliding:
 		if Input.is_action_just_pressed("lmb") and dislocated and not Global.player.healthCtl.get_limb_all("pain").values().max() > 0.9:
 			Global.player.healthCtl.Limbs[name].pain += randf()
 			if randf() > 0.5:
@@ -50,3 +52,8 @@ func _process(_delta: float) -> void:
 				Global.play_random_sfx(sfx_gore)
 			else:
 				Global.playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"))
+	if not was_colliding and is_colliding:
+		owner.get_node("HealthGUI").hovered_limb = name
+		modulate.a -= 0.5
+
+	was_colliding = is_colliding
