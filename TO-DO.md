@@ -2,6 +2,7 @@
 > in order of priority
 
 1. Gun malfunctions
-2. Limb-specific medical items
-3. Weapon Modifications (muzzle attachments, powder loads, ammo type, etc.)
-4. More guns
+2. Random tunnel generation
+3. Limb-specific medical items (bandages, splints, etc.)
+4. Gun modifications (muzzle devices, powder loads, ammo types, optics, etc.)
+5. More guns
