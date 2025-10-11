@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://bd4siua5myuh0"]
+[gd_scene load_steps=35 format=4 uid="uid://bd4siua5myuh0"]
 
 [ext_resource type="Script" uid="uid://cc4iweqokmawh" path="res://scripts/semi_gun.gd" id="1_8p8bs"]
 [ext_resource type="Texture2D" uid="uid://taj2mkpf6yxi" path="res://assets/models/ss320_Image_0.png" id="1_mecvt"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://jej0dxlsr005" path="res://assets/textures/decals/laser.png" id="5_i80ub"]
 [ext_resource type="Script" uid="uid://8mjjcc7xl8rw" path="res://scripts/attachment_ctl.gd" id="7_y44uq"]
 [ext_resource type="PackedScene" uid="uid://cqjetqaxn4o8d" path="res://assets/models/suppressor.glb" id="8_eiukc"]
+[ext_resource type="PackedScene" uid="uid://bffl7ws8b4q3m" path="res://scenes/attachments/red_dot_sight.tscn" id="9_ypqfq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j6dju"]
 resource_name = "TT_checker_4096x4096_UV_GRID"
@@ -464,7 +465,7 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 script = ExtResource("1_8p8bs")
 
 [node name="Gun" type="Node3D" parent="SS320"]
-transform = Transform3D(0.9999988, 0.0009543871, 0, -0.0009543871, 0.9999988, 0, 0, 0, 1, -0.00983862, -0.041509, 0)
+transform = Transform3D(0.99999875, 0.00095438707, 0, -0.00095438707, 0.99999875, 0, 0, 0, 1, -0.00983862, -0.041509, 0)
 
 [node name="Object_14" type="MeshInstance3D" parent="SS320/Gun"]
 mesh = SubResource("ArrayMesh_nuyb4")
@@ -537,7 +538,7 @@ modulate = Color(0, 1, 0, 1)
 transform = Transform3D(-5.2453664e-10, 0, -0.012, 0, 0.012, 0, 0.012, 0, -5.2453664e-10, 0.14387879, 0.056666348, 0)
 
 [node name="Optic" type="Node3D" parent="SS320"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.004150128, 0.06526121, 0)
+transform = Transform3D(-0.008, 0, -1.2079665e-09, 0, 0.008, 0, 1.2079665e-09, 0, -0.008, 0.004150128, 0.06526121, 0)
 
 [node name="Underbarrel" type="Node3D" parent="SS320"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.114972025, 0.026767299, 0)
@@ -550,6 +551,6 @@ shape = SubResource("BoxShape3D_y44uq")
 script = ExtResource("7_y44uq")
 attachments = Dictionary[String, PackedScene]({
 "muzzle": ExtResource("8_eiukc"),
-"optic": null,
+"optic": ExtResource("9_ypqfq"),
 "underbarrel": null
 })

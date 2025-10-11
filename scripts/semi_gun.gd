@@ -142,8 +142,12 @@ func _process(_delta: float) -> void:
 			target.basis = Basis.from_euler(targetEuler)
 			global_transform = lerp(global_transform, target, 0.2 * Global.player.healthCtl.consciousness)
 		else:
+			if attachmentCtl.attachments["optic"] != null:
+				target_t.origin += Vector3(0, -0.01, 0)
+				Global.player.camera.base_fov = lerp(Global.player.camera.base_fov, 40.0, 0.1)
 			global_transform = lerp(global_transform, target_t, 0.2 * Global.player.healthCtl.consciousness)
 	else:
+		Global.player.camera.base_fov = lerp(Global.player.camera.base_fov, 85.0, 0.1)
 		var target_t: Transform3D = Global.player.right_hand_position.global_transform
 		target_t.basis = Basis.from_euler(target_t.basis.get_euler() + rot_offset)
 		shakiness = lerp(shakiness, max(0.0, Global.player.healthCtl.get_limb_total("pain") / 16), 0.01)
@@ -213,15 +217,20 @@ func _process(_delta: float) -> void:
 						play_random_sfx(sfx_shoot2, -6)
 					elif attachmentCtl.attachmentNames["muzzle"] == "suppressor":
 						play_random_sfx(sfx_shoot2_sup, 25)
-					else:
-						play_random_sfx(sfx_shoot, 10)
-						play_random_sfx(sfx_shoot2, 16)
-					if not Global.quiet_guns:
-						if "ear-pro" in Global.player.equipment:
-							Global.player.damage_ears(0.00005)
-						elif attachmentCtl.attachmentNames["muzzle"] == "suppressor":
+						if not "ear-pro" in Global.player.equipment:
 							Global.player.damage_ears(0.002)
+					else:
+						if attachmentCtl.attachmentNames["muzzle"] == "loudener":
+							play_random_sfx(sfx_shoot, 40)
+							play_random_sfx(sfx_shoot2, 20)
+							if "ear-pro" in Global.player.equipment:
+								Global.player.damage_ears(0.0025)
+							else:
+								Global.player.damage_ears(0.02)
+							Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 						else:
+							play_random_sfx(sfx_shoot2, 16)
+							play_random_sfx(sfx_shoot, 10)
 							Global.player.damage_ears(0.01)
 							Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 
