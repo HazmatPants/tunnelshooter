@@ -199,31 +199,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9636958, 1.034326, -13.6175
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.113087, 1.4489521, -29.001135)
 
 [node name="Adrenaline" parent="." instance=ExtResource("9_85g3d")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.6, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.5827336, 1.989, -9.907393)
 
 [node name="BloodBag" parent="." instance=ExtResource("10_choun")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.6228685, 2.0886836, -9.903673)
 
 [node name="Fentanyl" parent="." instance=ExtResource("14_a8y0u")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.7, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.7137933, 1.989, -9.907393)
 
 [node name="Methamphetamine" parent="." instance=ExtResource("12_eb6dy")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.8, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.8268845, 1.989, -9.907393)
 
 [node name="Morphine" parent="." instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.9, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.9268847, 1.989, -9.907393)
 
 [node name="KCl" parent="." instance=ExtResource("13_trceg")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.0268846, 1.989, -9.907393)
 
 [node name="Procoagulant" parent="." instance=ExtResource("8_tipki")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.1, 1.989, -9.907393)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.1268845, 1.989, -9.907393)
 
 [node name="Oxycodone" parent="." instance=ExtResource("7_o6xl0")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.0077205, 1.8490454, -9.895307)
 
 [node name="Naloxone" parent="." instance=ExtResource("15_jkv2x")]
-transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.2, 1.989, -9.907)
+transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.2268844, 1.989, -9.907)
 
 [node name="SS320" parent="." instance=ExtResource("16_jbj1t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7544127, 1.304814, -5.3909836)

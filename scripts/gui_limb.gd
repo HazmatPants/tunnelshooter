@@ -1,5 +1,7 @@
 extends Control
 
+@onready var health_gui = owner.get_node("HealthGUI")
+
 var pain: float = 0.0
 var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
@@ -34,17 +36,10 @@ func _process(_delta: float) -> void:
 	var damage = clamp(muscleHealth, 0.0, 1.0)
 	
 	var color = Color(1.0, damage, damage, 1.0)
-	var bleedingRate = Global.player.healthCtl.Limbs[name].bleedingRate
-	var bleedcolor = Color(1.0, 1000 - bleedingRate, 1000 - bleedingRate, 1.0)
 	modulate = color
 	if dislocated:
 		limb_icon.modulate = Color.RED
 		limb_icon.texture = preload("res://assets/textures/ui/afflictions/dislocation.png")
-	else:
-		limb_icon.texture = null
-	if bleedingRate > 0.0:
-		limb_icon.modulate = bleedcolor
-		limb_icon.texture = preload("res://assets/textures/ui/blood.png")
 	else:
 		limb_icon.texture = null
 	if Rect2(Vector2(), size).has_point(get_local_mouse_position()):
