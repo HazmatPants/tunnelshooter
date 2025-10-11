@@ -1,4 +1,6 @@
-# TunnelShooter 
+> # Moved to [Codeberg](https://codeberg.org/HazmatPants/tunnelshooter)
+
+## TunnelShooter 
 > prototype name, will change
 
 An interactive shooter game with a realistic positional damage system. 
@@ -11,7 +13,7 @@ Inspired by [Receiver 2](https://receiver2.com) and [Casualites: Unknown](https:
 
 [To-Do List](TO-DO.md)
 
-# Images
+## Images
 - ![alt text](/gallery/healthy.png)
 - ![alt text](/gallery/shot.png)
 - ![alt text](/gallery/cardiac_arrest.png)
