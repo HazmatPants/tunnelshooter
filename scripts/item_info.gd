@@ -13,8 +13,8 @@ var item_names := {
 var item_descs := {
 	"Oxycodone": "An opioid analgesic (painkiller) used to treat moderate pain. Low overdose risk.",
 	"Procoagulant": "A serum that promotes blood clotting, slowing down bleeding across the body.",
-	"Adrenaline": "Quickly increases heart rate and awareness.",
-	"BloodBag": "Holds 750 ml of blood.",
+	"Adrenaline": "A hormone that quickly increases heart rate and alertness.",
+	"BloodBag": "Holds 750 ml of blood. Has an autoinjector on the end.",
 	"Morphine": "A strong opioid analgesic (painkiller) used to treat severe pain. Moderate overdose risk (90%).",
 	"Methamphetamine": "A powerful stimulant that suppresses fatigue and pain.",
 	"KCl": "Induces cardiac arrest, ultimately resulting in death.",
@@ -23,12 +23,12 @@ var item_descs := {
 	"Diazepam": "An anxiolytic drug, reduces anxiety and helps you stay calm. Reduces seizures and hand shaking, but reduces heart rate.",
 	"PLSS": "Personal Life Support System.\nA device that attaches to your thigh and pumps oxygen into your blood.",
 	"Bandage": "A roll of fabric used to cover wounds and slow bleeding.",
-	"IcePack": "A bag of a chemical that cools itself, helps with bruises, muscle damage, and pain.",
+	"IcePack": "A bag of a chemical that cools itself, helps with bruises, muscle damage, and pain, but slightly reduces blood flow to the limb.",
 	"ProteinGel": "A tube of gel containing protein, promotes muscle healing.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
 
-	"Headphones": "A pair of headphones designed to suppress loud sounds.",
+	"Headphones": "A pair of headphones designed to suppress loud sounds.\nMakes firearms more safe to hear.",
 
 }
 

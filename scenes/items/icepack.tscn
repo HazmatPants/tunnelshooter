@@ -49,6 +49,8 @@ resource_name = "Material.004"
 cull_mode = 2
 albedo_color = Color(0, 0.59921914, 0.9066199, 1)
 roughness = 0.5
+emission_enabled = true
+emission = Color(0, 0.54966664, 0.97, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_5ancf"]
 _surfaces = [{
@@ -141,7 +143,7 @@ tracks/0/enabled = true
 tracks/0/path = NodePath("Mesh")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -0.64, 1.1, 1, 0, 0, 0)
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -0.64, 0.7, 1, 0, 0, 0)
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -149,10 +151,33 @@ tracks/1/path = NodePath("Mesh:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.23333333, 0.6, 1.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.56666666),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0.31939524, 0, 0.09250245), Vector3(0.31939524, 0, 0.09250245), Vector3(0.099361576, -5.1956794e-09, 0.09250244), Vector3(0, 0, 0)]
+"values": [Vector3(0.31939524, 0, 0.37699112), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ou8cg"]
+resource_name = "useLoop"
+length = 0.1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -0.64)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.31939524, 0, 0.37699112)]
 }
 
 [sub_resource type="Animation" id="Animation_jt10y"]
@@ -175,29 +200,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0.31939524, 0, 0.09250245), Vector3(0.31939524, 0, 0.37699112)]
-}
-
-[sub_resource type="Animation" id="Animation_ou8cg"]
-resource_name = "useLoop"
-length = 1.2
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Mesh")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -0.64)
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Mesh:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.23333333),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.31939524, 0, 0.09250245), Vector3(0.31939524, 0, 0.09250245)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3jqnv"]

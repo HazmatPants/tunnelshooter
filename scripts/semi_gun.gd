@@ -9,6 +9,8 @@ extends Node3D
 @onready var laserRay: RayCast3D = $Gun/LaserRay
 @onready var laserPoint: Decal = $LaserPoint
 
+@onready var attachmentCtl: Node = $"../AttachmentCtl"
+
 var ammo_label: Label
 
 var recoil: float = 0.0
@@ -32,6 +34,12 @@ const sfx_shoot2 := [
 	preload("res://assets/audio/sfx/weapons/gun/gun_fire_1.wav"),
 	preload("res://assets/audio/sfx/weapons/gun/gun_fire_2.wav"),
 	preload("res://assets/audio/sfx/weapons/gun/gun_fire_3.wav")
+]
+
+const sfx_shoot2_sup := [
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_1.ogg"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_2.ogg"),
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_3.ogg"),
 ]
 
 #const sfx_holster := [
@@ -202,13 +210,17 @@ func _process(_delta: float) -> void:
 					anim.play("shoot")
 					chamber = false
 					if Global.quiet_guns:
-						playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], -6)
+						play_random_sfx(sfx_shoot2, -6)
+					elif attachmentCtl.attachmentNames["muzzle"] == "suppressor":
+						play_random_sfx(sfx_shoot2_sup, 25)
 					else:
-						playsound(sfx_shoot[randi_range(0, sfx_shoot.size() - 1)], 10)
-						playsound(sfx_shoot2[randi_range(0, sfx_shoot2.size() - 1)], 16)
+						play_random_sfx(sfx_shoot, 10)
+						play_random_sfx(sfx_shoot2, 16)
 					if not Global.quiet_guns:
 						if "ear-pro" in Global.player.equipment:
 							Global.player.damage_ears(0.00005)
+						elif attachmentCtl.attachmentNames["muzzle"] == "suppressor":
+							Global.player.damage_ears(0.002)
 						else:
 							Global.player.damage_ears(0.01)
 							Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")

@@ -3,6 +3,9 @@ extends Node
 var frontRay: RayCast3D
 var itemUseProgress: TextureProgressBar
 var itemConditionProgress: TextureProgressBar 
+var usingOnLabel: Label
+
+var LimbDisplayNames: Dictionary = {}
 
 var hovered_item
 
@@ -20,6 +23,8 @@ func _ready() -> void:
 	initialized = true
 	itemUseProgress = Global.playerGUI.get_node("ItemUseProgress") 
 	itemConditionProgress = Global.playerGUI.get_node("ItemConditionProgress") 
+	usingOnLabel = Global.playerGUI.get_node("UsingOnLabel")
+	LimbDisplayNames = Global.playerGUI.get_node("HealthGUI").LimbDisplayNames
 
 var using := false
 var used := false
@@ -86,6 +91,8 @@ func _process(delta: float) -> void:
 			if items["RHand"].isLimbSpecific and Global.playerGUI.get_node("HealthGUI").hovered_limb:
 				var limb = Global.playerGUI.get_node("HealthGUI").hovered_limb
 				if not used:
+					usingOnLabel.text = "Using on " + LimbDisplayNames[limb]
+					usingOnLabel.modulate.a = lerp(usingOnLabel.modulate.a, 1.0, 0.1)
 					itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 1.0, 0.1)
 					itemUseProgress.value += delta
 					if itemUseProgress.value >= itemUseProgress.max_value:
@@ -94,9 +101,20 @@ func _process(delta: float) -> void:
 							items["RHand"].fnc.use()
 						else:
 							items["RHand"].fnc.use(limb)
+						if items["RHand"].deleteOnDeplete:
+							if items["RHand"].condition <= 0.0 and not depleted:
+								depleted = true
+								items["RHand"].anim.current_animation = "useDeplete"
+								await items["RHand"].anim.animation_finished
+								depleted = false
+								using = false
+								used = false
+								items["RHand"].queue_free()
 						used = true
 						itemUseProgress.value = 0.0
 				if using:
+					usingOnLabel.text = "Using on " + LimbDisplayNames[limb]
+					usingOnLabel.modulate.a = lerp(usingOnLabel.modulate.a, 1.0, 0.1)
 					itemConditionProgress.value = items["RHand"].condition
 					itemConditionProgress.position = Vector2(10, 640)
 					if items["RHand"].condition > 0.0:
@@ -177,6 +195,7 @@ func _process(delta: float) -> void:
 			itemConditionProgress.modulate.a = Global.playerGUI.get_node("ItemInfo").modulate.a
 		itemUseProgress.value = 0.0
 		itemUseProgress.modulate.a = lerp(itemUseProgress.modulate.a, 0.0, 0.1)
+		usingOnLabel.modulate.a = lerp(usingOnLabel.modulate.a, 0.0, 0.1)
 		itemConditionProgress.modulate.a = lerp(itemConditionProgress.modulate.a, 0.0, 0.1)
 
 func playsound(stream: AudioStream, volume: float=0):

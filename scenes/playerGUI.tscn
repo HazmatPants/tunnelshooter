@@ -143,6 +143,12 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_alignment = 1
 
+[node name="UsingOnLabel" type="Label" parent="."]
+offset_left = 6.0
+offset_top = 415.0
+offset_right = 46.0
+offset_bottom = 438.0
+
 [node name="ItemUseProgress" type="TextureProgressBar" parent="."]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 7
@@ -822,8 +828,9 @@ script = ExtResource("16_60st2")
 visible = false
 offset_right = 732.0
 offset_bottom = 31.0
-placeholder_text = "Type a command..."
+placeholder_text = "Type a command... (type \"help\" for a list of commands)"
 keep_editing_on_text_submit = true
+emoji_menu_enabled = false
 script = ExtResource("9_q0f5p")
 
 [node name="CodeEdit" type="CodeEdit" parent="DevConsole"]

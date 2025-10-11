@@ -11,7 +11,8 @@ func use():
 
 func useTick(delta: float, limb: String):
 	Global.player.healthCtl.Limbs[limb].muscleHealMult += 1.0 * delta
-	Global.player.healthCtl.Limbs[limb].pain -= 0.1 * delta
+	Global.player.healthCtl.Limbs[limb].pain -= 0.025 * delta
+	Global.player.healthCtl.bloodOxygen -= 0.025 * delta
 	owner.condition -= 0.01 * delta
 
 func _process(delta: float) -> void:
