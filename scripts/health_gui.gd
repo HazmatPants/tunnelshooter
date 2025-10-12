@@ -133,9 +133,9 @@ func _process(delta: float) -> void:
 		$Panel/VBoxContainer/StaminaLabel.text = "Stamina: " + str(int(round(healthCtl.stamina * 100))) + "%"
 		$Panel/VBoxContainer/Blood/VBoxContainer/BloodVolumeLabel.text = str(snapped(healthCtl.bloodVolume / 1000, 0.01)) + " L"
 		$Panel/VBoxContainer/Pain/PainLabel.text = "Pain: " + str(int(round(healthCtl.get_limb_all("pain").values().max() * 100))) + "%"
-		var bleedRate = healthCtl.get_limb_total("bleedingRate")
+		var bleedRate = healthCtl.get_limb_total("bleedingRate") + healthCtl.internalBleeding
 		if bleedRate > 0:
-			$Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel.text = str(snapped((healthCtl.get_limb_total("bleedingRate") / 1000) * 60, 0.01)) + " L/m"
+			$Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel.text = str(snapped(((healthCtl.get_limb_total("bleedingRate") + healthCtl.internalBleeding) / 1000) * 60, 0.01)) + " L/m"
 		else:
 			$Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel.text = ""
 
@@ -190,7 +190,7 @@ func limb_tooltip(limb: Control):
 	str(int(round(PhysicalLimbs[limb.name].skinHealth * 100))),
 	str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)),
 	str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
-	if limb.dislocated:
+	if limb.dislocationAmount > 0.0:
 		if Global.player.healthCtl.get_limb_all("pain").values().max() < 0.9:
 			tt_text += "\n[color=red]Dislocated\nClick to attempt reduction[/color]"
 		else:
@@ -240,4 +240,4 @@ func update_limbs():
 		Limbs[limb].pain = PhysicalLimbs[limb].pain
 		Limbs[limb].muscleHealth = PhysicalLimbs[limb].muscleHealth
 		Limbs[limb].skinHealth = PhysicalLimbs[limb].skinHealth 
-		Limbs[limb].dislocated = PhysicalLimbs[limb].dislocated 
+		Limbs[limb].dislocationAmount = PhysicalLimbs[limb].dislocationAmount 

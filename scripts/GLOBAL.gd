@@ -16,6 +16,8 @@ var flashmode: bool = false
 var bgm_pain: AudioStreamPlayer
 var bgm_agony: AudioStreamPlayer
 
+var cause_of_death: String = "unknown"
+
 signal initialized
 var is_initialized
 

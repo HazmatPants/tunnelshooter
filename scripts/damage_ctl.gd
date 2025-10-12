@@ -35,6 +35,7 @@ var bloodstream := {
 
 var lifesupport: float = 0.0
 var bloodOxygen: float = 1.0
+var internalBleeding: float = 0.0
 var brainHealth: float = 1.0
 var consciousness: float = 1.0
 var bloodVolume: float = 5000 # ml
@@ -99,8 +100,10 @@ func _process(delta: float) -> void:
 		heartRate = 0
 		Limbs["Thorax"].pain += 0.0001
 
+	var total_pain = get_limb_total("pain")
+
 	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR) * 1.3
-	targetHR += (get_limb_total("pain") / 16) * 60
+	targetHR += total_pain
 	targetHR -= stimAmount * 120
 	targetHR -= opioidAmount * 10
 
@@ -118,7 +121,8 @@ func _process(delta: float) -> void:
 		targetHR = 0
 		bloodOxygen -= 0.02 * delta
 		for limb in Limbs.values():
-			limb.muscleHealth -= 0.01 * delta
+			limb.muscleHealth -= 0.001 * delta
+			limb.pain += 0.001 * delta
 
 	heartRate = lerp(heartRate, targetHR, 0.0025)
 	breathingRate = lerp(breathingRate, targetBR, 0.0025)
@@ -145,7 +149,7 @@ func _process(delta: float) -> void:
 	bloodOxygen -= physicalWork * oxygenUseRate * delta
 	bloodOxygen = clamp(bloodOxygen, 0.0, bloodVolume / 5000.0 if lifesupport <= 0.0 else 1.0)
 
-	var bloodLossRate = get_limb_total("bleedingRate")
+	var bloodLossRate = get_limb_total("bleedingRate") + internalBleeding
 	bloodVolume -= bloodLossRate * delta
 	bloodVolume = clamp(bloodVolume, 0.0, 5000.0)
 
@@ -153,7 +157,7 @@ func _process(delta: float) -> void:
 	physicalWork = clamp(physicalWork, 0.0, 1.0)
 	
 	stamina -= physicalWork / 250
-	stamina -= (get_limb_total("pain") / 16) / 100
+	stamina -= (total_pain / 16) / 100
 	stamina += stimAmount * delta
 
 	if physicalWork < 0.1:
@@ -169,7 +173,7 @@ func _process(delta: float) -> void:
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
 	consciousness -= clampf((conscOxygenTheshold - bloodOxygen) * 0.15 * delta, 0.0, INF)
-	consciousness -= (get_limb_total("pain") / 16) / 500
+	consciousness -= (total_pain / 16) / 400
 
 	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
 
@@ -191,6 +195,8 @@ func _process(delta: float) -> void:
 
 	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.025 * delta)
 
+	internalBleeding -= bloodClotSpeed * delta
+
 	if bloodVolume <= 2500:
 		brainHealth -= (2500 - bloodVolume) * 0.00002 * delta
 
@@ -201,6 +207,7 @@ func _process(delta: float) -> void:
 
 	if heartRate <= 10.0:
 		set_affliction("cardiacArrest", 1.0)
+		Global.cause_of_death = "cardiacarrest"
 		if afflictions.has("bradycardia"):
 			afflictions.erase("bradycardia")
 
@@ -212,6 +219,7 @@ func _process(delta: float) -> void:
 
 	if bloodVolume < 4500:
 		set_affliction("hypovolemia", (4500 - bloodVolume) / 5000)
+		Global.cause_of_death = "bloodloss"
 	else:
 		afflictions.erase("hypovolemia")
 
@@ -244,12 +252,19 @@ func _process(delta: float) -> void:
 		if bloodLossRate < 0.001:
 			afflictions.erase("bleeding")
 
+	Global.player.viewpunch_velocity += Vector3(
+		randf_range(-total_pain, total_pain),
+		randf_range(-total_pain, total_pain),
+		randf_range(-total_pain, total_pain)
+	) * 4
+
 	opioidAmount -= 0.005 * delta
 	stimAmount -= 0.005 * delta
 	stimAmount = clampf(stimAmount, 0.0, 1.0)
 
 	if opioidAmount > 2.8:
 		set_affliction("respiratoryFailure", 1.0)
+		Global.cause_of_death = "opioidoverdose"
 		organs["LLung"] = false
 		organs["RLung"] = false
 	else:
@@ -259,9 +274,10 @@ func _process(delta: float) -> void:
 
 	if brainHealth <= 0.0 and not Global.player.dead:
 		Global.player.die()
-
-	if get_limb_all("dislocated").values().has(true):
-		set_affliction("dislocation", 1.0)
+	
+	var max_disloc_amount = get_limb_all("dislocationAmount").values().max()
+	if max_disloc_amount > 0.0:
+		set_affliction("dislocation", max_disloc_amount)
 	else:
 		afflictions.erase("dislocation")
 
@@ -328,3 +344,11 @@ func add_to_blood(liq_name: String, amount: float=0.1):
 		bloodstream[liq_name] = {
 			"amount": amount
 		}
+
+func is_leg_dislocated() -> bool:
+	for limb in Limbs.values():
+		if limb.dislocationAmount > 0.0 and limb.isLeg:
+			return true
+		else:
+			continue
+	return false

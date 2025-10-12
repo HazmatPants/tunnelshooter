@@ -3,7 +3,6 @@ extends CanvasLayer
 @onready var hint_label: Label = $HintText
 @onready var pickup_text: Label = $PickupText
 @onready var mp: AudioStreamPlayer = $MusicPlayer
-@onready var mp2: AudioStreamPlayer = $MusicPlayer2
 @onready var tooltip: Control = $Tooltip
 @onready var shockOverlay: TextureRect = $Shock
 
@@ -13,7 +12,6 @@ var is_showing: bool = false
 var current_hint: String = ""
 
 var bgm_dying = preload("res://assets/audio/music/dying.wav")
-var bgm_death = preload("res://assets/audio/music/death.wav")
 
 func _ready() -> void:
 	await Global.initialized
@@ -76,7 +74,7 @@ func _process(delta: float) -> void:
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
 	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - Global.player.healthCtl.consciousness, 0.1)
-	if Global.player.healthCtl.brainHealth < last_brainHealth:
+	if Global.player.healthCtl.brainHealth < last_brainHealth and $Blackout.modulate.a > 0.9:
 		if $Blackout.visible and not Global.player.dead: # dying
 			$Blackout/TextureProgressBar.modulate = Color(1, 0, 0, $Blackout/TextureProgressBar.modulate.a)
 			$Blackout/TextureProgressBar.value = Global.player.healthCtl.brainHealth
@@ -112,8 +110,6 @@ func _process(delta: float) -> void:
 
 func _death():
 	$Blackout/Label.text = ""
-	mp2.stream = bgm_death
-	mp2.play()
 
 func shock():
 	shockOverlay.modulate.a = 1.0

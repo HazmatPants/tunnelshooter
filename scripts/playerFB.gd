@@ -334,6 +334,13 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity += gravity * delta
 		fall_velocity = velocity.y
+		if abs(fall_velocity) > 5:
+			viewpunch_velocity += Vector3(
+				randf_range(-25.0, 25.0),
+				randf_range(-25.0, 25.0),
+				randf_range(-25.0, 25.0)
+			)
+		viewpunch_velocity.x += abs(fall_velocity)
 	else:
 		velocity.y = 0.0
 		fall_velocity = 0.0
@@ -359,10 +366,15 @@ func _physics_process(delta):
 
 	var vel = get_real_velocity()
 	is_moving = vel.length() > 0.3
-	
-	
+
 	if is_moving:
 		healthCtl.physicalWork += 0.0001 if not sprinting else 0.001 * (1.5 - healthCtl.stamina)
+		if healthCtl.is_leg_dislocated():
+			for limb in healthCtl.Limbs.values():
+				if limb.dislocationAmount > 0.0:
+					limb.pain += 0.1 * delta
+			if not was_moving:
+				Global.playerGUI.show_hint("Walking on a dislocated leg is a bad idea.")
 
 	if not is_moving:
 		current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * 4.0)
@@ -507,6 +519,7 @@ func die():
 	dead = true
 	Death.emit()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_file("res://scenes/death_screen.tscn")
 
 var input_lock_reasons := {}
 
@@ -522,13 +535,21 @@ func is_input_enabled() -> bool:
 func do_fall_damage():
 	for limb in healthCtl.Limbs.values():
 		if limb.isLeg:
+			if abs(fall_velocity) > 25:
+				healthCtl.brainHealth -= abs(fall_velocity)
+				healthCtl.consciousness -= abs(fall_velocity) * 2
+				Global.cause_of_death = "fall"
 			if abs(fall_velocity) > 14:
 				viewpunch_velocity += Vector3(-300.0, 0, 0)
 				if randf() > 0.5:
+					Global.playerGUI.shock()
 					limb.pain += randf_range(0.01, abs(fall_velocity / 50))
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+					healthCtl.internalBleeding += randf_range(0.1, 1.0)
 				if randf() > 0.75:
-					limb.dislocated = true
+					Global.playerGUI.shock()
+					healthCtl.internalBleeding += randf_range(1.0, 3.0)
+					limb.dislocationAmount += abs(fall_velocity) * 2
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
 					limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
 					playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false)
