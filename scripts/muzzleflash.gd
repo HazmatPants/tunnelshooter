@@ -1,8 +1,8 @@
 extends OmniLight3D
 
 func _ready() -> void:
-	light_energy = 30
 	light_color = Color(1, 1, 1, 1)
+	
 
 func _process(_delta: float) -> void:
 	light_energy = lerp(light_energy, 0.0, 0.5)

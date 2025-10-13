@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=37 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://35g474si3mj" path="res://scenes/items/bandage.tscn" id="20_gqmmt"]
 [ext_resource type="PackedScene" uid="uid://dltflry3ixy0n" path="res://scenes/items/icepack.tscn" id="21_yc10j"]
 [ext_resource type="PackedScene" uid="uid://d0foaechfn8t6" path="res://scenes/items/protein_gel.tscn" id="22_jscy8"]
+[ext_resource type="PackedScene" uid="uid://u1xrqqc1jk86" path="res://scenes/flashbang.tscn" id="23_pm3ni"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -249,3 +250,6 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0.2284868, 0.973547, -9.987476e-09
 
 [node name="ProteinGel" parent="." instance=ExtResource("22_jscy8")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.5653725, 2.0259602, -9.916858)
+
+[node name="Flashbang" parent="." instance=ExtResource("23_pm3ni")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.729997, 0.7578773, -1.7591336)

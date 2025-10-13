@@ -56,7 +56,7 @@ const oxygenUseRate: float = 0.15
 const brainOxygenThreshold: float = 0.10
 const conscOxygenTheshold: float = 0.90
 const conscStaminaThreshold: float = 0.30
-const unconsciousThreshold: float = 0.25
+const unconsciousThreshold: float = 0.05
 
 var beatTimer: float = 0.0
 
@@ -184,7 +184,7 @@ func _process(delta: float) -> void:
 	consciousness = clamp(consciousness, 0.0, 1.0)
 
 	if consciousness <= unconsciousThreshold:
-		Engine.time_scale = 5.0
+		Engine.time_scale = 20.0
 		Global.player.set_input_lock("unconscious", true)
 	else:
 		Engine.time_scale = 1.0

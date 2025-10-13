@@ -37,10 +37,11 @@ func _process(_delta: float) -> void:
 				liquid_target_transform.origin= $Mesh/LiquidDrainPos.transform.origin
 			$Mesh/Liquid.transform = lerp(liquid_target_transform, liquid_base_transform, condition)
 
-func playsound(stream: AudioStream, volume: float=0):
-	var ap = AudioStreamPlayer.new()
-	ap.volume_db = volume
+func playsound(stream: AudioStream, volume: float=1.0):
+	var ap = AudioStreamPlayer3D.new()
+	ap.volume_linear = volume
 	get_tree().current_scene.add_child(ap)
+	ap.global_position = global_position
 	ap.stream = stream
 	ap.play()
 	await ap.finished

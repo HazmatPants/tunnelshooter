@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var mp: AudioStreamPlayer = $MusicPlayer
 @onready var tooltip: Control = $Tooltip
 @onready var shockOverlay: TextureRect = $Shock
+@onready var afterimageOverlay: TextureRect = $afterimage
 
 var hint_queue: Array[String] = []
 var hint_tween: Tween = null
@@ -105,11 +106,23 @@ func _process(delta: float) -> void:
 
 	last_brainHealth = Global.player.healthCtl.brainHealth
 
-	if shockOverlay.modulate.a > 0:
-		shockOverlay.modulate.a -= 1 * delta
+	if shockOverlay.modulate.a > 0.0:
+		shockOverlay.modulate.a -= 1.0 * delta
+
+	if Input.is_action_pressed("holster"):
+		afterimage()
+
+	if afterimageOverlay.modulate.a > 0.0:
+		afterimageOverlay.modulate.a -= 0.025 * delta
 
 func _death():
 	$Blackout/Label.text = ""
 
 func shock():
 	shockOverlay.modulate.a = 1.0
+
+func afterimage():
+	var image = get_viewport().get_texture().get_image()
+	image.adjust_bcs(2.0, 1.0, 2.0)
+	afterimageOverlay.texture = ImageTexture.create_from_image(image)
+	afterimageOverlay.modulate.a = 1.0
