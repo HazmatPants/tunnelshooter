@@ -59,6 +59,12 @@ func _process(_delta: float) -> void:
 		player.healthCtl.brainHealth = 1.0
 		player.healthCtl.stamina = 1.0
 
+	if Input.is_action_just_pressed("fullscreen"):
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
 func playsound(stream: AudioStream, volume: float=0):
 	var ap = AudioStreamPlayer.new()
 	ap.volume_db = volume

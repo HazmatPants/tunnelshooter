@@ -19,28 +19,29 @@ func use():
 	used = true
 
 func _process(_delta: float) -> void:
-	var target = Global.player.get_node("Head").global_transform.origin
+	var target = Global.player.global_transform.origin
 	var target_basis: Basis
 	target_basis = Transform3D().looking_at(target - owner.global_transform.origin).basis
 
+	ray.global_position = owner.global_position
 	ray.global_transform.basis = target_basis
 	if Input.is_action_just_released("lmb") and used and Global.player.inventory.items["RHand"] == owner:
+		owner.anim.stop()
+		owner.anim.current_animation = "used"
 		throw()
 
 func throw():
 	Global.player.inventory.items["RHand"] = null
 	owner.gravity_scale = 1.0
 	$"../CollisionShape3D".disabled = false
-	owner.anim.stop()
-	owner.anim.current_animation = "used"
 	var direction = Global.player.camera.global_transform.basis.z * -1.0
-	owner.apply_central_impulse(direction * 20)
+	owner.apply_central_impulse((direction * 20) + Global.player.velocity)
 	owner.playsound(sfx_spool)
 	await get_tree().create_timer(2.0).timeout
-	owner.playsound(sfx_explode, 10)
+	owner.playsound(sfx_explode, 100)
 	var Flash = flash.instantiate()
 	Flash.light_energy = 300
-	Flash.omni_range = 100.0
+	Flash.omni_range = 10.0
 	get_tree().current_scene.add_child(Flash)
 	Flash.global_position = owner.global_position
 	await get_tree().physics_frame
@@ -50,6 +51,9 @@ func throw():
 	ray.is_colliding() and 
 	ray.get_collider().owner == Global.player
 	):
-		Global.playerGUI.afterimage()
-	Global.player.damage_ears(0.4)
+		Global.playerGUI.afterimage(1.0)
+		Global.player.damage_ears(0.4)
+	elif ray.is_colliding() and ray.get_collider().owner == Global.player:
+		Global.playerGUI.afterimage(0.1)
+		Global.player.damage_ears(0.4)
 	owner.queue_free()

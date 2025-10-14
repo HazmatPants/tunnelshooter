@@ -30,3 +30,4 @@ scale = Vector2(0.75, 0.75)
 pivot_offset = Vector2(32, 32)
 mouse_filter = 2
 texture = ExtResource("2_b3hfl")
+expand_mode = 1

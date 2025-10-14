@@ -6,6 +6,6 @@ func _ready() -> void:
 	owner.useTime = 0.5
 
 func use():
-	Global.player.healthCtl.opioidAmount += 0.15
+	Global.player.healthCtl.opioidAmount += 0.3
 	owner.condition -= 0.0333
 	owner.playsound(sfx_use)

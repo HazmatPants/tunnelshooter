@@ -6,6 +6,7 @@ extends Control
 var item_names := {
 	"BloodBag": "Blood Bag",
 	"KCl": "Potassium Chloride",
+	"ChloralHydrate": "Chloral Hydrate",
 	
 	"SS320" : "SS-320",
 }
@@ -20,6 +21,7 @@ var item_descs := {
 	"KCl": "Induces cardiac arrest, ultimately resulting in death.",
 	"Fentanyl": "A VERY potent opioid analgesic (painkiller), 100 times stronger than morphine. Extreme overdose risk (20%).",
 	"Naloxone": "An opioid antagonist, used to treat the effects of overdose and withdrawal.",
+	"ChloralHydrate": "A sedative, used to knock people unconscious.",
 	"Diazepam": "An anxiolytic drug, reduces anxiety and helps you stay calm. Reduces seizures and hand shaking, but reduces heart rate.",
 	"PLSS": "Personal Life Support System.\nA device that attaches to your thigh and pumps oxygen into your blood.",
 	"Bandage": "A roll of fabric used to cover wounds and slow bleeding.",
@@ -29,6 +31,7 @@ var item_descs := {
 	"SS320": "A semi-automatic striker-fired handgun.",
 
 	"Headphones": "A pair of headphones designed to suppress loud sounds.\nMakes firearms more safe to hear.",
+	"Flashbang": "A non-lethal grenade used to disorient the enemy. Produces a blinding flash and deafening bang.",
 
 }
 

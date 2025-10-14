@@ -124,6 +124,10 @@ func _process(delta: float) -> void:
 			limb.muscleHealth -= 0.001 * delta
 			limb.pain += 0.001 * delta
 
+	if bloodstream.has("ChloralHydrate"):
+		consciousness -= bloodstream["ChloralHydrate"]["amount"] * delta
+		bloodstream["ChloralHydrate"]["amount"] -= 0.01 * delta
+
 	heartRate = lerp(heartRate, targetHR, 0.0025)
 	breathingRate = lerp(breathingRate, targetBR, 0.0025)
 
@@ -166,9 +170,6 @@ func _process(delta: float) -> void:
 	stamina = clamp(stamina, 0.0001, min(consciousness, 1.0))
 
 	adrenaline = lerp(adrenaline, 0.0, 0.0005)
-
-	if heartRate < 40:
-		adrenaline += 0.001
 
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
@@ -217,8 +218,13 @@ func _process(delta: float) -> void:
 	if bloodLossRate > 0.0:
 		set_affliction("bleeding", bloodLossRate / 16)
 
-	if bloodVolume < 4500:
-		set_affliction("hypovolemia", (4500 - bloodVolume) / 5000)
+	if internalBleeding > 0.0:
+		set_affliction("internalBleeding", internalBleeding / 100)
+	else:
+		afflictions.erase("internalBleeding")
+
+	if bloodVolume < 4700:
+		set_affliction("hypovolemia", (4700 - bloodVolume) / 1000)
 		Global.cause_of_death = "bloodloss"
 	else:
 		afflictions.erase("hypovolemia")

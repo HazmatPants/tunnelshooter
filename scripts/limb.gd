@@ -45,6 +45,9 @@ func _process(delta: float) -> void:
 	else:
 		skinHealth += 0.0001 * delta
 
+	dislocationAmount -= 0.0001 * delta
+	dislocationAmount = clampf(dislocationAmount, 0.0, 1.0)
+
 	muscleHealth = clampf(muscleHealth, 0.0, 1.0)
 	skinHealth = clampf(skinHealth, 0.0, 1.0)
 

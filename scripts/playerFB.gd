@@ -372,7 +372,9 @@ func _physics_process(delta):
 		if healthCtl.is_leg_dislocated():
 			for limb in healthCtl.Limbs.values():
 				if limb.dislocationAmount > 0.0:
-					limb.pain += 0.1 * delta
+					limb.pain += 0.025 * delta
+					limb.muscleHealth -= 0.01 * delta
+					limb.dislocationAmount += 0.01 * delta
 			if not was_moving:
 				Global.playerGUI.show_hint("Walking on a dislocated leg is a bad idea.")
 
@@ -405,19 +407,24 @@ func _physics_process(delta):
 		else:
 			playsound(sfx_land_small, false)
 
+	if healthCtl.consciousness <= healthCtl.unconsciousThreshold:
+		viewpunch_rotation = Vector3.ZERO
+		viewpunch_velocity = Vector3.ZERO
+
 	viewpunch_rotation += viewpunch_velocity * delta
 	viewpunch_velocity = lerp(viewpunch_velocity, Vector3.ZERO, delta * viewpunch_damping)
 	viewpunch_rotation = lerp(viewpunch_rotation, Vector3.ZERO, delta * viewpunch_damping)
 
 	was_on_floor = is_on_floor()
 
-	if is_on_floor() and input_dir.length() > 0:
-		bobbing_time += delta * current_bobbing_speed
-		var bob_offset = sin(bobbing_time) * current_bobbing_amount
-		camera.position.y = base_camera_position.y + bob_offset
-	else:
-		camera.position.y = lerp(camera.position.y, base_camera_position.y, delta * 10.0)
-		bobbing_time = 0.0
+	if not healthCtl.consciousness <= healthCtl.unconsciousThreshold:
+		if is_on_floor() and input_dir.length() > 0:
+			bobbing_time += delta * current_bobbing_speed
+			var bob_offset = sin(bobbing_time) * current_bobbing_amount
+			camera.position.y = base_camera_position.y + bob_offset
+		else:
+			camera.position.y = lerp(camera.position.y, base_camera_position.y, delta * 10.0)
+			bobbing_time = 0.0
 
 
 	if is_on_floor() and input_dir.length() > 0:
@@ -445,6 +452,9 @@ func _physics_process(delta):
 
 	var total_pitch = look_rotation.y + sway_pitch + deg_to_rad(viewpunch_rotation.x)
 	var total_roll = ambient_roll + current_strafe_roll + deg_to_rad(viewpunch_rotation.z)
+
+	if healthCtl.consciousness <= healthCtl.unconsciousThreshold:
+		total_pitch = look_rotation.y
 
 	var camera_rot = Vector3.ZERO
 	camera_rot.x = total_pitch
@@ -483,7 +493,7 @@ func _physics_process(delta):
 func _process(delta: float) -> void:
 	hand_shakiness = lerp(hand_shakiness, 0.01, 0.0001)
 	hand_shakiness = clampf(hand_shakiness, 0.0, 0.01)
-	healthCtl.heartRate -= (0.01 - hand_shakiness) * 25
+	healthCtl.heartRate -= (0.01 - hand_shakiness) * 10
 	
 	if tinnitus > 2:
 		tinnitus = 2

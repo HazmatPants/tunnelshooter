@@ -61,7 +61,7 @@ func parse_command(commandString: String):
 				help_string += "clear: clears the dev console output\n"
 				help_string += "godmode: toggles godmode (invincibility to damage)\n"
 				help_string += "flashmode: toggles flashmode (super speed)\n"
-				help_string += "fall: teleports you 100 meters upwards\n"
+				help_string += "fall <amount>: teleports you <amount> meters upwards\n"
 				user_print(help_string)
 			"status":
 				var stat = Global.player.healthCtl
@@ -258,7 +258,10 @@ func parse_command(commandString: String):
 				Global.flashmode = !Global.flashmode
 				user_print("flashmode is now ON" if Global.flashmode else "flashmode is now OFF")
 			"fall":
-				Global.player.global_position.y += 100.0
+				var amount = 10
+				if args.size() > 1:
+					amount = args[1]
+				Global.player.global_position.y += abs(float(amount))
 			_:
 				user_print("Command not valid")
 				return
