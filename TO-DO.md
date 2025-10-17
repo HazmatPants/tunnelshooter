@@ -2,6 +2,6 @@
 > in order of priority
 
 1. Gun malfunctions
-2. Gun modifications (muzzle devices, powder loads, ammo types, optics, etc.)
-3. More guns
-4. Random tunnel generation
+2. add a way to add attachments in-game
+3. More guns (M1911)
+4. Random dungeon-like generation

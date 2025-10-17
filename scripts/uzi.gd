@@ -104,9 +104,11 @@ func _unhandled_input(event):
 			rot_offset.y -= event.relative.x * 0.01
 			rot_offset.z -= event.relative.y * 0.01
 			if muzzleRay.is_colliding():
-				if muzzleRay.get_collider().owner.name == "Player":
-					shakiness += 0.005
-					Global.player.healthCtl.adrenaline += 0.005
+				var collider = muzzleRay.get_collider()
+				if collider:
+					if collider.owner.name == "Player":
+						shakiness += 0.005
+						Global.player.healthCtl.adrenaline += 0.005
 	else:
 		Global.player.mouse_look_enabled = true
 		rot_offset = Vector3.ZERO
@@ -202,8 +204,8 @@ func _process(_delta: float) -> void:
 							magazine.ammo -= 1
 							chamber = true
 	if triggerPulled:
-		anim.play("shoot")
 		if shootTimer < shootFrames:
+			anim.play("shoot")
 			shootTimer += 1
 			return
 		triggerPulled = false
