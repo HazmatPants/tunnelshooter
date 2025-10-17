@@ -186,10 +186,15 @@ func _process(_delta: float) -> void:
 
 	scale = Vector3(0.3, 0.3, 0.3)
 
+	if Input.is_action_just_pressed("lmb") and Global.player.is_input_enabled():
+		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/trigger_down.ogg"), -10)
+
 	if Input.is_action_pressed("lmb") and Global.player.is_input_enabled() and not fired:
 		if hammer:
 			if bolt:
 				if shootTimer < 1:
+					if firemode == "safe":
+						return
 					triggerPulled = true
 					play_random_sfx(sfx_prefire)
 					if magazine:
@@ -244,6 +249,9 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_released("lmb"):
 		shootTimer = 0
 		fired = false
+		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/trigger_up.ogg"), -15)
+		if fired:
+			playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/disconnector.wav"), -10)
 	if Input.is_action_just_pressed("pullslide") and Global.player.is_input_enabled(): 
 		if not Input.is_action_pressed("slidelock"):
 			first_input = "pullslide"
@@ -301,6 +309,8 @@ func _process(_delta: float) -> void:
 		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/mode.wav"))
 		if firemode == "auto":
 			firemode = "semi"
+		elif firemode == "semi":
+			firemode = "safe"
 		else:
 			firemode = "auto"
 		ammo_label.text = firemode.to_upper()
