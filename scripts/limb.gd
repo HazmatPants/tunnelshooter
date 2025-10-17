@@ -57,6 +57,7 @@ func hit(_bullet):
 	if isHead:
 		Global.player.healthCtl.brainHealth = 0
 		play_random_sfx(sfx_flesh_hit, 40)
+		Global.cause_of_death = "headshot"
 
 	bleedingRate += randf_range(1.0, 3.0) * bleedingRateMult
 	pain += randf_range(0.075, 0.2) * (1.0 - Global.player.healthCtl.adrenaline)

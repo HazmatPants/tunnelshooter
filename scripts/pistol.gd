@@ -6,17 +6,12 @@ extends Node3D
 @onready var magPos: Node3D = $Gun/Magazine
 @onready var magInsertPos: Node3D = $Gun/MagazineInsert
 
-@onready var laserRay: RayCast3D = $Gun/LaserRay
-@onready var laserPoint: Decal = $LaserPoint
-
 @onready var attachmentCtl: Node = $"../AttachmentCtl"
 
 var ammo_label: Label
 
 var recoil: float = 0.0
 var hrecoil: float = 0.0
-
-@export var laser := false
 
 var muzzleflash = preload("res://scenes/muzzleflash.tscn")
 var casing = preload("res://scenes/9mm_casing.tscn")
@@ -82,14 +77,12 @@ const sfx_mag_insert := [
 
 var bullet = preload("res://scenes/bullet.tscn")
 
-var magazine: RigidBody3D = preload("res://scenes/magazine.tscn").instantiate()
+var magazine: RigidBody3D = preload("res://scenes/ss320_mag.tscn").instantiate()
 var chamber: bool = false
 var hammer: bool = false
 var slidelock: bool = false
 
-var laserMesh = MeshInstance3D.new()
 var crosshair
-
 
 var rot_offset := Vector3.ZERO
 func _unhandled_input(event):
@@ -109,7 +102,6 @@ func _unhandled_input(event):
 		rot_offset = Vector3.ZERO
 
 func _ready() -> void:
-	get_tree().current_scene.call_deferred("add_child", laserMesh)
 	get_tree().current_scene.call_deferred("add_child", magazine)
 	magazine.gravity_scale = 0.0
 	magazine.position = magPos.position
@@ -178,31 +170,6 @@ func _process(_delta: float) -> void:
 	hrecoil = lerp(hrecoil, 0.0, 0.5 * Global.player.healthCtl.consciousness)
 
 	scale = Vector3(3, 3, 3)
-
-	if laser:
-		laserRay.enabled = true
-		laserPoint.visible = true
-		if laserRay.is_colliding():
-			var ray = laserRay
-			laserPoint.global_position = ray.get_collision_point()
-			laserPoint.rotation = ray.get_collision_normal()
-		var mesh = ImmediateMesh.new()
-		var mat = StandardMaterial3D.new()
-		mat.emission_enabled = true
-		mat.emission = Color("00ff00ff")
-		mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-		mesh.surface_add_vertex(laserRay.global_position)
-		if laserRay.is_colliding():
-			mesh.surface_add_vertex(laserRay.get_collision_point())
-		else:
-			mesh.surface_add_vertex(to_global(laserRay.position + laserRay.target_position))
-
-		mesh.surface_end()
-		mesh.surface_set_material(0, mat)
-		laserMesh.mesh = mesh
-	else:
-		laserRay.enabled = false
-		laserPoint.visible = false
 
 	if Input.is_action_just_pressed("lmb") and Global.player.is_input_enabled():
 		if not slidelock:
@@ -365,14 +332,6 @@ func _process(_delta: float) -> void:
 		first_input = ""
 					
 	$"Gun/Round".visible = chamber
-
-	if magazine:
-		if magazine.ammo == magazine.maximum and chamber:
-			ammo_label.text = str(magazine.ammo) + "+1"
-		else:
-			ammo_label.text = str(magazine.ammo + 1 if chamber else magazine.ammo)
-	else:
-		ammo_label.text = "X"
 
 func play_random_sfx(sound_list, volume: float=0):
 	var idx = randi() % sound_list.size()

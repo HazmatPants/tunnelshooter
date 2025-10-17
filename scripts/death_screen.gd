@@ -47,4 +47,6 @@ func death_cause_msg() -> String:
 		return "Falling"
 	if cause_of_death == "opioidoverdose":
 		return "Opiate overdose"
+	if cause_of_death == "headshot":
+		return "Bullet punctured brain"
 	return "Unknown"

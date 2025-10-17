@@ -9,6 +9,7 @@ var item_names := {
 	"ChloralHydrate": "Chloral Hydrate",
 	
 	"SS320" : "SS-320",
+	"Uzi": "UZI",
 }
 
 var item_descs := {
@@ -29,6 +30,7 @@ var item_descs := {
 	"ProteinGel": "A tube of gel containing protein, promotes muscle healing.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
+	"Uzi": "An open-bolt submachine gun.",
 
 	"Headphones": "A pair of headphones designed to suppress loud sounds.\nMakes firearms more safe to hear.",
 	"Flashbang": "A non-lethal grenade used to disorient the enemy. Produces a blinding flash and deafening bang.",
