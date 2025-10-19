@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=50 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://u1xrqqc1jk86" path="res://scenes/flashbang.tscn" id="23_pm3ni"]
 [ext_resource type="PackedScene" uid="uid://bni8w27n3rrt5" path="res://scenes/items/chloral_hydrate.tscn" id="24_y6deb"]
 [ext_resource type="PackedScene" uid="uid://cbdfbi72sig1p" path="res://scenes/uzi.tscn" id="25_og1vs"]
+[ext_resource type="PackedScene" uid="uid://cgnvboti64r87" path="res://scenes/m45a1.tscn" id="27_vxglm"]
 
 [sub_resource type="Environment" id="Environment_sugp2"]
 ssao_enabled = true
@@ -353,7 +354,7 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.19
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 4.2268844, 1.989, -9.907)
 
 [node name="SS320" parent="." instance=ExtResource("16_jbj1t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7544127, 1.304814, -5.3909836)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7334027, 1.051293, -5.3909836)
 metadata/IsGun = false
 
 [node name="Diazepam" parent="." instance=ExtResource("17_muem4")]
@@ -382,4 +383,8 @@ transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94
 
 [node name="Uzi" parent="." instance=ExtResource("25_og1vs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, -6)
+metadata/IsGun = true
+
+[node name="M45A1" parent="." instance=ExtResource("27_vxglm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8617516, 1.1725633, -4.650289)
 metadata/IsGun = true

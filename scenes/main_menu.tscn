@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://ceyvwjpgnkuxh"]
+[gd_scene load_steps=8 format=3 uid="uid://ceyvwjpgnkuxh"]
 
 [ext_resource type="FontFile" uid="uid://boeoafodkpa6u" path="res://assets/fonts/PerfectDOSVGA437.ttf" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://bs2x8vmcbx5km" path="res://scripts/main_menu.gd" id="1_l6cm7"]
-[ext_resource type="AudioStream" uid="uid://dovcw887no7cl" path="res://assets/audio/music/SU_2.wav" id="3_bqqt6"]
-[ext_resource type="AudioStream" uid="uid://dylbk2ixkecpw" path="res://assets/audio/music/TH_HI - KICK.wav" id="4_wu84c"]
+[ext_resource type="AudioStream" uid="uid://c5hi4hy00it8s" path="res://assets/audio/music/untitled.ogg" id="3_bqqt6"]
 
 [sub_resource type="Theme" id="Theme_bqqt6"]
 default_font = ExtResource("1_ekxnf")
@@ -79,20 +78,23 @@ theme_override_font_sizes/font_size = 100
 text = "TunnelShooter"
 horizontal_alignment = 1
 
-[node name="PlayButton" type="MenuButton" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -15.5
-offset_right = 50.0
-offset_bottom = 15.5
+offset_left = -50.66751
+offset_top = -27.0
+offset_right = 50.66751
+offset_bottom = 27.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(50, 0)
+
+[node name="PlayButton" type="MenuButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
@@ -102,20 +104,9 @@ item_count = 1
 popup/item_0/text = "Load Test Scene"
 popup/item_0/id = 0
 
-[node name="CheatsButton" type="MenuButton" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.55600005
-anchor_right = 0.5
-anchor_bottom = 0.55600005
-offset_left = -50.0
-offset_top = -15.288025
-offset_right = 50.0
-offset_bottom = 15.711975
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(50, 0)
+[node name="CheatsButton" type="MenuButton" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
@@ -143,10 +134,6 @@ popup/item_5/id = 5
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_bqqt6")
-volume_db = -8.0
+volume_db = -10.0
 autoplay = true
-
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_wu84c")
-volume_db = -8.0
-autoplay = true
+parameters/looping = true

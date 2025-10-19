@@ -1,7 +1,7 @@
 extends Control
 
-@onready var playButton: MenuButton = $PlayButton
-@onready var cheatsButton: MenuButton = $CheatsButton
+@onready var playButton: MenuButton = $VBoxContainer/PlayButton
+@onready var cheatsButton: MenuButton = $VBoxContainer/CheatsButton
 
 func _ready() -> void:
 	playButton.get_popup().index_pressed.connect(_playButton_pressed)

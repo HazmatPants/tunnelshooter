@@ -1,11 +1,12 @@
 extends Node3D
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var muzzleRay: RayCast3D = $MuzzleRay
+@onready var muzzleRay: RayCast3D = $Gun/MuzzleRay
 @onready var casingPos: Node3D = $CasePos
-@onready var magPos: Node3D = $Magazine
-@onready var magInsertPos: Node3D = $MagazineInsert
+@onready var magPos: Node3D = $Gun/Magazine
+@onready var magInsertPos: Node3D = $Gun/MagazineInsert
 
+@onready var attachmentCtl: Node = $"../AttachmentCtl"
 
 var ammo_label: Label
 
@@ -15,6 +16,7 @@ var hrecoil: float = 0.0
 var muzzleflash = preload("res://scenes/muzzleflash.tscn")
 var casing = preload("res://scenes/9mm_casing.tscn")
 
+const sfx_dryfire := preload("res://assets/audio/sfx/weapons/gun/1911/dry_fire.wav")
 const sfx_shoot := [
 	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_1.wav"),
 	preload("res://assets/audio/sfx/weapons/explosive/plastic_explosive_2.wav"),
@@ -32,15 +34,7 @@ const sfx_shoot2 := [
 const sfx_shoot2_sup := [
 	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_1.ogg"),
 	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_2.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_3.ogg")
-]
-
-const sfx_prefire := [
-	preload("res://assets/audio/sfx/weapons/gun/uzi/prefire1.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/prefire2.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/prefire3.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/prefire4.wav")
-
+	preload("res://assets/audio/sfx/weapons/gun/gun_fire_suppressed_3.ogg"),
 ]
 
 #const sfx_holster := [
@@ -57,26 +51,23 @@ const sfx_prefire := [
 #]
 
 const sfx_slideback := [
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltback1.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltback2.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltback3.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltback4.ogg")
+	preload("res://assets/audio/sfx/weapons/gun/1911/slide_back1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/1911/slide_back2.wav")
 ]
 const sfx_slideforward := [
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltforward1.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltforward2.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltforward3.ogg"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/boltforward4.ogg")
+	preload("res://assets/audio/sfx/weapons/gun/1911/slide_release1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/1911/slide_release2.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/1911/slide_release3.wav")
 ]
-const sfx_slidehit := preload("res://assets/audio/sfx/weapons/gun/slide_lock_hit.wav")
+const sfx_slidehit := preload("res://assets/audio/sfx/weapons/gun/1911/slide_lock.wav")
 
 const sfx_mag_out := [
-	preload("res://assets/audio/sfx/weapons/gun/uzi/magout1.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/magout2.wav")
+	preload("res://assets/audio/sfx/weapons/gun/1911/mag_out1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/1911/mag_out2.wav")
 ]
 const sfx_mag_in := [
-	preload("res://assets/audio/sfx/weapons/gun/uzi/magin1.wav"),
-	preload("res://assets/audio/sfx/weapons/gun/uzi/magin2.wav")
+	preload("res://assets/audio/sfx/weapons/gun/1911/mag_in1.wav"),
+	preload("res://assets/audio/sfx/weapons/gun/1911/mag_in2.wav")
 ]
 const sfx_mag_insert := [
 	preload("res://assets/audio/sfx/weapons/gun/insert_mag_1.wav"),
@@ -86,11 +77,11 @@ const sfx_mag_insert := [
 
 var bullet = preload("res://scenes/bullet.tscn")
 
-var magazine: RigidBody3D = preload("res://scenes/uzi_mag.tscn").instantiate()
+var magazine: RigidBody3D = preload("res://scenes/m45a1_mag.tscn").instantiate()
 var chamber: bool = false
 var hammer: bool = false
-var bolt: bool = false
-var firemode: String = "auto"
+var slidelock: bool = false
+var firemode: String = "semi"
 
 var crosshair
 
@@ -104,11 +95,9 @@ func _unhandled_input(event):
 			rot_offset.y -= event.relative.x * 0.01
 			rot_offset.z -= event.relative.y * 0.01
 			if muzzleRay.is_colliding():
-				var collider = muzzleRay.get_collider()
-				if collider:
-					if collider.owner.name == "Player":
-						shakiness += 0.005
-						Global.player.healthCtl.adrenaline += 0.005
+				if muzzleRay.get_collider().owner.name == "Player":
+					shakiness += 0.005
+					Global.player.healthCtl.adrenaline += 0.005
 	else:
 		Global.player.mouse_look_enabled = true
 		rot_offset = Vector3.ZERO
@@ -117,20 +106,16 @@ func _ready() -> void:
 	get_tree().current_scene.call_deferred("add_child", magazine)
 	magazine.gravity_scale = 0.0
 	magazine.position = magPos.position
-	magazine.maximum = 30
-	magazine.ammo = 30
 	magazine.inserted = true
+	magazine.maximum = 7
+	magazine.ammo = 7
+	magazine.name = "M45A1Magazine"
 	await Global.initialized
 	ammo_label = Global.playerGUI.get_node("AmmoLabel")
 
 	crosshair = Global.playerGUI.get_node("Crosshair")
 
 var shakiness: float = 0.0
-
-var shootFrames: int = 8
-var shootTimer: int = 0
-var triggerPulled: bool = false
-var fired: bool = false
 
 var first_input: String = ""
 var magAction: String = "none"
@@ -146,8 +131,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed("rmb") and Global.player.is_input_enabled():
 		crosshair.modulate.a = lerp(crosshair.modulate.a, 0.0, 0.1)
 		var target_t: Transform3D = Global.player.grab_position.global_transform
-		target_t.origin += Vector3(0, 0.04, 0)
 		target_t.basis = Basis.from_euler(target_t.basis.get_euler() + rot_offset)
+		target_t.origin += Vector3(0, -0.025, 0)
 		if Input.is_action_pressed("pullslide"):
 			var target = Global.player.grab_position.global_transform
 			var targetEuler = target.basis.get_euler() + Vector3(0, 0, 0.4)
@@ -186,91 +171,145 @@ func _process(_delta: float) -> void:
 	recoil = lerp(recoil, 0.0, 0.5 * Global.player.healthCtl.consciousness)
 	hrecoil = lerp(hrecoil, 0.0, 0.5 * Global.player.healthCtl.consciousness)
 
-	scale = Vector3(0.3, 0.3, 0.3)
+	scale = Vector3(3, 3, 3)
 
 	if Input.is_action_just_pressed("lmb") and Global.player.is_input_enabled():
-		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/trigger_down.ogg"), -10)
+		if Input.is_action_pressed("hammer"):
+			if firemode == "safe":
+				return
+			playsound(sfx_slidehit)
+			hammer = false
+			return
+		if firemode == "safe":
+			playsound(sfx_slidehit, -10)
+			return
+		if not slidelock:
+			shakiness += 0.01
+			if hammer:
+				if chamber:
+					playsound(sfx_dryfire, 10)
+					play_random_sfx(sfx_slideback)
+					anim.play("shoot")
+					chamber = false
+					if Global.quiet_guns:
+						play_random_sfx(sfx_shoot2, -6)
+					else:
+							play_random_sfx(sfx_shoot, 20)
+							play_random_sfx(sfx_shoot2, 10)
+							if "ear-pro" in Global.player.equipment:
+								play_random_sfx(sfx_shoot, 14)
+								play_random_sfx(sfx_shoot2, 12)
+							else:
+								Global.player.damage_ears(0.01)
+								Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
 
-	if Input.is_action_pressed("lmb") and Global.player.is_input_enabled() and not fired:
-		if hammer:
-			if bolt:
-				if shootTimer < 1:
-					if firemode == "safe":
-						return
-					triggerPulled = true
-					play_random_sfx(sfx_prefire)
+					var Flash = muzzleflash.instantiate()
+					Flash.light_energy = 30
+					get_tree().current_scene.add_child(Flash)
+					Flash.global_position = muzzleRay.global_position
+
+					spawn_casing()
+
+					if not Global.no_recoil:
+						Global.player.viewpunch_velocity += Vector3(80, 0, 0)
+						recoil += randf_range(0.25, 0.45)
+						hrecoil += randf_range(-0.1, 0.1)
+
+						Global.player.viewpunch_rotation += Vector3(
+							randf_range(-1.0, 1.0), 
+							randf_range(-1.0, 1.0),
+							randf_range(-1.0, 1.0)
+						) * 5
+
+					shoot_bullet()
+					
 					if magazine:
 						if magazine.ammo > 0:
-							magazine.ammo -= 1
+							if not Global.infinite_ammo:
+								magazine.ammo -= 1
 							chamber = true
-	if triggerPulled:
-		if shootTimer < shootFrames:
-			anim.play("shoot")
-			shootTimer += 1
-			return
-		triggerPulled = false
-		shootTimer = 0
-		shakiness += 0.001
-		bolt = false
-		if not chamber:
-			return
-		chamber = false
-		if Global.quiet_guns:
-			play_random_sfx(sfx_shoot2, -6)
-		else:
-			play_random_sfx(sfx_shoot2, 16)
-			play_random_sfx(sfx_shoot, 10)
-		if not "ear-pro" in Global.player.equipment:
-			Global.player.damage_ears(0.01)
-			Global.playerGUI.show_hint("Shooting firearms without hearing protection can cause permanent hearing loss.")
-		var Flash = muzzleflash.instantiate()
-		Flash.light_energy = 30
-		get_tree().current_scene.add_child(Flash)
-		Flash.global_position = muzzleRay.global_position
-
-		spawn_casing()
-
-		bolt = true
-		anim.play("bolt_open")
-		if firemode == "semi":
-			fired = true
-
-		if not Global.no_recoil:
-			Global.player.viewpunch_velocity += Vector3(80, 0, 0)
-			recoil += randf_range(0.001, 0.05)
-			hrecoil += randf_range(-0.005, 0.005)
-
-			Global.player.viewpunch_rotation += Vector3(
-				randf_range(-1.0, 1.0), 
-				randf_range(-1.0, 1.0),
-				randf_range(-1.0, 1.0)
-			) * 5
-
-		shoot_bullet()
-
-	if Input.is_action_just_released("lmb"):
-		shootTimer = 0
-		fired = false
-		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/trigger_up.ogg"), -15)
-		if fired:
-			playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/disconnector.wav"), -10)
+						else:
+							anim.play("slidelock")
+							playsound(sfx_slidehit)
+							slidelock = true
+				else:
+					if hammer:
+						playsound(sfx_dryfire, 10)
+						hammer = false
+						hrecoil += randf_range(-0.01, 0.01)
+						recoil += randf_range(-0.01, 0.01)
 	if Input.is_action_just_pressed("pullslide") and Global.player.is_input_enabled(): 
 		if not Input.is_action_pressed("slidelock"):
 			first_input = "pullslide"
 			recoil += 0.1
 			play_random_sfx(sfx_slideback)
-			anim.play("bolt")
-			bolt = true
+			if slidelock:
+				anim.play("slidebacklock")
+				return
+			anim.play("slideback")
 			hammer = true
+			if chamber:
+				spawn_casing()
+				chamber = false
 	if Input.is_action_just_released("pullslide") and Global.player.is_input_enabled():
-		anim.play("bolt_release")
 		recoil -= 0.2
-		play_random_sfx(sfx_slideforward)
+		if magazine:
+			if magazine.ammo <= 0:
+				anim.play("slidelock")
+				playsound(sfx_slidehit)
+				slidelock = true
+				return
+		if Input.is_action_pressed("slidelock") and first_input == "pullslide":
+			anim.play("slidelock")
+			playsound(sfx_slidehit)
+			slidelock = true
+		else:
+			anim.play("slideforward")
+			recoil -= 0.2
+			play_random_sfx(sfx_slideforward)
+			if not first_input == "slidelock":
+				if magazine:
+					if magazine.ammo > 0:
+						magazine.ammo -= 1
+						chamber = true
+	if Input.is_action_just_pressed("slidelock") and Global.player.is_input_enabled():
+		if slidelock:
+			anim.play("sliderelease")
+			recoil -= 0.1
+			play_random_sfx(sfx_slideforward)
+			slidelock = false
+			if magazine:
+				if magazine.ammo > 0:
+					magazine.ammo -= 1
+					chamber = true
 	if Input.is_action_just_released("slidelock") and Global.player.is_input_enabled():
 		if Input.is_action_pressed("pullslide"):
 			anim.play("inspect_to_pull")
 			play_random_sfx(sfx_slideback)
 			hammer = true
+			if chamber:
+				spawn_casing()
+				chamber = false
+			if magazine:
+				if magazine.ammo > 0:
+					magazine.ammo -= 1
+					chamber = true
+	if Input.is_action_just_pressed("hammer") and Global.player.is_input_enabled():
+		if not hammer:
+			playsound(preload("res://assets/audio/sfx/weapons/gun/1911/hammer.wav"))
+			hammer = true
+	if Input.is_action_just_pressed("firemode") and Global.player.is_input_enabled():
+		if firemode == "semi":
+			if not hammer:
+				return
+			firemode = "safe"
+			recoil += 0.01
+			playsound(preload("res://assets/audio/sfx/weapons/gun/1911/safety_on.wav"))
+		else:
+			firemode = "semi"
+			recoil -= 0.01
+			playsound(preload("res://assets/audio/sfx/weapons/gun/1911/safety_off.wav"))
+		ammo_label.text = firemode.to_upper()
 	if Input.is_action_just_pressed("eject_mag") and Global.player.is_input_enabled():
 		if magazine and magAction == "none":
 			play_random_sfx(sfx_mag_out)
@@ -282,9 +321,9 @@ func _process(_delta: float) -> void:
 			Global.player.left_hand = magazine
 			magazine = null
 	if Input.is_action_just_pressed("insert_mag") and Global.player.is_input_enabled():
-		if not magazine:
+		if magazine == null:
 			if Global.player.left_hand != null:
-				if "Magazine" in Global.player.left_hand.name:
+				if "magazine" in Global.player.left_hand.name.to_lower():
 					magazine = Global.player.left_hand
 					Global.player.left_hand = null
 					magAction = "inserting"
@@ -307,17 +346,20 @@ func _process(_delta: float) -> void:
 			first_input = "slidelock"
 	if not Input.is_action_pressed("slidelock") and not Input.is_action_pressed("pullslide"):
 		first_input = ""
-	if Input.is_action_just_pressed("firemode") and Global.player.is_input_enabled():
-		playsound(preload("res://assets/audio/sfx/weapons/gun/uzi/mode.wav"))
-		if firemode == "auto":
-			firemode = "semi"
-		elif firemode == "semi":
-			firemode = "safe"
+					
+	$Gun/Slide/Round.visible = chamber
+	if hammer:
+		$Gun/Hammer.rotation_degrees.z = lerp($Gun/Hammer.rotation_degrees.z, 60.0, 0.8)
+	else:
+		if Input.is_action_pressed("hammer"):
+			$Gun/Hammer.rotation_degrees.z = lerp($Gun/Hammer.rotation_degrees.z, 0.0, 0.2)
 		else:
-			firemode = "auto"
-		ammo_label.text = firemode.to_upper()
+			$Gun/Hammer.rotation_degrees.z = lerp($Gun/Hammer.rotation_degrees.z, 0.0, 0.8)
 
-	$"Mesh/bolt/Round".visible = chamber
+	if firemode == "semi":
+		$Gun/Safety.rotation_degrees.z = lerp($Gun/Safety.rotation_degrees.z, -20.0, 0.3)
+	else:
+		$Gun/Safety.rotation_degrees.z = lerp($Gun/Safety.rotation_degrees.z, 5.0, 0.3)
 
 func play_random_sfx(sound_list, volume: float=0):
 	var idx = randi() % sound_list.size()
@@ -337,7 +379,6 @@ func playsound(stream: AudioStream, volume: float=0):
 func shoot_bullet():
 	var b = bullet.instantiate()
 	
-	b.speed = 400.0
 	get_tree().current_scene.call_deferred("add_child", b)
 	b.global_transform = muzzleRay.global_transform
 	b.shooter = Global.player
@@ -347,5 +388,8 @@ func spawn_casing():
 	get_tree().current_scene.add_child(case)
 	case.global_transform = casingPos.global_transform
 	case.scale = Vector3(2, 2, 2)
-	var direction = casingPos.global_transform.basis.z
-	case.linear_velocity = direction * 20.0
+	case.linear_velocity = Vector3(
+		randf_range(-0.5, 2.0),
+		randf_range(4.0, 8.0),
+		randf_range(-1.0, 1.0)
+	)

@@ -109,9 +109,6 @@ func _process(delta: float) -> void:
 	if shockOverlay.modulate.a > 0.0:
 		shockOverlay.modulate.a -= 1.0 * delta
 
-	if Input.is_action_pressed("holster"):
-		afterimage()
-
 	if afterimageOverlay.modulate.a > 0.0:
 		afterimageOverlay.modulate.a -= 0.025 * delta
 
