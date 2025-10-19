@@ -95,7 +95,7 @@ func _process(delta: float) -> void:
 		$Blackout/TextureProgressBar.value = 0
 		mp.volume_linear = lerp(mp.volume_linear, 0.0, 0.05)
 
-	if Global.player.healthCtl.consciousness <= 0.15:
+	if Global.player.healthCtl.consciousness <= Global.player.healthCtl.unconsciousThreshold:
 		$Blackout/TextureProgressBar.visible = true
 		$Blackout/TextureProgressBar.modulate.a = lerp($Blackout/TextureProgressBar.modulate.a, 1.0, 0.05)
 		$Blackout/Label.modulate.a = lerp($Blackout/Label.modulate.a, 1.0, 0.05)

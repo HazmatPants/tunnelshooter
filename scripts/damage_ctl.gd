@@ -185,7 +185,7 @@ func _process(delta: float) -> void:
 	consciousness = clamp(consciousness, 0.0, 1.0)
 
 	if consciousness <= unconsciousThreshold:
-		Engine.time_scale = 20.0
+		Engine.time_scale = 10.0
 		Global.player.set_input_lock("unconscious", true)
 	else:
 		Engine.time_scale = 1.0

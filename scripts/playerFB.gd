@@ -352,16 +352,19 @@ func _physics_process(delta):
 				velocity.y = jump_height
 				viewpunch_velocity += jump_viewpunch
 				footstep_sound("impact")
+	crouching = Input.is_action_pressed("crouch")
+
+	if healthCtl.is_leg_dislocated():
+		crouching = true
+
 	if is_input_enabled():
-		if Input.is_action_pressed("crouch"):
-			crouching = true
+		if crouching:
 			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, crouch_height, 0.1)
 		else:
-			crouching = false
 			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, default_height, 0.1)
-	
+
 	footstepRay.position.y = $CollisionShape3D.position.y - 1
-	
+
 	move_and_slide()
 
 	var vel = get_real_velocity()
@@ -447,8 +450,8 @@ func _physics_process(delta):
 	ambient_time += delta * ambient_sway_speed
 
 	# Ambient sway rotation
-	var sway_pitch = deg_to_rad(sin(ambient_time) * ambient_pitch_amount)
-	var ambient_roll = deg_to_rad(cos(ambient_time * 0.5) * ambient_roll_amount)
+	var sway_pitch = deg_to_rad(sin(ambient_time) * ambient_pitch_amount * (2.0 - healthCtl.consciousness))
+	var ambient_roll = deg_to_rad(cos(ambient_time * 0.5) * ambient_roll_amount * (2.0 - healthCtl.consciousness))
 
 	var total_pitch = look_rotation.y + sway_pitch + deg_to_rad(viewpunch_rotation.x)
 	var total_roll = ambient_roll + current_strafe_roll + deg_to_rad(viewpunch_rotation.z)

@@ -60,10 +60,10 @@ maximum = 30
 ammo = 30
 
 [node name="AmmoLabel" type="Label3D" parent="."]
-transform = Transform3D(-4.11646e-10, 0.00336356, -0.00941735, 1.47026e-10, 0.00941735, 0.00336356, 0.01, 0, -4.37114e-10, 0.00300247, 0.0836754, -0.00037412)
+transform = Transform3D(1.3113416e-09, 0, -0.010000001, 0, 0.010000001, 0, 0.01, 0, 1.3113417e-09, -0.012064099, 0.066073634, 0.0016307309)
 modulate = Color(1, 1, 0, 1)
 outline_modulate = Color(0, 0, 0, 0)
-text = "0"
+text = "30"
 font_size = 128
 outline_size = 4
 

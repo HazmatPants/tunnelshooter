@@ -39,6 +39,8 @@ func _process(delta: float) -> void:
 	position.y = base_pos.y + randf_range(-0.25, 0.25) * pain
 	var damage = clamp(muscleHealth, 0.0, 1.0)
 	var color = Color(1.0, damage, damage, 1.0)
+	if muscleHealth <= 0.0:
+		color = Color.BLACK
 	modulate = lerp(modulate, color, 0.1)
 	limb_icon.pivot_offset = size / 2
 	limb_icon.position = Vector2(-15, 0)

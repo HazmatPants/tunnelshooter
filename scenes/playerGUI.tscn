@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dc7l8xehcc418"]
+[gd_scene load_steps=32 format=3 uid="uid://dc7l8xehcc418"]
 
 [ext_resource type="Script" uid="uid://bch43lv5jeax1" path="res://scripts/player_gui.gd" id="1_cvfx2"]
 [ext_resource type="AudioStream" uid="uid://2vpiayiwu6uf" path="res://assets/audio/music/death.wav" id="2_y1buc"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://ds3r5ad5b0r5f" path="res://scripts/brain_damage.gd" id="16_60st2"]
 [ext_resource type="Texture2D" uid="uid://dnuwjl5ltplea" path="res://assets/textures/ui/shock.png" id="16_gmikn"]
 [ext_resource type="Texture2D" uid="uid://cu250tmwi4y54" path="res://assets/textures/ui/crosshair.png" id="17_jjdev"]
+[ext_resource type="AudioStream" uid="uid://u8hkcds047jd" path="res://assets/audio/bgs/incoming_seizure.wav" id="19_blegf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -823,6 +824,12 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("16_60st2")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="BrainDamage"]
+stream = ExtResource("19_blegf")
+volume_db = -80.0
+pitch_scale = 1.25
+autoplay = true
 
 [node name="DevConsole" type="LineEdit" parent="."]
 visible = false
