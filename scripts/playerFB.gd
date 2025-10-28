@@ -200,7 +200,7 @@ func play_random_sfx(sound_list, volume: float=0, spatialize=true):
 	var idx = randi() % sound_list.size()
 	playsound(sound_list[idx], spatialize, volume)
 
-func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0):
+func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0, bus: String="SFX"):
 	if spatialize:
 		var plr = SteamAudioPlayer.new()
 
@@ -208,7 +208,7 @@ func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0):
 		plr.attenuation_model = 3
 		plr.distance_attenuation = true
 		plr.reflection = true
-		plr.bus = "SFX"
+		plr.bus = bus
 
 		get_tree().get_current_scene().add_child(plr)
 		plr.global_position = global_position
@@ -218,7 +218,7 @@ func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0):
 		var plr = AudioStreamPlayer.new()
 		plr.stream = sound
 		plr.volume_db = volume
-		plr.bus = "SFX"
+		plr.bus = bus
 		get_tree().current_scene.add_child(plr)
 		plr.play()
 
@@ -340,6 +340,7 @@ func _physics_process(delta):
 				randf_range(-25.0, 25.0),
 				randf_range(-25.0, 25.0)
 			)
+			healthCtl.adrenaline += 0.1 * delta
 		viewpunch_velocity.x += abs(fall_velocity)
 	else:
 		velocity.y = 0.0
@@ -375,11 +376,11 @@ func _physics_process(delta):
 		if healthCtl.is_leg_dislocated():
 			for limb in healthCtl.Limbs.values():
 				if limb.dislocationAmount > 0.0:
-					limb.pain += 0.025 * delta
+					limb.pain += 0.1 * delta
 					limb.muscleHealth -= 0.01 * delta
 					limb.dislocationAmount += 0.01 * delta
 			if not was_moving:
-				Global.playerGUI.show_hint("Walking on a dislocated leg is a bad idea.")
+				Global.playerGUI.show_hint("Using a dislocated limb will cause the injury to greatly worsen.")
 
 	if not is_moving:
 		current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * 4.0)
@@ -546,13 +547,17 @@ func is_input_enabled() -> bool:
 	return input_lock_reasons.is_empty()
 
 func do_fall_damage():
+	var dislocated: bool = false
 	for limb in healthCtl.Limbs.values():
 		if limb.isLeg:
-			if abs(fall_velocity) > 25:
-				healthCtl.brainHealth -= abs(fall_velocity)
-				healthCtl.consciousness -= abs(fall_velocity) * 2
+			if abs(fall_velocity) > 20:
+				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 200
+			if abs(fall_velocity) > 16:
+				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 600
+				healthCtl.consciousness = 0.0
 				Global.cause_of_death = "fall"
 			if abs(fall_velocity) > 14:
+				healthCtl.consciousness -= abs(fall_velocity) / 200
 				viewpunch_velocity += Vector3(-300.0, 0, 0)
 				if randf() > 0.5:
 					Global.playerGUI.shock()
@@ -561,13 +566,15 @@ func do_fall_damage():
 					healthCtl.internalBleeding += randf_range(0.1, 1.0)
 				if randf() > 0.75:
 					Global.playerGUI.shock()
-					healthCtl.internalBleeding += randf_range(1.0, 3.0)
-					limb.dislocationAmount += abs(fall_velocity) * 2
+					healthCtl.internalBleeding += randf_range(0.5, 1.5)
+					limb.dislocationAmount += abs(fall_velocity) / 50
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
 					limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
-					playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false)
+					dislocated = true
 			elif abs(fall_velocity) > 10:
 				if randf() > 0.5:
 					viewpunch_velocity += Vector3(-200.0, 0, 0)
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 125), abs(fall_velocity / 100))
 					limb.pain += randf_range(0.01, abs(fall_velocity / 100))
+	if dislocated:
+		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, randf() * 10.0, "Master")

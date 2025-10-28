@@ -20,6 +20,7 @@ var aff_icons := {
 	"lifeSupport": preload("res://assets/textures/ui/afflictions/lifeSupport.png"),
 	"dislocation": preload("res://assets/textures/ui/afflictions/dislocation.png"),
 	"internalBleeding": preload("res://assets/textures/ui/afflictions/internalBleeding.png"),
+	"pain": preload("res://assets/textures/ui/afflictions/pain.png"),
 }
 
 var aff_names := {
@@ -46,6 +47,11 @@ var aff_names := {
 	"lifeSupport": "Life Support",
 	"dislocation": "Dislocated Joint",
 	"internalBleeding": "Internal Bleeding",
+	"pain1": "Discomfort",
+	"pain2": "Pain",
+	"pain3": "Moderate Pain",
+	"pain4": "Agony",
+	"pain5": "Vasovagal Response",
 }
 
 var aff_descs := {
@@ -72,6 +78,11 @@ var aff_descs := {
 	"lifeSupport": "A device is providing you with oxygen",
 	"dislocation": "A joint has broken out of place. Try not to use the affected limb.",
 	"internalBleeding": "Blood is collecting inside your body.",
+	"pain1": "Feeling mild discomfort.",
+	"pain2": "Hurts a bit...",
+	"pain3": "Hurts a lot!",
+	"pain4": "Mind fogged by severe pain.",
+	"pain5": "Losing consciousness from extreme agony. Maybe it'll all be over soon...?",
 }
 
 var aff_name: String = ""
@@ -126,6 +137,22 @@ func _process(_delta: float) -> void:
 			else:
 				tooltip_title = aff_names["hypovolemia1"]
 				tooltip_desc = aff_descs["hypovolemia1"]
+		elif aff_name == "pain":
+			if intensity > 0.8:
+				tooltip_title = aff_names["pain5"]
+				tooltip_desc = aff_descs["pain5"]
+			elif intensity > 0.7:
+				tooltip_title = aff_names["pain4"]
+				tooltip_desc = aff_descs["pain4"]
+			elif intensity > 0.3:
+				tooltip_title = aff_names["pain3"]
+				tooltip_desc = aff_descs["pain3"]
+			elif intensity > 0.15:
+				tooltip_title = aff_names["pain2"]
+				tooltip_desc = aff_descs["pain2"]
+			else:
+				tooltip_title = aff_names["pain1"]
+				tooltip_desc = aff_descs["pain1"]
 		else:
 			tooltip_title = aff_names[aff_name]
 			tooltip_desc = aff_descs[aff_name]

@@ -61,53 +61,58 @@ func _start_hint_tween(text: String) -> void:
 	hint_tween.tween_property(hint_label, "modulate:a", 0.0, 0.5)
 	hint_tween.finished.connect(_display_next_hint)
 
-var time = 0
-var last_brainHealth: float = 0
+var time: int = 0
+var last_brainHealth: float = 1.0
+var last_adren: float = 0.0
+var last_consc: float = 1.0
 func _process(delta: float) -> void:
 	if not Global.is_initialized:
 		return
-	var total_pain = Global.player.healthCtl.get_limb_all("pain").values().max()
-	var painImageSine = 2.0 - total_pain
+	var max_pain = Global.player.healthCtl.get_limb_all("pain").values().max()
+	var painImageSine = 2.0 - max_pain
 	painImageSine += (sin((PI * time) / 30) * 2 / 2 * PI)
 	time += 1
 	$Pain/Pain.scale = $Pain/Pain.scale.lerp(Vector2(1.3, 1.3) * painImageSine * 2, 0.01)
-	$Pain/Pain.modulate.a = total_pain
+	$Pain/Pain.modulate.a = max_pain
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
-	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - Global.player.healthCtl.consciousness, 0.1)
+	var current_blur = $blur.material.get_shader_parameter("lod")
+	var target_blur = lerp(0.0, 4.0, max(max_pain, 1.0 - Global.player.healthCtl.brainHealth))
+	var lerped_blur = lerp(current_blur, target_blur, 0.1)
+	$blur.material.set_shader_parameter("lod", lerped_blur)
+
+	$Blackout.modulate.a = 1.0 - Global.player.healthCtl.consciousness
 	if Global.player.healthCtl.brainHealth < last_brainHealth and $Blackout.modulate.a > 0.9:
 		if $Blackout.visible and not Global.player.dead: # dying
 			$Blackout/TextureProgressBar.modulate = Color(1, 0, 0, $Blackout/TextureProgressBar.modulate.a)
 			$Blackout/TextureProgressBar.value = Global.player.healthCtl.brainHealth
+			$Blackout/Label.modulate.a = 1.0
 			$Blackout/Label.text = "!!"
 			mp.volume_linear = lerp(mp.volume_linear, 1.0, 0.05)
 			$Blackout/TextureProgressBar.max_value = 1
 			if not mp.playing:
 				mp.stream = bgm_dying
 				mp.play()
-	elif not Global.player.dead: # unconscious
-		$Blackout/TextureProgressBar.modulate = Color(1, 1, 1, $Blackout/TextureProgressBar.modulate.a)
-		$Blackout/TextureProgressBar.value = Global.player.healthCtl.consciousness
-		$Blackout/TextureProgressBar.max_value = Global.player.healthCtl.unconsciousThreshold
-		$Blackout/Label.text = "..."
-		mp.volume_linear = lerp(mp.volume_linear, 0.0, 0.05)
 	else: # dead
+		$Blackout/Label.modulate.a = 0.0
 		$Blackout/TextureProgressBar.value = 0
 		mp.volume_linear = lerp(mp.volume_linear, 0.0, 0.05)
 
-	if Global.player.healthCtl.consciousness <= Global.player.healthCtl.unconsciousThreshold:
-		$Blackout/TextureProgressBar.visible = true
-		$Blackout/TextureProgressBar.modulate.a = lerp($Blackout/TextureProgressBar.modulate.a, 1.0, 0.05)
-		$Blackout/Label.modulate.a = lerp($Blackout/Label.modulate.a, 1.0, 0.05)
-	else:
-		$Blackout/TextureProgressBar.visible = false
-		$Blackout/TextureProgressBar.modulate.a = 0.0
-		$Blackout/Label.modulate.a = 0.0
+	if last_consc < Global.player.healthCtl.consciousness:
+		if Global.player.healthCtl.consciousness <= Global.player.healthCtl.unconsciousThreshold:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif Global.player.healthCtl.consciousness > Global.player.healthCtl.unconsciousThreshold:
+		if Global.player.is_input_enabled():
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+	if Global.player.healthCtl.adrenaline > last_adren:
+		shockOverlay.modulate.a = Global.player.healthCtl.adrenaline * 2.0
+
+	if shockOverlay.modulate.a > 0.0 or Global.player.healthCtl.adrenaline > 0.0:
+		shockOverlay.modulate.a -= 1.0 * delta
 
 	last_brainHealth = Global.player.healthCtl.brainHealth
-
-	if shockOverlay.modulate.a > 0.0:
-		shockOverlay.modulate.a -= 1.0 * delta
+	last_adren = Global.player.healthCtl.adrenaline
 
 	if afterimageOverlay.modulate.a > 0.0:
 		afterimageOverlay.modulate.a -= 0.025 * delta

@@ -192,9 +192,9 @@ func limb_tooltip(limb: Control):
 	str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
 	if limb.dislocationAmount > 0.0:
 		if Global.player.healthCtl.get_limb_all("pain").values().max() < 0.75:
-			tt_text += "\n[color=red]Dislocated\nClick to attempt reduction[/color]"
+			tt_text += "\n[color=pink]%s Dislocated\nClick to attempt reduction[/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
 		else:
-			tt_text += "\n[color=red]Dislocated\nToo much pain!![/color]"
+			tt_text += "\n[color=red]%s Dislocated\nToo much pain!![/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
 	check_tooltip(limb, LimbDisplayNames[limb.name], tt_text)
 
 

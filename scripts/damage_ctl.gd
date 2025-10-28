@@ -101,11 +101,14 @@ func _process(delta: float) -> void:
 		Limbs["Thorax"].pain += 0.0001
 
 	var total_pain = get_limb_total("pain")
+	var max_pain = get_limb_all("pain").values().max()
 
 	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR) * 1.3
 	targetHR += total_pain
 	targetHR -= stimAmount * 120
 	targetHR -= opioidAmount * 10
+	if brainHealth < 0.5:
+		targetHR += randf_range(-0.5, 2.0)
 
 	targetHR = clamp(targetHR, 0.0, maxHR)
 	var targetBR = (targetHR + adrenaline * 10) * 0.4
@@ -130,6 +133,8 @@ func _process(delta: float) -> void:
 
 	heartRate = lerp(heartRate, targetHR, 0.0025)
 	breathingRate = lerp(breathingRate, targetBR, 0.0025)
+
+	adrenaline += max_pain / 35 * delta
 
 	if lifesupport > 0.0:
 		var plss_sfx
@@ -174,9 +179,10 @@ func _process(delta: float) -> void:
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
 	consciousness -= clampf((conscOxygenTheshold - bloodOxygen) * 0.15 * delta, 0.0, INF)
-	consciousness -= (total_pain / 16) / 400
+	if max_pain >= 0.9:
+		consciousness -= (max_pain - 0.9) * delta
 
-	consciousness += 0.01 * (1.0 + (adrenaline * 10)) * delta
+	consciousness += 0.01 * (1.0 + (adrenaline * 8)) * delta
 
 	consciousness = clamp(consciousness, 0.0, min(bloodOxygen, brainHealth, 5.0 - opioidAmount, 1.0))
 	if stimAmount > 0.0:
@@ -196,7 +202,7 @@ func _process(delta: float) -> void:
 
 	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.025 * delta)
 
-	internalBleeding -= bloodClotSpeed * delta
+	internalBleeding -= (bloodClotSpeed * 5.0) * delta
 
 	if bloodVolume <= 2500:
 		brainHealth -= (2500 - bloodVolume) * 0.00002 * delta
@@ -257,6 +263,11 @@ func _process(delta: float) -> void:
 	if afflictions.has("bleeding"):
 		if bloodLossRate < 0.001:
 			afflictions.erase("bleeding")
+
+	if total_pain > 0.0:
+		set_affliction("pain", max_pain)
+	else:
+		afflictions.erase("pain")
 
 	Global.player.viewpunch_velocity += Vector3(
 		randf_range(-total_pain, total_pain),

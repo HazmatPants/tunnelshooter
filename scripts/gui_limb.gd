@@ -39,9 +39,9 @@ func _process(delta: float) -> void:
 	position.y = base_pos.y + randf_range(-0.25, 0.25) * pain
 	var damage = clamp(muscleHealth, 0.0, 1.0)
 	var color = Color(1.0, damage, damage, 1.0)
-	if muscleHealth <= 0.0:
+	if muscleHealth <= 0.01:
 		color = Color.BLACK
-	modulate = lerp(modulate, color, 0.1)
+	self_modulate = lerp(self_modulate, color, 0.1)
 	limb_icon.pivot_offset = size / 2
 	limb_icon.position = Vector2(-15, 0)
 	if dislocationAmount > 0.0:
@@ -59,15 +59,16 @@ func _process(delta: float) -> void:
 			tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 0.0, 0.1)
 		if tooltip_progress.value >= 1.0:
 			tooltip_progress.value = 0.0
-			Global.player.healthCtl.Limbs[name].pain += randf()
+			Global.player.healthCtl.Limbs[name].pain += randf_range(0.25, 0.6)
 			Global.playerGUI.shock()
 			Global.play_random_sfx(sfx_gore)
 			if randf() > 0.5:
 				Global.player.healthCtl.Limbs[name].dislocationAmount = 0.0
 			else:
+				Global.player.healthCtl.Limbs[name].dislocationAmount += randf()
 				Global.playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"))
 	if not was_colliding and is_colliding:
 		owner.get_node("HealthGUI").hovered_limb = name
-		modulate.a -= 0.5
+		self_modulate.a -= 0.5
 
 	was_colliding = is_colliding

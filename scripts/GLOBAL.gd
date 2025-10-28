@@ -49,6 +49,9 @@ func _process(_delta: float) -> void:
 	if not player:
 		return
 	bgm_pain.volume_linear = clampf(player.healthCtl.get_limb_all("pain").values().max() - 0.1, 0.0, 1.0)
+	if player.healthCtl.consciousness <= player.healthCtl.unconsciousThreshold:
+		bgm_pain.volume_linear = 0.0
+		bgm_agony.volume_linear = 0.0
 	if player.healthCtl.get_limb_all("pain").values().max() > 0.9:
 		bgm_agony.volume_linear = lerp(bgm_agony.volume_linear, 1.0, 0.01)
 	else:

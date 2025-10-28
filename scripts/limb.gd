@@ -5,7 +5,6 @@ extends Node3D
 @export var isLeg: bool = false
 @export var bleedingRateMult: float = 1.0
 @export var muscleHealMult: float = 1.0
-var dislocationAmount: float = 0.0
 
 const sfx_flesh_hit := [
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_1.wav"),
@@ -20,17 +19,21 @@ var bleedingRate: float = 0.0
 var pain: float = 0.0
 var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
+var dislocationAmount: float = 0.0
 
 func _process(delta: float) -> void:
 	if not Global.is_initialized:
 		return
 	bleedingRate -= Global.player.healthCtl.bloodClotSpeed * delta
 	bleedingRate = clampf(bleedingRate, 0.0, INF)
-	var pain_sub = ((0.01 * (1.0 - Global.player.healthCtl.adrenaline)) * 
+	var pain_sub = (
+		(0.025 * 
 		1.0 + (Global.player.healthCtl.opioidAmount +
 		Global.player.healthCtl.stimAmount * 10) / 10)
+		)
+	pain_sub += Global.player.healthCtl.adrenaline / 10
+	pain_sub *= min(muscleHealth, 0.99 - dislocationAmount)
 
-	pain += (1.0 - muscleHealth) / 2000 * delta
 	pain -= clampf(pain_sub, 0.0, INF) * delta
 
 	muscleHealMult = lerp(muscleHealMult, 1.0, 0.005)
@@ -45,7 +48,7 @@ func _process(delta: float) -> void:
 	else:
 		skinHealth += 0.0001 * delta
 
-	dislocationAmount -= 0.0001 * delta
+	dislocationAmount -= 0.0005 * delta
 	dislocationAmount = clampf(dislocationAmount, 0.0, 1.0)
 
 	muscleHealth = clampf(muscleHealth, 0.0, 1.0)
