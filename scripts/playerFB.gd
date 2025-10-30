@@ -372,7 +372,7 @@ func _physics_process(delta):
 	is_moving = vel.length() > 0.3
 
 	if is_moving:
-		healthCtl.physicalWork += 0.0001 if not sprinting else 0.001 * (1.5 - healthCtl.stamina)
+		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0012 * (1.5 - healthCtl.stamina)
 		if healthCtl.is_leg_dislocated():
 			for limb in healthCtl.Limbs.values():
 				if limb.dislocationAmount > 0.0:

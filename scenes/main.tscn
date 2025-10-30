@@ -224,6 +224,16 @@ mesh = SubResource("BoxMesh_tbgi4")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 shape = SubResource("BoxShape3D_tefeu")
 
+[node name="StaticBody3D18" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -62.298035, 2.5295324, -29.942638)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D18"]
+mesh = SubResource("BoxMesh_tbgi4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D18"]
+shape = SubResource("BoxShape3D_tefeu")
+
 [node name="StaticBody3D9" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -30.0589, 2.5295324, -29.942638)
 collision_layer = 3
@@ -370,11 +380,48 @@ mesh = SubResource("BoxMesh_tbgi4")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D7"]
 shape = SubResource("BoxShape3D_tefeu")
 
+[node name="StaticBody3D19" type="StaticBody3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, -70.78025, 2.52953, -21.438131)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D19"]
+mesh = SubResource("BoxMesh_tbgi4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D19"]
+shape = SubResource("BoxShape3D_tefeu")
+
 [node name="SoundTurret" parent="." instance=ExtResource("6_tefeu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.514927, 1.034326, -29.628376)
 
 [node name="Turret" parent="." instance=ExtResource("6_o6xl0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.113087, 1.4489521, -29.001135)
+
+[node name="Turret2" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64.53757, 1.4489521, -23.344934)
+
+[node name="Turret3" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.041855, 1.4489521, -23.344934)
+
+[node name="Turret4" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67.97746, 1.4489521, -23.344934)
+
+[node name="Turret5" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.877464, 1.4489521, -23.344934)
+
+[node name="Turret6" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -71.95989, 1.4489521, -23.344934)
+
+[node name="Turret7" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.80808, 1.4489521, -23.344934)
+
+[node name="Turret8" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.26098, 1.4489521, -23.344934)
+
+[node name="Turret9" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.50605, 1.4489521, -23.344934)
+
+[node name="Turret10" parent="." instance=ExtResource("6_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80.56629, 1.4489521, -23.344934)
 
 [node name="Adrenaline" parent="." instance=ExtResource("9_85g3d")]
 transform = Transform3D(1, 0, 0, 0, 0.94112295, 0.33806455, 0, -0.33806455, 0.94112295, 3.5827336, 1.989, -9.907393)

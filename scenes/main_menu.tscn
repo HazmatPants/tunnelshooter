@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ceyvwjpgnkuxh"]
+[gd_scene load_steps=10 format=3 uid="uid://ceyvwjpgnkuxh"]
 
 [ext_resource type="FontFile" uid="uid://boeoafodkpa6u" path="res://assets/fonts/PerfectDOSVGA437.ttf" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://bs2x8vmcbx5km" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="AudioStream" uid="uid://c5hi4hy00it8s" path="res://assets/audio/music/untitled.ogg" id="3_bqqt6"]
+[ext_resource type="FontFile" uid="uid://dbshxd2je35m6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="4_wu84c"]
 
 [sub_resource type="Theme" id="Theme_bqqt6"]
 default_font = ExtResource("1_ekxnf")
@@ -42,6 +43,9 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="Theme" id="Theme_8ln24"]
+default_font = ExtResource("4_wu84c")
+
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -52,6 +56,11 @@ grow_vertical = 2
 theme = SubResource("Theme_bqqt6")
 script = ExtResource("1_l6cm7")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_bqqt6")
+volume_db = -10.0
+parameters/looping = true
+
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -61,38 +70,44 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="."]
+[node name="Main" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Main"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -124.0
-offset_right = 20.0
-offset_bottom = -101.0
+offset_left = 190.5
+offset_top = 141.5
+offset_right = 921.5
+offset_bottom = 241.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 100
 text = "TunnelShooter"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Main"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -50.66751
-offset_top = -27.0
-offset_right = 50.66751
-offset_bottom = 27.0
+offset_left = 505.33252
+offset_top = 270.0
+offset_right = 606.66754
+offset_bottom = 338.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlayButton" type="MenuButton" parent="VBoxContainer"]
+[node name="PlayButton" type="MenuButton" parent="Main/VBoxContainer"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
@@ -104,7 +119,7 @@ item_count = 1
 popup/item_0/text = "Load Test Scene"
 popup/item_0/id = 0
 
-[node name="CheatsButton" type="MenuButton" parent="VBoxContainer"]
+[node name="CheatsButton" type="MenuButton" parent="Main/VBoxContainer"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
@@ -132,8 +147,80 @@ popup/item_5/text = "No Recoil"
 popup/item_5/checkable = 1
 popup/item_5/id = 5
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_bqqt6")
-volume_db = -10.0
-autoplay = true
-parameters/looping = true
+[node name="QuitButton" type="Button" parent="Main/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
+text = "Quit"
+
+[node name="Disclaimer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_8ln24")
+
+[node name="Label" type="Label" parent="Disclaimer"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.185
+anchor_right = 0.5
+anchor_bottom = 0.185
+offset_left = -441.0
+offset_top = -138.85
+offset_right = 441.0
+offset_bottom = 139.15
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 210
+text = "WARNING"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Disclaimer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.43400002
+anchor_right = 0.5
+anchor_bottom = 0.43400002
+offset_left = -365.5
+offset_top = -42.05699
+offset_right = 365.5
+offset_bottom = 41.943207
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "This game contains things that may 
+trigger seizures in people with certain conditions, 
+such as photosensitivity."
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Disclaimer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.64500004
+anchor_right = 0.5
+anchor_bottom = 0.64500004
+offset_left = -85.0
+offset_top = -42.23001
+offset_right = 85.0
+offset_bottom = 41.76999
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OkButton" type="Button" parent="Disclaimer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Okay"
+
+[node name="NoButton" type="Button" parent="Disclaimer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Nevermind
+"

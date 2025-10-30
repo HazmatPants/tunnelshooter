@@ -21,6 +21,7 @@ var aff_icons := {
 	"dislocation": preload("res://assets/textures/ui/afflictions/dislocation.png"),
 	"internalBleeding": preload("res://assets/textures/ui/afflictions/internalBleeding.png"),
 	"pain": preload("res://assets/textures/ui/afflictions/pain.png"),
+	"seizure": preload("res://assets/textures/ui/afflictions/seizure.png"),
 }
 
 var aff_names := {
@@ -52,6 +53,7 @@ var aff_names := {
 	"pain3": "Moderate Pain",
 	"pain4": "Agony",
 	"pain5": "Vasovagal Response",
+	"seizure": "Seizuring",
 }
 
 var aff_descs := {
@@ -83,6 +85,7 @@ var aff_descs := {
 	"pain3": "Hurts a lot!",
 	"pain4": "Mind fogged by severe pain.",
 	"pain5": "Losing consciousness from extreme agony. Maybe it'll all be over soon...?",
+	"seizure": "Brain is firing random signals.",
 }
 
 var aff_name: String = ""

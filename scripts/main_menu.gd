@@ -1,13 +1,32 @@
 extends Control
 
-@onready var playButton: MenuButton = $VBoxContainer/PlayButton
-@onready var cheatsButton: MenuButton = $VBoxContainer/CheatsButton
+@onready var playButton: MenuButton = $Main/VBoxContainer/PlayButton
+@onready var cheatsButton: MenuButton = $Main/VBoxContainer/CheatsButton
+
+@onready var disclOkButton: Button = $Disclaimer/VBoxContainer/OkButton
+@onready var disclNoButton: Button = $Disclaimer/VBoxContainer/NoButton
 
 func _ready() -> void:
+	Global.playsound(preload("res://assets/audio/sfx/ui/ui_tab.ogg"))
 	playButton.get_popup().index_pressed.connect(_playButton_pressed)
 	cheatsButton.get_popup().index_pressed.connect(_cheatsButton_pressed)
 	cheatsButton.about_to_popup.connect(_click)
 	playButton.about_to_popup.connect(_click)
+	disclOkButton.pressed.connect(_disclOkButton_pressed)
+	disclNoButton.pressed.connect(quit)
+	$Main/VBoxContainer/QuitButton.pressed.connect(quit)
+
+func _quitButton_pressed():
+	get_tree().quit()
+
+func _disclOkButton_pressed():
+	$AudioStreamPlayer.play()
+	Global.playsound(preload("res://assets/audio/sfx/ui/ui_popup.ogg"))
+	$Main.show()
+	$Disclaimer.hide()
+
+func quit():
+	get_tree().quit()
 
 func _playButton_pressed(idx: int):
 	match idx:

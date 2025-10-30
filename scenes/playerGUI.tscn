@@ -24,6 +24,10 @@
 [ext_resource type="AudioStream" uid="uid://u8hkcds047jd" path="res://assets/audio/bgs/incoming_seizure.wav" id="19_blegf"]
 [ext_resource type="Shader" uid="uid://b6ruxsiaxscer" path="res://shaders/blur.gdshader" id="23_wgrh7"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
+shader = ExtResource("23_wgrh7")
+shader_parameter/lod = 2.8410001349475
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
 
@@ -86,10 +90,6 @@ expand_margin_bottom = 3.0
 [sub_resource type="Theme" id="Theme_8rw1s"]
 default_font = ExtResource("4_kf1ee")
 default_font_size = 16
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
-shader = ExtResource("23_wgrh7")
-shader_parameter/lod = 2.8410001349475
 
 [node name="PlayerGUI" type="CanvasLayer"]
 script = ExtResource("1_cvfx2")
@@ -283,6 +283,16 @@ grow_vertical = 2
 scale = Vector2(0.505, 0.505)
 pivot_offset = Vector2(1024, 1024)
 texture = ExtResource("12_cle1p")
+
+[node name="blur" type="ColorRect" parent="."]
+top_level = true
+material = SubResource("ShaderMaterial_350o8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="HealthGUI" type="Control" parent="."]
 layout_mode = 3
@@ -926,16 +936,6 @@ nine_patch_stretch = true
 texture_under = ExtResource("8_epmk8")
 texture_progress = ExtResource("8_epmk8")
 tint_under = Color(0, 0, 0, 1)
-
-[node name="blur" type="ColorRect" parent="."]
-top_level = true
-material = SubResource("ShaderMaterial_350o8")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
 
 [node name="afterimage" type="TextureRect" parent="."]
 top_level = true

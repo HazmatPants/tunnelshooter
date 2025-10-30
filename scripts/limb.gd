@@ -63,11 +63,12 @@ func hit(_bullet):
 		Global.cause_of_death = "headshot"
 
 	bleedingRate += randf_range(1.0, 3.0) * bleedingRateMult
-	pain += randf_range(0.075, 0.2) * (1.0 - Global.player.healthCtl.adrenaline)
+	pain += randf_range(0.25, 0.5) * (1.0 - Global.player.healthCtl.adrenaline)
 	Global.player.healthCtl.adrenaline += 0.05
 	muscleHealth -= randf_range(0.1, 0.3)
 	skinHealth -= randf_range(0.005, 0.05)
 	play_random_sfx(sfx_flesh_hit, 10)
+	Global.playerGUI.shock()
 	Global.player.viewpunch_velocity += Vector3(200.0, 0, 0)
 
 func play_random_sfx(sound_list, volume: float=0):

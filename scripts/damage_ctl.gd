@@ -43,7 +43,7 @@ var adrenaline: float = 0.0
 var physicalWork: float = 0.05
 var stamina: float = 1.0
 var heartRate: float = 80.0 # bpm
-var maxHR: float = 200
+var maxHR: float = 240
 var restHR: float = 80
 var targetHR: float = 80
 var breathingRate: float = 90
@@ -103,7 +103,7 @@ func _process(delta: float) -> void:
 	var total_pain = get_limb_total("pain")
 	var max_pain = get_limb_all("pain").values().max()
 
-	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR) * 1.3
+	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR)
 	targetHR += total_pain
 	targetHR -= stimAmount * 120
 	targetHR -= opioidAmount * 10
@@ -223,6 +223,11 @@ func _process(delta: float) -> void:
 
 	if bloodLossRate > 0.0:
 		set_affliction("bleeding", bloodLossRate / 16)
+
+	if Global.playerGUI.get_node("BrainDamage").seizuring:
+		set_affliction("seizure", 1.0)
+	else:
+		afflictions.erase("seizure")
 
 	if internalBleeding > 0.0:
 		set_affliction("internalBleeding", internalBleeding / 100)
