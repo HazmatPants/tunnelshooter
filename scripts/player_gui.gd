@@ -16,8 +16,9 @@ var bgm_dying = preload("res://assets/audio/music/dying.wav")
 
 func _ready() -> void:
 	await Global.initialized
+
 	Global.player.Death.connect(_death)
-	
+
 	$Blackout.visible = true
 
 func show_hint(text: String) -> void:
@@ -77,7 +78,7 @@ func _process(delta: float) -> void:
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
 	var current_blur = $blur.material.get_shader_parameter("lod")
-	var target_blur = lerp(0.0, 4.0, max(max_pain, 1.0 - Global.player.healthCtl.brainHealth))
+	var target_blur = lerp(0.0, 5.0, max(max_pain, 1.0 - Global.player.healthCtl.brainHealth))
 	var lerped_blur = lerp(current_blur, target_blur, 0.1)
 	$blur.material.set_shader_parameter("lod", lerped_blur)
 

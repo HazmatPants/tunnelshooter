@@ -95,9 +95,11 @@ func _unhandled_input(event):
 			rot_offset.y -= event.relative.x * 0.01
 			rot_offset.z -= event.relative.y * 0.01
 			if muzzleRay.is_colliding():
-				if muzzleRay.get_collider().owner.name == "Player":
-					shakiness += 0.005
-					Global.player.healthCtl.adrenaline += 0.005
+				var collider = muzzleRay.get_collider()
+				if collider:
+					if collider.owner.name == "Player":
+						shakiness += 0.005
+						Global.player.healthCtl.adrenaline += 0.005
 	else:
 		Global.player.mouse_look_enabled = true
 		rot_offset = Vector3.ZERO
@@ -246,13 +248,17 @@ func _process(_delta: float) -> void:
 			if slidelock:
 				anim.play("slidebacklock")
 				return
-			anim.play("slideback")
-			hammer = true
-			if chamber:
-				spawn_casing()
-				chamber = false
+			if not firemode == "safe":
+				anim.play("slideback")
+				hammer = true
+				if chamber:
+					spawn_casing()
+					chamber = false
 	if Input.is_action_just_released("pullslide") and Global.player.is_input_enabled():
 		recoil -= 0.2
+		if firemode == "safe":
+			playsound(sfx_slidehit)
+			return
 		if magazine:
 			if magazine.ammo <= 0:
 				anim.play("slidelock")
@@ -338,6 +344,10 @@ func _process(_delta: float) -> void:
 					magAction = "none"
 	if Input.is_action_pressed("slidelock") and not first_input == "pullslide":
 		if Input.is_action_just_pressed("pullslide"):
+			recoil += 0.1
+			if firemode == "safe":
+				playsound(sfx_slidehit)
+				return
 			play_random_sfx(sfx_slideback)
 			anim.play("inspect")
 			recoil -= 0.1

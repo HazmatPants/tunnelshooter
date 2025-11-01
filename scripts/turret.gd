@@ -49,12 +49,12 @@ func _ready() -> void:
 	ap_alarm.stream = preload("res://assets/audio/sfx/weapons/turret/alarm.wav")
 	ap_alarm.volume_db = -10
 	get_tree().current_scene.call_deferred("add_child", ap_alarm)
-	ap_alarm.global_position = global_position
 
 var last_spotted_rot: Vector3 = Vector3.ZERO
 func _process(delta: float) -> void:
 	if not Global.is_initialized:
 		return
+	ap_alarm.global_position = global_position
 	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 3
 	var target_basis: Basis
 	if state == "shoot":

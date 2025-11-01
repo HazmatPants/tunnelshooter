@@ -46,8 +46,8 @@ var healthCtl
 const sfx_heartBeat = preload("res://assets/audio/sfx/player/heart_thump.ogg")
 const sfx_ECG = preload("res://assets/audio/sfx/player/ECG.wav")
 const sfx_ECG_loop = preload("res://assets/audio/sfx/player/ECG_loop.wav")
-const sfx_menu_open = preload("res://assets/audio/sfx/ui/health_menu_open.ogg")
-const sfx_menu_close = preload("res://assets/audio/sfx/ui/health_menu_close.ogg")
+const sfx_menu_open = preload("res://assets/audio/sfx/ui/ui_open.wav")
+const sfx_menu_close = preload("res://assets/audio/sfx/ui/ui_close.wav")
 
 var ap_ecg = AudioStreamPlayer.new()
 var limbposs = {}
@@ -84,6 +84,7 @@ func _ready() -> void:
 		"RFoot": Global.player.get_node("RLeg/RThigh/RCrusPivot/RCrus/RFootPivot/RFoot"),
 	}
 
+var last_scale := Vector2.ZERO
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("healthmenu"):
 		if not visible:
@@ -110,9 +111,8 @@ func _process(delta: float) -> void:
 			$Panel/VBoxContainer/HoveredLimbLabel.text = "\n" + LimbDisplayNames[hovered_limb]
 
 		lung_anim(delta)
-		scale.x = lerp(scale.x, 1.0, 0.4)
-		if scale.x > 0.9:
-			scale.y = lerp(scale.y, 1.0, 0.4)
+		scale = lerp(scale, Vector2.ONE, 0.3)
+		
 		Heart.scale = lerp(Heart.scale, Vector2(1.0, 1.0), 0.2)
 		if healthCtl.heartRate < 1:
 			$Panel/ECG/Gradient.position.x += 2
@@ -144,6 +144,8 @@ func _process(delta: float) -> void:
 	else:
 		scale = Vector2(0.0, 0.1)
 
+	last_scale = scale
+
 func _HeartBeat():
 	Heart.scale = Vector2(1.2, 1.2)
 	Heart.get_theme_stylebox("panel").skew = Vector2(0, randf_range(-0.25, 0.25))
@@ -152,9 +154,10 @@ func _HeartBeat():
 		playsound(sfx_heartBeat)
 		ap_ecg.play()
 
-func playsound(stream: AudioStream, volume: float=0):
+func playsound(stream: AudioStream, volume: float=0, pitch: float=1.0):
 	var ap = AudioStreamPlayer.new()
 	ap.volume_db = volume
+	ap.pitch_scale = pitch
 	get_tree().current_scene.add_child(ap)
 	ap.stream = stream
 	ap.play()

@@ -195,9 +195,8 @@ offset_bottom = 41.943207
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 25
-text = "This game contains things that may 
-trigger seizures in people with certain conditions, 
-such as photosensitivity."
+text = "This game contains things like:
+Very loud sounds, flashing lights, and lots of violence."
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Disclaimer"]

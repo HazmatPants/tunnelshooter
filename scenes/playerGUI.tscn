@@ -26,7 +26,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
 shader = ExtResource("23_wgrh7")
-shader_parameter/lod = 2.8410001349475
+shader_parameter/lod = 3.0000001425
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -51,41 +51,43 @@ corner_radius_bottom_left = 5
 default_font = ExtResource("4_kf1ee")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0f6tr"]
-bg_color = Color(0, 0.2, 0, 1)
+bg_color = Color(0.33, 0.209, 0, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.53, 0.53, 0.53, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 expand_margin_left = 10.0
 expand_margin_top = 10.0
 expand_margin_right = 10.0
 expand_margin_bottom = 10.0
-anti_aliasing_size = 4.0
+anti_aliasing = false
 
 [sub_resource type="Theme" id="Theme_epmk8"]
 default_font = ExtResource("4_kf1ee")
 default_font_size = 80
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1buc"]
-bg_color = Color(0, 0.258824, 0, 0.705882)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wgrh7"]
+bg_color = Color(0.33, 0.209, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.542318, 0.542318, 0.542318, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 3.0
-expand_margin_top = 3.0
-expand_margin_right = 3.0
-expand_margin_bottom = 3.0
+border_color = Color(0.53, 0.53, 0.53, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+shadow_size = 4
+anti_aliasing = false
 
 [sub_resource type="Theme" id="Theme_8rw1s"]
 default_font = ExtResource("4_kf1ee")
@@ -315,6 +317,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kf1ee")
 
 [node name="Body" type="Control" parent="HealthGUI"]
+modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -629,10 +632,10 @@ offset_left = 108.275
 offset_top = 49.0
 offset_right = 109.275
 offset_bottom = 89.0
-color = Color(0, 1, 0, 1)
+color = Color(1, 1, 0, 1)
 
 [node name="ECG" type="TextureRect" parent="HealthGUI/Panel"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 0.8000001, 0, 1)
 clip_children = 1
 texture_filter = 1
 layout_mode = 0
@@ -661,7 +664,7 @@ offset_bottom = 174.0
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Brain"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -673,25 +676,25 @@ stretch_mode = 5
 layout_mode = 2
 
 [node name="BrainHealthLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Brain/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "Int: 100%"
 
 [node name="ConsciousnessLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Brain/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "Conc: 100%"
 
 [node name="Separator2" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 1)
 layout_mode = 2
-color = Color(0, 1, 0, 1)
+color = Color(1, 1, 0, 1)
 
 [node name="Heart" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Heart"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -706,13 +709,13 @@ text = "80 BPM"
 [node name="Separator" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 1)
 layout_mode = 2
-color = Color(0, 1, 0, 1)
+color = Color(1, 1, 0, 1)
 
 [node name="Blood" type="HBoxContainer" parent="HealthGUI/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Blood"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 texture_filter = 1
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -723,32 +726,32 @@ stretch_mode = 3
 layout_mode = 2
 
 [node name="BloodVolumeLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "5 L"
 
 [node name="BleedingRateLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "0.10 L/m"
 
 [node name="SPO2Label" type="Label" parent="HealthGUI/Panel/VBoxContainer/Blood/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "SPO2 100%"
 
 [node name="Separator3" type="ColorRect" parent="HealthGUI/Panel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 1)
 layout_mode = 2
-color = Color(0, 1, 0, 1)
+color = Color(1, 1, 0, 1)
 
 [node name="WorkLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "Work: 5%"
 
 [node name="StaminaLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "Stamina: 100%"
 
@@ -756,18 +759,19 @@ text = "Stamina: 100%"
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HealthGUI/Panel/VBoxContainer/Pain"]
+modulate = Color(1, 1, 0, 1)
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 texture = ExtResource("14_cpy2a")
 expand_mode = 2
 
 [node name="PainLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Pain"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "Pain: 100%"
 
 [node name="HoveredLimbLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 
 [node name="Blackout" type="ColorRect" parent="."]
@@ -896,7 +900,7 @@ layout_mode = 0
 offset_right = 100.0
 offset_bottom = 30.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_y1buc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wgrh7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Tooltip/Panel"]
 custom_minimum_size = Vector2(250, 0)
@@ -906,7 +910,7 @@ offset_bottom = 55.0
 mouse_filter = 2
 
 [node name="Title" type="Label" parent="Tooltip/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 theme = SubResource("Theme_8rw1s")
 text = "Title"
@@ -915,9 +919,10 @@ text = "Title"
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 mouse_filter = 2
-color = Color(0, 0.647059, 0, 1)
+color = Color(1, 1, 0, 1)
 
 [node name="Description" type="RichTextLabel" parent="Tooltip/Panel/VBoxContainer"]
+modulate = Color(1, 1, 0, 1)
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = SubResource("Theme_8rw1s")
@@ -927,7 +932,7 @@ fit_content = true
 scroll_active = false
 
 [node name="TooltipProgress" type="TextureProgressBar" parent="Tooltip/Panel/VBoxContainer"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 max_value = 1.0

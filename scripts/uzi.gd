@@ -201,7 +201,8 @@ func _process(_delta: float) -> void:
 					play_random_sfx(sfx_prefire)
 					if magazine:
 						if magazine.ammo > 0:
-							magazine.ammo -= 1
+							if not Global.infinite_ammo:
+								magazine.ammo -= 1
 							chamber = true
 	if triggerPulled:
 		if shootTimer < shootFrames:
@@ -337,7 +338,6 @@ func playsound(stream: AudioStream, volume: float=0):
 func shoot_bullet():
 	var b = bullet.instantiate()
 	
-	b.speed = 400.0
 	get_tree().current_scene.call_deferred("add_child", b)
 	b.global_transform = muzzleRay.global_transform
 	b.shooter = Global.player

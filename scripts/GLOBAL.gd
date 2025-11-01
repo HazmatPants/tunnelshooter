@@ -1,5 +1,7 @@
 extends Node
 
+var settings: ConfigFile = null
+
 @export var infinite_ammo: bool = false
 @export var console_enabled: bool = false
 @export var quiet_guns: bool = false
@@ -22,6 +24,8 @@ signal initialized
 var is_initialized
 
 func _ready() -> void:
+	settings = load_settings()
+
 	await get_tree().scene_changed
 
 	playerScene = get_tree().get_current_scene()
@@ -80,3 +84,21 @@ func playsound(stream: AudioStream, volume: float=0):
 func play_random_sfx(sound_list, volume: float=0):
 	var idx = randi() % sound_list.size()
 	playsound(sound_list[idx], volume)
+
+func load_settings() -> ConfigFile:
+	var cfg := ConfigFile.new()
+	var err = cfg.load("user://settings.cfg")
+
+	print("Load settings: " + error_string(err))
+
+	if err != OK:
+		var s = ConfigFile.new()
+		s.set_value("Misc", "accepted_disclaimer", false)
+		s.save("user://settings.cfg")
+		return s
+
+	return cfg
+
+func set_setting(section: String, key: String, value: Variant):
+	settings.set_value(section, key, value)
+	settings.save("user://settings.cfg")

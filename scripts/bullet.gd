@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var speed: float = 360
+@export var speed: float = 1300.0
 @export var max_spread := Vector2(0.01, 0.01)
 @export var bounces: int = 1
 
