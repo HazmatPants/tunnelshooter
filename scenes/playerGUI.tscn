@@ -26,7 +26,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
 shader = ExtResource("23_wgrh7")
-shader_parameter/lod = 3.0000001425
+shader_parameter/lod = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -593,6 +593,7 @@ offset_right = -2.99997
 offset_bottom = 155.02
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(18, 31)
 script = ExtResource("5_fay7l")
 
 [node name="RFoot" type="ColorRect" parent="HealthGUI/Body"]

@@ -117,9 +117,6 @@ func _process(delta: float) -> void:
 	if stamina < 0.5:
 		targetHR += (0.5 - stamina) * 60.0
 
-	if heartRate > 200:
-		consciousness -= 1 * delta
-
 	if bloodstream.has("KCl"):
 		targetHR = 0
 		bloodOxygen -= 0.02 * delta

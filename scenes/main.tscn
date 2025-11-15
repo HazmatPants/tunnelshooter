@@ -491,3 +491,6 @@ transform = Transform3D(1.9106855e-15, 1, -4.371139e-08, 4.371139e-08, -4.371139
 size = Vector3(178.56555, 0.14916992, 193.83838)
 texture_albedo = ExtResource("28_2f3dj")
 texture_emission = ExtResource("28_2f3dj")
+
+[node name="Camera2" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -5.9604645e-08, 1.6898158, -5.3450937)

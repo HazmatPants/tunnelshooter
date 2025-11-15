@@ -15,3 +15,9 @@ func _process(delta: float) -> void:
 			fov = lerp(fov, zoom_fov, zoom_speed * delta)
 		else:
 			fov = lerp(fov, base_fov, zoom_speed * delta)
+
+	if Input.is_action_just_pressed("camera2"):
+		if current:
+			Global.playerScene.get_node("Camera2").current = true
+		else:
+			current = true
