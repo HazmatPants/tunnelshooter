@@ -62,6 +62,8 @@ func _process(delta: float) -> void:
 			rotation_degrees = lerp(rotation_degrees, disloc_angle, 0.1)
 			tooltip_progress.value -= 0.5 * delta
 			tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 0.0, 0.1)
+	else:
+		tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 0.0, 0.1)
 
 	if not was_colliding and is_colliding:
 		owner.get_node("HealthGUI").hovered_limb = name

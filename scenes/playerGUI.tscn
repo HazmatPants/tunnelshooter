@@ -703,7 +703,7 @@ texture = ExtResource("6_0f6tr")
 stretch_mode = 3
 
 [node name="BPMLabel" type="Label" parent="HealthGUI/Panel/VBoxContainer/Heart"]
-modulate = Color(0, 1, 0, 1)
+modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 text = "80 BPM"
 

@@ -92,9 +92,7 @@ func load_settings() -> ConfigFile:
 	print("Load settings: " + error_string(err))
 
 	if err != OK:
-		var s = ConfigFile.new()
-		s.set_value("Misc", "accepted_disclaimer", false)
-		s.save("user://settings.cfg")
+		var s = default_config()
 		return s
 
 	return cfg
@@ -102,3 +100,9 @@ func load_settings() -> ConfigFile:
 func set_setting(section: String, key: String, value: Variant):
 	settings.set_value(section, key, value)
 	settings.save("user://settings.cfg")
+
+func default_config() -> ConfigFile:
+	var s = ConfigFile.new()
+	s.set_value("Misc", "accepted_disclaimer", false)
+	s.save("user://settings.cfg")
+	return s

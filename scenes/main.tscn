@@ -1,8 +1,8 @@
-[gd_scene load_steps=58 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=55 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
-[ext_resource type="Texture2D" uid="uid://dqitb0kwfld7i" path="res://assets/textures/qwantani_night_puresky_1k.exr" id="3_yq6so"]
+[ext_resource type="Environment" uid="uid://m8173xuc6d13" path="res://assets/res/environment.tres" id="3_yq6so"]
 [ext_resource type="Texture2D" uid="uid://bedjnkl6c6nv0" path="res://assets/textures/target_bullseye.png" id="4_jyhfs"]
 [ext_resource type="Material" uid="uid://dbt6gwqwfiug4" path="res://assets/materials/green.tres" id="5_2wyq8"]
 [ext_resource type="PackedScene" uid="uid://ly67c2aajcpn" path="res://scenes/metal_target.tscn" id="5_tbgi4"]
@@ -29,20 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://cbdfbi72sig1p" path="res://scenes/uzi.tscn" id="25_og1vs"]
 [ext_resource type="PackedScene" uid="uid://cgnvboti64r87" path="res://scenes/m45a1.tscn" id="27_vxglm"]
 [ext_resource type="Texture2D" uid="uid://d2ablh56gcqms" path="res://assets/textures/mutilatedmoonbaby.jpg" id="28_2f3dj"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fv21b"]
-panorama = ExtResource("3_yq6so")
-energy_multiplier = 0.4
-
-[sub_resource type="Sky" id="Sky_tel4y"]
-sky_material = SubResource("PanoramaSkyMaterial_fv21b")
-
-[sub_resource type="Environment" id="Environment_sugp2"]
-background_mode = 2
-sky = SubResource("Sky_tel4y")
-ssr_enabled = true
-ssao_enabled = true
-glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wfyh"]
 size = Vector3(400, 1, 400)
@@ -128,12 +114,11 @@ size = Vector3(11.995, 10.905, 0.3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8912523, 0)
 strafe_roll_amount = 4.0
 strafe_roll_speed = 1.0
-equipment = []
 
 [node name="PlayerGUI" parent="." instance=ExtResource("2_0wfyh")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_sugp2")
+environment = ExtResource("3_yq6so")
 
 [node name="SteamAudioConfig" type="SteamAudioConfig" parent="."]
 max_reflection_sources = 256.0

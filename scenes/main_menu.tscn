@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ceyvwjpgnkuxh"]
+[gd_scene load_steps=12 format=3 uid="uid://ceyvwjpgnkuxh"]
 
 [ext_resource type="FontFile" uid="uid://boeoafodkpa6u" path="res://assets/fonts/PerfectDOSVGA437.ttf" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://bs2x8vmcbx5km" path="res://scripts/main_menu.gd" id="1_l6cm7"]
@@ -7,6 +7,12 @@
 
 [sub_resource type="Theme" id="Theme_bqqt6"]
 default_font = ExtResource("1_ekxnf")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ln24"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
+draw_center = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bqqt6"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
@@ -71,27 +77,46 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Main" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Label" type="Label" parent="Main"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.24900001
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 190.5
-offset_top = 141.5
-offset_right = 921.5
-offset_bottom = 241.5
+anchor_bottom = 0.24900001
+offset_left = -365.5
+offset_top = -49.727005
+offset_right = 365.5
+offset_bottom = 50.273026
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_font_sizes/font_size = 100
 text = "TunnelShooter"
 horizontal_alignment = 1
+
+[node name="ConfigLabel" type="Button" parent="Main"]
+layout_mode = 1
+offset_right = 196.865
+offset_bottom = 24.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_8ln24")
+theme_override_styles/focus = SubResource("StyleBoxFlat_rtw2f")
+text = "user data is at: "
+alignment = 0
+
+[node name="OSLabel" type="Label" parent="Main"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_right = 40.0
+grow_vertical = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Main"]
 layout_mode = 1
@@ -100,10 +125,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 505.33252
-offset_top = 270.0
-offset_right = 606.66754
-offset_bottom = 338.0
+offset_left = -50.66751
+offset_top = -46.0
+offset_right = 50.66751
+offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -115,9 +140,11 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
 text = "Play"
 flat = false
-item_count = 1
+item_count = 2
 popup/item_0/text = "Load Test Scene"
 popup/item_0/id = 0
+popup/item_1/text = "Load World"
+popup/item_1/id = 1
 
 [node name="CheatsButton" type="MenuButton" parent="Main/VBoxContainer"]
 custom_minimum_size = Vector2(0, 32)
@@ -153,6 +180,24 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
 theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
 text = "Quit"
+
+[node name="ConfigResetButton" type="Button" parent="Main"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -56.0
+offset_top = -20.0
+offset_right = 56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_bqqt6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wu84c")
+text = "Reset Config
+"
 
 [node name="Disclaimer" type="Control" parent="."]
 layout_mode = 1

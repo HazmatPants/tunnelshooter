@@ -92,7 +92,7 @@ var hearing_damage: float = 0.0
 var dead: bool = false
 
 @export var equipment := [
-	"ear-pro"
+	#"ear-pro"
 ]
 
 const sfx_foot_step = {
@@ -125,6 +125,18 @@ const sfx_foot_step = {
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk2.ogg"),
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk3.ogg"),
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk4.ogg")
+	],
+	"grass": [
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk4.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk5.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk6.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk7.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk8.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk9.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_walk10.ogg")
 	]
 }
 
@@ -181,6 +193,14 @@ const sfx_foot_wander = {
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_wander2.ogg"),
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_wander3.ogg"),
 		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_wander4.ogg")
+	],
+	"grass": [
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander4.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander5.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_wander6.ogg")
 	]
 }
 
@@ -200,7 +220,7 @@ func play_random_sfx(sound_list, volume: float=0, spatialize=true):
 	var idx = randi() % sound_list.size()
 	playsound(sound_list[idx], spatialize, volume)
 
-func playsound(sound: AudioStream, spatialize: bool=true, volume: float=0.0, bus: String="SFX"):
+func playsound(sound: AudioStream, spatialize: bool=false, volume: float=0.0, bus: String="SFX"):
 	if spatialize:
 		var plr = SteamAudioPlayer.new()
 

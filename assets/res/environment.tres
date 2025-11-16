@@ -1,0 +1,18 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://m8173xuc6d13"]
+
+[ext_resource type="Texture2D" uid="uid://dqitb0kwfld7i" path="res://assets/textures/qwantani_night_puresky_1k.exr" id="1_45qa7"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fv21b"]
+panorama = ExtResource("1_45qa7")
+energy_multiplier = 0.4
+
+[sub_resource type="Sky" id="Sky_tel4y"]
+sky_material = SubResource("PanoramaSkyMaterial_fv21b")
+
+[resource]
+background_mode = 2
+background_energy_multiplier = 0.05
+sky = SubResource("Sky_tel4y")
+ssr_enabled = true
+ssao_enabled = true
+glow_enabled = true

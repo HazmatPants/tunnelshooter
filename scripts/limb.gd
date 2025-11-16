@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 		Global.player.healthCtl.stimAmount * 10) / 10)
 		)
 	pain_sub += Global.player.healthCtl.adrenaline / 10
-	pain_sub *= min(muscleHealth, 0.99 - dislocationAmount)
+	pain_sub *= min(muscleHealth, 0.9 - dislocationAmount)
 
 	pain -= clampf(pain_sub, 0.0, INF) * delta
 

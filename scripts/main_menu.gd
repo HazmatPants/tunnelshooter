@@ -6,6 +6,8 @@ extends Control
 @onready var disclOkButton: Button = $Disclaimer/VBoxContainer/OkButton
 @onready var disclNoButton: Button = $Disclaimer/VBoxContainer/NoButton
 
+@onready var OSLabel: Label = $Main/OSLabel
+
 func _ready() -> void:
 	Global.playsound(preload("res://assets/audio/sfx/ui/ui_tab.ogg"))
 	playButton.get_popup().index_pressed.connect(_playButton_pressed)
@@ -13,6 +15,7 @@ func _ready() -> void:
 	cheatsButton.about_to_popup.connect(_click)
 	playButton.about_to_popup.connect(_click)
 	disclOkButton.pressed.connect(_disclOkButton_pressed)
+	$Main/ConfigResetButton.pressed.connect(_ConfigReset)
 	disclNoButton.pressed.connect(quit)
 	$Main/VBoxContainer/QuitButton.pressed.connect(quit)
 	if Global.settings.get_value("Misc", "accepted_disclaimer", false):
@@ -24,6 +27,25 @@ func _ready() -> void:
 		popup.set_item_checked(int(idx), Global.settings.get_value("Dev_Tools", idx, false))
 
 		apply_dev_tool(int(idx))
+
+	$Main/ConfigLabel.text = "user data is at: " + ProjectSettings.globalize_path("user://")
+	$Main/ConfigLabel.pressed.connect(_ConfigLabel_pressed)
+
+	print(OS.get_name())
+	match OS.get_name():
+		"Windows", "UWP":
+			OSLabel.text = "🪟"
+		"macOS":
+			OSLabel.text = "🍎"
+		"Linux", "X11":
+			OSLabel.text = "🐧"
+
+func _ConfigLabel_pressed():
+	DisplayServer.clipboard_set(ProjectSettings.globalize_path("user://"))
+
+	$Main/ConfigLabel.text += "\nCopied path to clipboard"
+	await get_tree().create_timer(1.0).timeout
+	$Main/ConfigLabel.text = "user data is at: " + ProjectSettings.globalize_path("user://")
 
 func _quitButton_pressed():
 	get_tree().quit()
@@ -46,7 +68,12 @@ func _playButton_pressed(idx: int):
 			await get_tree().create_timer(0.05).timeout
 			Global.is_initialized = false
 			get_tree().change_scene_to_file("res://scenes/main.tscn")
-
+		1:
+			Global.playsound(preload("res://assets/audio/sfx/ui/ui_tab.ogg"))
+			$Main/Label.text = "LOADING..."
+			await get_tree().create_timer(0.05).timeout
+			Global.is_initialized = false
+			get_tree().change_scene_to_file("res://scenes/world.tscn")
 func _cheatsButton_pressed(idx: int):
 	var popup = cheatsButton.get_popup()
 	popup.set_item_checked(idx, !popup.is_item_checked(idx))
@@ -79,3 +106,8 @@ func apply_dev_tool(idx: int):
 
 func _click():
 	Global.playsound(preload("res://assets/audio/sfx/ui/ui_popup.ogg"))
+
+func _ConfigReset():
+	var s = Global.default_config()
+	Global.settings = s
+	quit()
