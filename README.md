@@ -10,7 +10,8 @@ Inspired by [Receiver 2](https://receiver2.com) (gunplay) and [Casualites: Unkno
 **This game is in VERY early alpha. There are many bugs and it is very unpolished.**
 If you find a bug, please let me know, feedback is greatly appreciated. :D
 
-**Builds are not currently available. You may clone this repo and export it yourself in Godot.**
+Check the [releases](https://github.com/HazmatPants/tunnelshooter/releases) for builds.
+If you want to play TS with the latest changes, check [EXPORTING.md](EXPORTING.md) for info on how to export the game.
 
 [To-Do List](TO-DO.md)
 
