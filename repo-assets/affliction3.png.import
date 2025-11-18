@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qti3ok08prs"
-path="res://.godot/imported/affliction3.png-0684804c9bd7b61c378c38f33b8b7228.ctex"
+path="res://.godot/imported/affliction3.png-7556325db709592f81d29b2ed5b9c4b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gallery/affliction3.png"
-dest_files=["res://.godot/imported/affliction3.png-0684804c9bd7b61c378c38f33b8b7228.ctex"]
+source_file="res://repo-assets/affliction3.png"
+dest_files=["res://.godot/imported/affliction3.png-7556325db709592f81d29b2ed5b9c4b7.ctex"]
 
 [params]
 

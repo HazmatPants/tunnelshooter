@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du7wt7j3fayf1"
-path="res://.godot/imported/uzi_2.png-713b13ecf8cb704e5944ca4f4b710430.ctex"
+uid="uid://bd1gbmqf1588x"
+path="res://.godot/imported/ss320_1.png-92d22f9f671c7f2162736614d0798432.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gallery/uzi_2.png"
-dest_files=["res://.godot/imported/uzi_2.png-713b13ecf8cb704e5944ca4f4b710430.ctex"]
+source_file="res://repo-assets/ss320_1.png"
+dest_files=["res://.godot/imported/ss320_1.png-92d22f9f671c7f2162736614d0798432.ctex"]
 
 [params]
 

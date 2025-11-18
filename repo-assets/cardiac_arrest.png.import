@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jcainop647uf"
-path="res://.godot/imported/affliction2.png-d0203ef07f14cf59e670e5bca70fd49e.ctex"
+uid="uid://mr78y5tm0swk"
+path="res://.godot/imported/cardiac_arrest.png-1ea0fdba9d82f98f0a83750155fce4e0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gallery/affliction2.png"
-dest_files=["res://.godot/imported/affliction2.png-d0203ef07f14cf59e670e5bca70fd49e.ctex"]
+source_file="res://repo-assets/cardiac_arrest.png"
+dest_files=["res://.godot/imported/cardiac_arrest.png-1ea0fdba9d82f98f0a83750155fce4e0.ctex"]
 
 [params]
 

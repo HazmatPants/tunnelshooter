@@ -15,18 +15,18 @@ If you find a bug, please let me know, feedback is greatly appreciated. :D
 [To-Do List](TO-DO.md)
 
 ## Images
-- ![alt text](/gallery/healthy.png)
-- ![alt text](/gallery/shot.png)
-- ![alt text](/gallery/cardiac_arrest.png)
-- ![alt text](/gallery/affliction1.png)
-- ![alt text](/gallery/affliction2.png)
-- ![alt text](/gallery/affliction3.png)
-- ![alt text](/gallery/affliction4.png)
-- ![alt text](/gallery/affliction5.png)
+![alt text](/repo-assets/healthy.png)<br>
+![alt text](/repo-assets/shot.png)<br>
+![alt text](/repo-assets/cardiac_arrest.png)<br>
+![alt text](/repo-assets/affliction1.png)<br>
+![alt text](/repo-assets/affliction2.png)<br>
+![alt text](/repo-assets/affliction3.png)<br>
+![alt text](/repo-assets/affliction4.png)<br>
+![alt text](/repo-assets/affliction5.png)<br>
 
-- ![alt text](/gallery/ss320_1.png)
-- ![alt text](/gallery/ss320_2.png)
-- ![alt text](/gallery/ss320_3.png)
+![alt text](/repo-assets/ss320_1.png)<br>
+![alt text](/repo-assets/ss320_2.png)<br>
+![alt text](/repo-assets/ss320_3.png)<br>
 
-- ![alt text](/gallery/uzi_1.png)
-- ![alt text](/gallery/uzi_2.png)
+![alt text](/repo-assets/uzi_1.png)<br>
+![alt text](/repo-assets/uzi_2.png)

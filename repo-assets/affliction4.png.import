@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ciw00jdgce62v"
-path="res://.godot/imported/ss320_3.png-954748dab507c777713834dc73bd367b.ctex"
+uid="uid://bl2ib1l0ogsbf"
+path="res://.godot/imported/affliction4.png-61a6ca64d954fb7803c2e31ee8acebb0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gallery/ss320_3.png"
-dest_files=["res://.godot/imported/ss320_3.png-954748dab507c777713834dc73bd367b.ctex"]
+source_file="res://repo-assets/affliction4.png"
+dest_files=["res://.godot/imported/affliction4.png-61a6ca64d954fb7803c2e31ee8acebb0.ctex"]
 
 [params]
 
