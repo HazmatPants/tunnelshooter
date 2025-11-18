@@ -83,7 +83,7 @@ func _process(delta: float) -> void:
 			else:
 				items["RHand"].anim.current_animation = "use"
 			itemUseProgress.max_value = items["RHand"].useTime
-		else:
+		elif items["RHand"].isLimbSpecific:
 			Global.playerGUI.show_hint("Hover over a limb in the health display and hold Right Click to use this item.")
 
 	if Input.is_action_pressed("rmb"):

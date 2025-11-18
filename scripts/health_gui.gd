@@ -188,7 +188,7 @@ func check_tooltip(node: Control, tt_title: String, tt_desc: String=""):
 		Global.playerGUI.tooltip.request_tooltip(tt_title, tt_desc)
 
 func limb_tooltip(limb: Control):
-	var tt_text = "[color=green]Muscle Health: %s%%\nSkin Health: %s%%\nBlood Loss Rate: %s L/m\nPain: %s%%[/color]" % (
+	var tt_text := "[color=yellow]Muscle Health: %s%%\nSkin Health: %s%%\nBlood Loss Rate: %s L/m\nPain: %s%%[/color]" % (
 	[str(int(round(PhysicalLimbs[limb.name].muscleHealth * 100))),
 	str(int(round(PhysicalLimbs[limb.name].skinHealth * 100))),
 	str(snapped((PhysicalLimbs[limb.name].bleedingRate / 1000) * 60, 0.01)),
@@ -198,6 +198,8 @@ func limb_tooltip(limb: Control):
 			tt_text += "\n[color=pink]%s Dislocated\nClick to attempt reduction[/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
 		else:
 			tt_text += "\n[color=red]%s Dislocated\nToo much pain!![/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
+	if limb.fractureAmount > 0.0:
+			tt_text += "\n[color=pink]%s Fractured[/color]" % (str(int(round(limb.fractureAmount * 100))) + "%")
 	check_tooltip(limb, LimbDisplayNames[limb.name], tt_text)
 
 
@@ -243,4 +245,5 @@ func update_limbs():
 		Limbs[limb].pain = PhysicalLimbs[limb].pain
 		Limbs[limb].muscleHealth = PhysicalLimbs[limb].muscleHealth
 		Limbs[limb].skinHealth = PhysicalLimbs[limb].skinHealth 
-		Limbs[limb].dislocationAmount = PhysicalLimbs[limb].dislocationAmount 
+		Limbs[limb].dislocationAmount = PhysicalLimbs[limb].dislocationAmount
+		Limbs[limb].fractureAmount = PhysicalLimbs[limb].fractureAmount

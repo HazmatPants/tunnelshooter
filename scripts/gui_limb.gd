@@ -7,6 +7,7 @@ var pain: float = 0.0
 var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
 var dislocationAmount: float = 0.0
+var fractureAmount: float = 0.0
 var base_pos
 
 var center: CenterContainer
@@ -52,6 +53,7 @@ func _process(delta: float) -> void:
 				tooltip_progress.value = 0.0
 				Global.player.healthCtl.Limbs[name].pain += randf_range(0.25, 0.6)
 				Global.playerGUI.shock()
+				Global.player.viewpunch_velocity += Vector3(-300.0, 0, 0)
 				Global.play_random_sfx(sfx_gore)
 				if randf() > 0.5:
 					Global.player.healthCtl.Limbs[name].dislocationAmount = 0.0
@@ -62,8 +64,6 @@ func _process(delta: float) -> void:
 			rotation_degrees = lerp(rotation_degrees, disloc_angle, 0.1)
 			tooltip_progress.value -= 0.5 * delta
 			tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 0.0, 0.1)
-	else:
-		tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 0.0, 0.1)
 
 	if not was_colliding and is_colliding:
 		owner.get_node("HealthGUI").hovered_limb = name

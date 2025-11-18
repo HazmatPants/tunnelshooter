@@ -46,10 +46,10 @@ func _process(delta: float) -> void:
 			if randf() > 0.75:
 				photopsia()
 			photopsia_timer = 0.0
-		if seizure_timer >= next_seizure_time:
+		if seizure_timer >= next_seizure_time and not seizuring:
 			if randf() > 0.8:
 				seizuring = true
-				seizure_time = randf_range(3.0, 8.0)
+				seizure_time = randf_range(1.0, 8.0)
 		if (next_seizure_time - seizure_timer < 5.0 and
 		next_seizure_time - seizure_timer > 0.0):
 			ap.volume_linear += 0.001
@@ -84,20 +84,18 @@ func _process(delta: float) -> void:
 	was_seizuring = seizuring
 
 func photopsia():
-	Global.playerGUI.afterimage(randf() / 4)
-	var viewSize := DisplayServer.window_get_size()
+	if randf() > 0.8:
+		Global.playerGUI.afterimage(randf() / 4, randf_range(1.0, 3.0), randf_range(1.0, 3.0), randf_range(1.0, 3.0))
+		Global.playsound(preload("res://assets/audio/bgs/headhit.ogg"))
+	else:
+		Global.playerGUI.afterimage(randf() / 4)
+
 	var flash = TextureRect.new()
 	flash.texture = photopsia_textures[randi_range(0, photopsia_textures.size() - 1)]
 	add_child(flash)
-	flash.position.x = randi_range(0, viewSize.x)
-	flash.position.y = randi_range(0, viewSize.y)
-	flash.rotation_degrees = randf_range(0, 360)
 	flash.modulate = Color(randf(), randf(), randf(), randf())
 	await get_tree().create_timer(randf_range(0.02, 0.05)).timeout
 	flash.texture = photopsia_textures[randi_range(0, photopsia_textures.size() - 1)]
-	flash.position.x = randi_range(0, viewSize.x)
-	flash.position.y = randi_range(0, viewSize.y)
-	flash.rotation_degrees = randf_range(0, 360)
 	flash.modulate = Color(randf(), randf(), randf(), randf())
 	await get_tree().create_timer(randf_range(0.02, 0.25)).timeout
 	flash.queue_free()

@@ -20,6 +20,7 @@ var pain: float = 0.0
 var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
 var dislocationAmount: float = 0.0
+var fractureAmount: float = 0.0
 
 func _process(delta: float) -> void:
 	if not Global.is_initialized:
@@ -32,7 +33,6 @@ func _process(delta: float) -> void:
 		Global.player.healthCtl.stimAmount * 10) / 10)
 		)
 	pain_sub += Global.player.healthCtl.adrenaline / 10
-	pain_sub *= min(muscleHealth, 0.9 - dislocationAmount)
 
 	pain -= clampf(pain_sub, 0.0, INF) * delta
 

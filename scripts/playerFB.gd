@@ -209,6 +209,12 @@ const sfx_land_heavy := [
 	preload("res://assets/audio/sfx/physics/land/landheavy2.ogg")
 ]
 
+const sfx_fracture := [
+	preload("res://assets/audio/sfx/physics/land/fracture1.ogg"),
+	preload("res://assets/audio/sfx/physics/land/fracture2.ogg"),
+	preload("res://assets/audio/sfx/physics/land/fracture3.ogg")
+]
+
 const sfx_land_mid := preload("res://assets/audio/sfx/physics/land/landmedium1.ogg")
 const sfx_land_small := preload("res://assets/audio/sfx/physics/land/landsmall1.ogg")
 
@@ -216,9 +222,9 @@ const sfx_deny = preload("res://assets/audio/sfx/ui/suit_denydevice.wav")
 
 signal Death
 
-func play_random_sfx(sound_list, volume: float=0, spatialize=true):
+func play_random_sfx(sound_list, volume: float=0, spatialize=false, bus: String="SFX"):
 	var idx = randi() % sound_list.size()
-	playsound(sound_list[idx], spatialize, volume)
+	playsound(sound_list[idx], spatialize, volume, bus)
 
 func playsound(sound: AudioStream, spatialize: bool=false, volume: float=0.0, bus: String="SFX"):
 	if spatialize:
@@ -375,7 +381,7 @@ func _physics_process(delta):
 				footstep_sound("impact")
 	crouching = Input.is_action_pressed("crouch")
 
-	if healthCtl.is_leg_dislocated():
+	if healthCtl.is_leg_injured():
 		crouching = true
 
 	if is_input_enabled():
@@ -393,12 +399,16 @@ func _physics_process(delta):
 
 	if is_moving:
 		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0012 * (1.5 - healthCtl.stamina)
-		if healthCtl.is_leg_dislocated():
+		if healthCtl.is_leg_injured():
 			for limb in healthCtl.Limbs.values():
 				if limb.dislocationAmount > 0.0:
 					limb.pain += 0.1 * delta
 					limb.muscleHealth -= 0.01 * delta
 					limb.dislocationAmount += 0.01 * delta
+				if limb.fractureAmount > 0.0:
+					limb.pain += 0.1 * delta
+					limb.muscleHealth -= 0.01 * delta
+					limb.fractureAmount += 0.01 * delta
 			if not was_moving:
 				Global.playerGUI.show_hint("Using a dislocated limb will cause the injury to greatly worsen.")
 
@@ -568,33 +578,46 @@ func is_input_enabled() -> bool:
 
 func do_fall_damage():
 	var dislocated: bool = false
+	var fractured: bool = false
+	var injured: bool = false
 	for limb in healthCtl.Limbs.values():
 		if limb.isLeg:
 			if abs(fall_velocity) > 20:
 				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 200
+				Global.cause_of_death = "fall"
+				injured = true
 			if abs(fall_velocity) > 16:
 				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 600
 				healthCtl.consciousness = 0.0
 				Global.cause_of_death = "fall"
+				injured = true
 			if abs(fall_velocity) > 14:
 				healthCtl.consciousness -= abs(fall_velocity) / 200
 				viewpunch_velocity += Vector3(-300.0, 0, 0)
+				Global.playerGUI.shock()
 				if randf() > 0.5:
-					Global.playerGUI.shock()
 					limb.pain += randf_range(0.01, abs(fall_velocity / 50))
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
 					healthCtl.internalBleeding += randf_range(0.1, 1.0)
+				if randf() > 0.85:
+					limb.fractureAmount += abs(fall_velocity) / randf_range(38, 42)
+					fractured = true
 				if randf() > 0.75:
-					Global.playerGUI.shock()
 					healthCtl.internalBleeding += randf_range(0.5, 1.5)
-					limb.dislocationAmount += abs(fall_velocity) / 50
+					limb.dislocationAmount += abs(fall_velocity) / randf_range(48, 52)
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
 					limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
 					dislocated = true
+				injured = true
 			elif abs(fall_velocity) > 10:
 				if randf() > 0.5:
 					viewpunch_velocity += Vector3(-200.0, 0, 0)
 					limb.muscleHealth -= randf_range(abs(fall_velocity / 125), abs(fall_velocity / 100))
 					limb.pain += randf_range(0.01, abs(fall_velocity / 100))
+				injured = true
 	if dislocated:
-		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, randf() * 10.0, "Master")
+		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, 0.0, "Master")
+	if fractured:
+		play_random_sfx(sfx_fracture, 0.0, false, "Master")
+	if injured:
+		playsound(preload("res://assets/audio/bgs/harmSting.ogg"), false, 0.0, "Master")

@@ -18,6 +18,8 @@ func _ready() -> void:
 	$Main/ConfigResetButton.pressed.connect(_ConfigReset)
 	disclNoButton.pressed.connect(quit)
 	$Main/VBoxContainer/QuitButton.pressed.connect(quit)
+	$Main.visible = false
+	$Disclaimer.visible = true
 	if Global.settings.get_value("Misc", "accepted_disclaimer", false):
 		_disclOkButton_pressed()
 
@@ -33,7 +35,7 @@ func _ready() -> void:
 
 	print(OS.get_name())
 	match OS.get_name():
-		"Windows", "UWP":
+		"Windows":
 			OSLabel.text = "🪟"
 		"macOS":
 			OSLabel.text = "🍎"

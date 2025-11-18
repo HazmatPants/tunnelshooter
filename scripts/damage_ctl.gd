@@ -176,7 +176,7 @@ func _process(delta: float) -> void:
 	adrenaline = clamp(adrenaline, 0.0, 1.0)
 
 	consciousness -= clampf((conscOxygenTheshold - bloodOxygen) * 0.15 * delta, 0.0, INF)
-	if max_pain >= 0.9:
+	if max_pain >= 0.8:
 		consciousness -= (max_pain - 0.9) * delta
 
 	consciousness += 0.01 * (1.0 + (adrenaline * 8)) * delta
@@ -188,14 +188,14 @@ func _process(delta: float) -> void:
 	consciousness = clamp(consciousness, 0.0, 1.0)
 
 	if consciousness <= unconsciousThreshold:
-		Engine.time_scale = 10.0
+		Engine.time_scale = 2.0
 		Global.player.set_input_lock("unconscious", true)
 	else:
 		Engine.time_scale = 1.0
 		Global.player.set_input_lock("unconscious", false)
 
 	if bloodOxygen < brainOxygenThreshold:
-		brainHealth -= (brainOxygenThreshold - bloodOxygen) * 0.05 * delta
+		brainHealth -= (brainOxygenThreshold - bloodOxygen) * 0.2 * delta
 
 	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.025 * delta)
 
@@ -300,6 +300,12 @@ func _process(delta: float) -> void:
 	else:
 		afflictions.erase("dislocation")
 
+	var max_fracture_amount = get_limb_all("fractureAmount").values().max()
+	if max_fracture_amount > 0.0:
+		set_affliction("fracture", max_fracture_amount)
+	else:
+		afflictions.erase("fracture")
+
 	for affliction in afflictions.keys():
 		afflictions[affliction]["intensity"] = clampf(afflictions[affliction]["intensity"], 0.0, 1.0)
 		if afflictions[affliction]["intensity"] <= 0.0:
@@ -364,10 +370,11 @@ func add_to_blood(liq_name: String, amount: float=0.1):
 			"amount": amount
 		}
 
-func is_leg_dislocated() -> bool:
+func is_leg_injured() -> bool:
 	for limb in Limbs.values():
-		if limb.dislocationAmount > 0.0 and limb.isLeg:
-			return true
+		if limb.isLeg:
+			if limb.dislocationAmount > 0.0 or limb.fractureAmount < 0.0 or limb.muscleHealth <= 0.05:
+				return true
 		else:
 			continue
 	return false

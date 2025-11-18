@@ -124,8 +124,8 @@ func _death():
 func shock():
 	shockOverlay.modulate.a = 1.0
 
-func afterimage(alpha=1.0):
+func afterimage(alpha=1.0, b=5.0, c=1.0, s=1.0):
 	var image = get_viewport().get_texture().get_image()
-	image.adjust_bcs(5.0, 1.0, 1.0)
+	image.adjust_bcs(b, c, s)
 	afterimageOverlay.texture = ImageTexture.create_from_image(image)
 	afterimageOverlay.modulate.a = alpha
