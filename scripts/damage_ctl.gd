@@ -51,7 +51,8 @@ var maxBR: float = 200
 var restBR: float = 10
 var opioidAmount: float = 0.0
 var stimAmount: float = 0.0
-var bloodClotSpeed: float = 0.003
+var bloodClotSpeed: float = 0.01
+var bloodLossRate: float = 0.0
 const oxygenUseRate: float = 0.15
 const brainOxygenThreshold: float = 0.10
 const conscOxygenTheshold: float = 0.90
@@ -155,7 +156,7 @@ func _process(delta: float) -> void:
 	bloodOxygen -= physicalWork * oxygenUseRate * delta
 	bloodOxygen = clamp(bloodOxygen, 0.0, bloodVolume / 5000.0 if lifesupport <= 0.0 else 1.0)
 
-	var bloodLossRate = get_limb_total("bleedingRate") + internalBleeding
+	bloodLossRate = get_limb_total("bleedingRate") + internalBleeding
 	bloodVolume -= bloodLossRate * delta
 	bloodVolume = clamp(bloodVolume, 0.0, 5000.0)
 

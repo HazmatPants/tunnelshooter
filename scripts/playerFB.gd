@@ -577,6 +577,8 @@ func is_input_enabled() -> bool:
 	return input_lock_reasons.is_empty()
 
 func do_fall_damage():
+	if Global.godmode:
+		return
 	var dislocated: bool = false
 	var fractured: bool = false
 	var injured: bool = false

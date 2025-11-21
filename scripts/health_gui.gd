@@ -40,7 +40,9 @@ var LimbDisplayNames: Dictionary = {
 	"RFoot": "Right Foot",
 }
 
-@onready var Heart = $Body/Thorax/Heart
+@onready var Heart: Panel = $Body/Thorax/Heart
+@onready var StatusLabel: RichTextLabel = $Panel/VBoxContainer/StatusLabel
+
 var healthCtl
 
 const sfx_heartBeat = preload("res://assets/audio/sfx/player/heart_thump.ogg")
@@ -50,6 +52,7 @@ const sfx_menu_open = preload("res://assets/audio/sfx/ui/ui_open.wav")
 const sfx_menu_close = preload("res://assets/audio/sfx/ui/ui_close.wav")
 
 var ap_ecg = AudioStreamPlayer.new()
+var ap_alarm = AudioStreamPlayer.new()
 var limbposs = {}
 
 var hovered_limb: String = ""
@@ -59,7 +62,9 @@ func _ready() -> void:
 	ap_ecg.volume_db = -45
 	ap_ecg.stream = sfx_ECG
 	get_tree().current_scene.call_deferred("add_child", ap_ecg)
-
+	ap_alarm.volume_db = -20
+	ap_alarm.stream = preload("res://assets/audio/bgs/dyingAlarm.wav")
+	get_tree().current_scene.call_deferred("add_child", ap_alarm)
 	await Global.initialized
 
 	healthCtl = Global.player.healthCtl
@@ -85,7 +90,11 @@ func _ready() -> void:
 	}
 
 var last_scale := Vector2.ZERO
+var blink_time: float = 0.0
+var blink_time2: float = 0.0
 func _process(delta: float) -> void:
+	blink_time += delta
+	blink_time2 += delta
 	if Input.is_action_just_pressed("healthmenu"):
 		if not visible:
 			if Global.player.is_input_enabled():
@@ -105,6 +114,7 @@ func _process(delta: float) -> void:
 				ap_ecg.playing = false
 
 	if visible:
+		ap_alarm.volume_db = -20
 		handle_tooltips()
 		
 		if hovered_limb:
@@ -140,11 +150,79 @@ func _process(delta: float) -> void:
 			$Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel.text = ""
 
 		update_limbs()
-
 	else:
+		ap_alarm.volume_db = -40
 		scale = Vector2(0.0, 0.1)
 
 	last_scale = scale
+
+	var dying := false
+	var injured := false
+	if healthCtl.heartRate < 40:
+		dying = true
+		if blink_time2 < 1.0:
+			StatusLabel.text = "Status: DYING"
+		else:
+			StatusLabel.text = "Status: HEART RATE"
+	elif healthCtl.bloodVolume < 4500.0: 
+		dying = true
+		if blink_time2 < 1.0:
+			StatusLabel.text = "Status: DYING"
+		else:
+			StatusLabel.text = "Status: LOW BLOOD VOLUME"
+	elif healthCtl.bloodLossRate > 10.0: 
+		dying = true
+		if blink_time2 < 1.0:
+			StatusLabel.text = "Status: DYING"
+		else:
+			StatusLabel.text = "Status: BLOOD LOSS RATE"
+	elif healthCtl.get_limb_all("fractureAmount").values().max() > 0.0:
+		injured = true
+		if blink_time2 < 1.0:
+			StatusLabel.text = "Status: INJURED"
+		else:
+			StatusLabel.text = "Status: FRACTURE"
+	elif healthCtl.get_limb_all("dislocationAmount").values().max() > 0.0:
+		injured = true
+		if blink_time2 < 1.0:
+			StatusLabel.text = "Status: INJURED"
+		else:
+			StatusLabel.text = "Status: DISLOCATION"
+	elif healthCtl.bloodLossRate > 0.0: 
+		injured = true
+		if blink_time2 < 1.0:
+				StatusLabel.text = "Status: INJURED"
+		else:
+			StatusLabel.text = "Status: BLEEDING"
+	else:
+		StatusLabel.text = "Status: OK"
+		StatusLabel.modulate = Color.YELLOW
+		ap_alarm.playing = false
+
+	if dying:
+		if not ap_alarm.playing:
+			ap_alarm.playing = true
+		if blink_time > 0.25:
+			StatusLabel.modulate = Color.RED
+		else:
+			StatusLabel.modulate = Color.YELLOW
+	elif injured:
+		ap_alarm.playing = false
+		if blink_time > 0.25:
+			StatusLabel.modulate = Color.ORANGE
+		else:
+			StatusLabel.modulate = Color.YELLOW
+
+	if blink_time > 0.5:
+		blink_time = 0.0
+	if blink_time2 > 2.0:
+		blink_time2 = 0.0
+
+
+func final_bloodvol(initial: float, loss_rate_initial: float) -> float:
+	var k = Global.player.healthCtl.bloodClotSpeed
+	var vol_lost = (loss_rate_initial * loss_rate_initial) / (2.0 * k)
+	return initial - vol_lost
 
 func _HeartBeat():
 	Heart.scale = Vector2(1.2, 1.2)
@@ -184,7 +262,7 @@ func lung_anim(delta):
 		breathe_timer = 0.0
 
 func check_tooltip(node: Control, tt_title: String, tt_desc: String=""):
-	if node.get_global_rect().has_point(get_local_mouse_position()):
+	if is_mouse_colliding(node):
 		Global.playerGUI.tooltip.request_tooltip(tt_title, tt_desc)
 
 func limb_tooltip(limb: Control):
@@ -223,9 +301,9 @@ func handle_tooltips():
 	limb_tooltip($Body/Head)
 	limb_tooltip($Body/Neck)
 	if (
-		not $Body/Thorax/Heart.get_global_rect().has_point(get_local_mouse_position()) and 
-		not $Body/Thorax/LLung.get_global_rect().has_point(get_local_mouse_position()) and
-		not $Body/Thorax/RLung.get_global_rect().has_point(get_local_mouse_position())
+		not is_mouse_colliding($Body/Thorax/Heart) and 
+		not is_mouse_colliding($Body/Thorax/LLung) and
+		not is_mouse_colliding($Body/Thorax/RLung)
 	):
 		limb_tooltip($Body/Thorax)
 	limb_tooltip($Body/Abdomen)
@@ -250,3 +328,6 @@ func update_limbs():
 		Limbs[limb].dislocationAmount = PhysicalLimbs[limb].dislocationAmount
 		Limbs[limb].fractureAmount = PhysicalLimbs[limb].fractureAmount
 		Limbs[limb].splinted = PhysicalLimbs[limb].splinted
+
+func is_mouse_colliding(node: Control) -> bool:
+	return node.get_global_rect().has_point(get_local_mouse_position())
