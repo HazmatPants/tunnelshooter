@@ -164,7 +164,7 @@ func _process(delta: float) -> void:
 			StatusLabel.text = "Status: DYING"
 		else:
 			StatusLabel.text = "Status: HEART RATE"
-	elif healthCtl.bloodVolume < 4500.0: 
+	elif healthCtl.bloodVolume < 4000.0: 
 		dying = true
 		if blink_time2 < 1.0:
 			StatusLabel.text = "Status: DYING"

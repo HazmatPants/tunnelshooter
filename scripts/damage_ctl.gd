@@ -106,6 +106,7 @@ func _process(delta: float) -> void:
 
 	targetHR = restHR + (physicalWork + adrenaline) * (maxHR - restHR)
 	targetHR += total_pain
+	targetHR += (5000 - bloodVolume) / 16
 	targetHR -= stimAmount * 120
 	targetHR -= opioidAmount * 10
 	if brainHealth < 0.5:

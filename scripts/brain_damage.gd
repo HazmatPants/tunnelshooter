@@ -6,11 +6,14 @@ var stat
 
 var photopsia_timer: float = 0.0
 var seizure_timer: float = 0.0
+var lob_timer: float = 0.0
 var seizure_time: float = 0.0
 
 var seizuring: bool = false
 
-var next_seizure_time: float = 5.0
+var next_seizure_time: float = randf_range(120.0, 300.0)
+var next_photopsia_time: float = randf_range(3.0, 10.0)
+var next_lob_time: float = randf_range(30.0, 120.0)
 
 var actions = [
 	"crouch",
@@ -30,7 +33,6 @@ const photopsia_textures := [
 
 func _ready() -> void:
 	seizure_time = randf_range(1.0, 20.0)
-	next_seizure_time = 15.0
 	await Global.initialized
 	ap.volume_linear = 0.0
 	stat = Global.player.healthCtl
@@ -42,7 +44,7 @@ func _process(delta: float) -> void:
 	if stat.brainHealth <= 0.75:
 		photopsia_timer += delta
 		seizure_timer += delta
-		if photopsia_timer >= randf_range(3.0, 10.0):
+		if photopsia_timer >= next_photopsia_time:
 			if randf() > 0.75:
 				photopsia()
 			photopsia_timer = 0.0
@@ -56,6 +58,11 @@ func _process(delta: float) -> void:
 			ap.volume_linear = clampf(ap.volume_linear, 0.0, 1.0)
 		else:
 			ap.volume_linear = lerp(ap.volume_linear, 0.0, 0.1)
+	if stat.brainHealth <= 0.5:
+		lob_timer += delta
+		if lob_timer >= next_lob_time:
+			if randf() > 0.75:
+				lobotomy()
 	if seizuring:
 		if stat.consciousness > stat.unconsciousThreshold:
 			seizure_time -= delta
@@ -84,6 +91,7 @@ func _process(delta: float) -> void:
 	was_seizuring = seizuring
 
 func photopsia():
+	next_photopsia_time = randf_range(3.0, 10.0)
 	if randf() > 0.8:
 		Global.playerGUI.afterimage(randf() / 4, randf_range(1.0, 3.0), randf_range(1.0, 3.0), randf_range(1.0, 3.0))
 		Global.playsound(preload("res://assets/audio/bgs/headhit.ogg"))
@@ -99,3 +107,9 @@ func photopsia():
 	flash.modulate = Color(randf(), randf(), randf(), randf())
 	await get_tree().create_timer(randf_range(0.02, 0.25)).timeout
 	flash.queue_free()
+
+func lobotomy():
+	lob_timer = 0.0
+	Global.playerGUI.afterimage(randf() * 2, randf_range(2.0, 5.0), randf_range(5.0, 10.0), randf_range(5.0, 10.0))
+	Global.playsound(preload("res://assets/audio/music/lobotomy.wav"))
+	next_lob_time = randf_range(30.0, 120.0)
