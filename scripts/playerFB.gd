@@ -398,19 +398,16 @@ func _physics_process(delta):
 	is_moving = vel.length() > 0.3
 
 	if is_moving:
-		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0012 * (1.5 - healthCtl.stamina)
-		if healthCtl.is_leg_injured():
-			for limb in healthCtl.Limbs.values():
-				if limb.dislocationAmount > 0.0:
-					limb.pain += 0.1 * delta
-					limb.muscleHealth -= 0.01 * delta
-					limb.dislocationAmount += 0.01 * delta
-				if limb.fractureAmount > 0.0:
-					limb.pain += 0.1 * delta
-					limb.muscleHealth -= 0.01 * delta
-					limb.fractureAmount += 0.01 * delta
-			if not was_moving:
-				Global.playerGUI.show_hint("Using a dislocated limb will cause the injury to greatly worsen.")
+		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0015 * (1.5 - healthCtl.stamina)
+		for limb in healthCtl.Limbs.values():
+			if limb.dislocationAmount > 0.0:
+				limb.pain += 0.1 * delta
+				limb.muscleHealth -= 0.01 * delta
+				limb.dislocationAmount += 0.01 * delta
+			if limb.fractureAmount > 0.0 and not limb.splinted:
+				limb.pain += 0.2 * delta
+				limb.muscleHealth -= 0.01 * delta
+				limb.fractureAmount += 0.001 * delta
 
 	if not is_moving:
 		current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * 4.0)
@@ -470,7 +467,10 @@ func _physics_process(delta):
 			viewpunch_velocity += step_viewpunch
 			footstep_cooldown = current_footstep_interval
 			step_side = not step_side
-			viewpunch_velocity += Vector3(0, 0, step_kick) if step_side else Vector3(0, 0, -step_kick)
+			if healthCtl.is_leg_injured():
+				viewpunch_velocity += Vector3(0, 0, step_kick * 2) if step_side else Vector3(0, 0, -step_kick * 2)
+			else:
+				viewpunch_velocity += Vector3(0, 0, step_kick) if step_side else Vector3(0, 0, -step_kick)
 
 		last_bob_value = bob_value
 		footstep_cooldown -= delta
@@ -620,4 +620,4 @@ func do_fall_damage():
 	if fractured:
 		play_random_sfx(sfx_fracture, 0.0, false, "Master")
 	if injured:
-		playsound(preload("res://assets/audio/bgs/harmSting.ogg"), false, 0.0, "Master")
+		playsound(preload("res://assets/audio/bgs/harmSting.ogg"), false, -20, "Master")

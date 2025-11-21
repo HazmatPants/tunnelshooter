@@ -22,16 +22,16 @@ var skinHealth: float = 1.0
 var dislocationAmount: float = 0.0
 var fractureAmount: float = 0.0
 
+var splinted: bool = false
+
 func _process(delta: float) -> void:
 	if not Global.is_initialized:
 		return
 	bleedingRate -= Global.player.healthCtl.bloodClotSpeed * delta
 	bleedingRate = clampf(bleedingRate, 0.0, INF)
-	var pain_sub = (
-		(0.025 * 
-		1.0 + (Global.player.healthCtl.opioidAmount +
-		Global.player.healthCtl.stimAmount * 10) / 10)
-		)
+	var pain_sub = 0.025
+	pain_sub *= 1.0 + (Global.player.healthCtl.opioidAmount + 
+		Global.player.healthCtl.stimAmount * 10)
 	pain_sub += Global.player.healthCtl.adrenaline / 10
 
 	pain -= clampf(pain_sub, 0.0, INF) * delta
@@ -48,8 +48,15 @@ func _process(delta: float) -> void:
 	else:
 		skinHealth += 0.0001 * delta
 
-	dislocationAmount -= 0.0005 * delta
+	if splinted:
+		dislocationAmount -= 0.002 * delta
+		fractureAmount -= 0.002 * delta
+	else:
+		dislocationAmount -= 0.0005 * delta
+		fractureAmount -= 0.0005 * delta
+
 	dislocationAmount = clampf(dislocationAmount, 0.0, 1.0)
+	fractureAmount = clampf(fractureAmount, 0.0, 1.0)
 
 	muscleHealth = clampf(muscleHealth, 0.0, 1.0)
 	skinHealth = clampf(skinHealth, 0.0, 1.0)

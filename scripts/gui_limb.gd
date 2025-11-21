@@ -8,6 +8,9 @@ var muscleHealth: float = 1.0
 var skinHealth: float = 1.0
 var dislocationAmount: float = 0.0
 var fractureAmount: float = 0.0
+
+var splinted: bool = false
+
 var base_pos
 
 var center: CenterContainer
@@ -45,19 +48,27 @@ func _process(delta: float) -> void:
 	self_modulate = lerp(self_modulate, color, 0.1)
 	is_colliding = Rect2(Vector2(), size).has_point(get_local_mouse_position())
 	if is_colliding:
+		if Input.is_action_just_pressed("lmb") and splinted:
+			Global.player.healthCtl.Limbs[name].splinted = false
+			var splint = preload("res://scenes/items/splint.tscn").instantiate()
+			Global.playerScene.add_child(splint)
+			splint.global_position = Global.player.global_position
+			Global.playsound(preload("res://assets/audio/sfx/ui/inventory/wear.ogg"))
 		if Input.is_action_pressed("lmb") and dislocationAmount > 0.0 and not Global.player.healthCtl.get_limb_all("pain").values().max() > 0.75:
 			tooltip_progress.value += 0.333 * delta
 			tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 5.0, 0.1)
 			rotation_degrees = lerp(disloc_angle, 0.0, tooltip_progress.value)
+			Global.player.healthCtl.Limbs[name].pain += 0.1 * delta
 			if tooltip_progress.value >= 1.0:
 				tooltip_progress.value = 0.0
-				Global.player.healthCtl.Limbs[name].pain += randf_range(0.25, 0.6)
 				Global.playerGUI.shock()
 				Global.player.viewpunch_velocity += Vector3(-300.0, 0, 0)
 				Global.play_random_sfx(sfx_gore)
 				if randf() > 0.5:
+					Global.player.healthCtl.Limbs[name].pain -= 0.1
 					Global.player.healthCtl.Limbs[name].dislocationAmount = 0.0
 				else:
+					Global.player.healthCtl.Limbs[name].pain += randf_range(0.25, 0.6)
 					Global.player.healthCtl.Limbs[name].dislocationAmount += randf()
 					Global.playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"))
 		else:

@@ -28,6 +28,7 @@ var item_descs := {
 	"Bandage": "A roll of fabric used to cover wounds and slow bleeding.",
 	"IcePack": "A bag of a chemical that cools itself, helps with bruises, muscle damage, and pain, but slightly reduces blood flow to the limb.",
 	"ProteinGel": "A tube of gel containing protein, promotes muscle healing.",
+	"Splint": "A device that keeps a limb from moving, greatly speeds up healing of dislocations and bone fractures.",
 
 	"SS320": "A semi-automatic striker-fired handgun.",
 	"Uzi": "An open-bolt submachine gun.",

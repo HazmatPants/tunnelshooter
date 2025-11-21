@@ -44,7 +44,7 @@ var physicalWork: float = 0.05
 var stamina: float = 1.0
 var heartRate: float = 80.0 # bpm
 var maxHR: float = 240
-var restHR: float = 80
+var restHR: float = 70
 var targetHR: float = 80
 var breathingRate: float = 90
 var maxBR: float = 200
@@ -200,6 +200,7 @@ func _process(delta: float) -> void:
 	bloodClotSpeed = lerp(bloodClotSpeed, 0.003, 0.025 * delta)
 
 	internalBleeding -= (bloodClotSpeed * 5.0) * delta
+	internalBleeding = clampf(internalBleeding, 0.0, INF)
 
 	if bloodVolume <= 2500:
 		brainHealth -= (2500 - bloodVolume) * 0.00002 * delta
@@ -373,7 +374,7 @@ func add_to_blood(liq_name: String, amount: float=0.1):
 func is_leg_injured() -> bool:
 	for limb in Limbs.values():
 		if limb.isLeg:
-			if limb.dislocationAmount > 0.0 or limb.fractureAmount < 0.0 or limb.muscleHealth <= 0.05:
+			if limb.dislocationAmount > 0.0 or limb.muscleHealth <= 0.05:
 				return true
 		else:
 			continue

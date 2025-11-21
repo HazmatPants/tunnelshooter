@@ -195,11 +195,13 @@ func limb_tooltip(limb: Control):
 	str(int(round(PhysicalLimbs[limb.name].pain * 100)))])
 	if limb.dislocationAmount > 0.0:
 		if Global.player.healthCtl.get_limb_all("pain").values().max() < 0.75:
-			tt_text += "\n[color=pink]%s Dislocated\nClick to attempt reduction[/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
+			tt_text += "\n[color=pink]%s Dislocated\nHold click to attempt fix[/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
 		else:
 			tt_text += "\n[color=red]%s Dislocated\nToo much pain!![/color]" % (str(int(round(limb.dislocationAmount * 100))) + "%")
 	if limb.fractureAmount > 0.0:
 			tt_text += "\n[color=pink]%s Fractured[/color]" % (str(int(round(limb.fractureAmount * 100))) + "%")
+	if limb.splinted:
+		tt_text += "\nSplinted - Click to remove"
 	check_tooltip(limb, LimbDisplayNames[limb.name], tt_text)
 
 
@@ -207,9 +209,9 @@ func handle_tooltips():
 	check_tooltip($Panel/VBoxContainer/Brain/VBoxContainer/BrainHealthLabel, "Brain Integrity (%)")
 	check_tooltip($Panel/VBoxContainer/Brain/VBoxContainer/ConsciousnessLabel, "Consciousness (%)")
 	check_tooltip($Panel/VBoxContainer/Heart/BPMLabel, "Heart Rate (Beats/min)")
-	check_tooltip($Panel/VBoxContainer/Blood/VBoxContainer/BloodVolumeLabel, "Blood Volume (Liters)")
+	check_tooltip($Panel/VBoxContainer/Blood/VBoxContainer/BloodVolumeLabel, "Blood Volume (Liters)", "%s mL" % int(healthCtl.bloodVolume))
 	check_tooltip($Panel/VBoxContainer/Blood/VBoxContainer/SPO2Label, "Blood Oxygen (%)")
-	check_tooltip($Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel, "Total Blood Loss Rate (Liters/min)")
+	check_tooltip($Panel/VBoxContainer/Blood/VBoxContainer/BleedingRateLabel, "Total Blood Loss Rate (Liters/min)", "%s mL/m" % int((healthCtl.get_limb_total("bleedingRate") + healthCtl.internalBleeding) * 60))
 	check_tooltip($Panel/VBoxContainer/WorkLabel, "Physical Work (%)")
 	check_tooltip($Panel/VBoxContainer/StaminaLabel, "Stamina (%)")
 	check_tooltip($Panel/ECG, "Electrocardiogram (ECG)")
@@ -247,3 +249,4 @@ func update_limbs():
 		Limbs[limb].skinHealth = PhysicalLimbs[limb].skinHealth 
 		Limbs[limb].dislocationAmount = PhysicalLimbs[limb].dislocationAmount
 		Limbs[limb].fractureAmount = PhysicalLimbs[limb].fractureAmount
+		Limbs[limb].splinted = PhysicalLimbs[limb].splinted
