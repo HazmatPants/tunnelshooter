@@ -72,11 +72,12 @@ func _process(_delta: float) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
-func playsound(stream: AudioStream, volume: float=0):
+func playsound(stream: AudioStream, volume: float=0, pitch=1.0):
 	var ap = AudioStreamPlayer.new()
 	ap.volume_db = volume
 	get_tree().current_scene.add_child(ap)
 	ap.stream = stream
+	ap.pitch_scale = pitch
 	ap.play()
 	await ap.finished
 	ap.queue_free()

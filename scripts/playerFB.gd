@@ -291,6 +291,8 @@ func _ready():
 func _unhandled_input(event):
 	if is_input_enabled():
 		if event is InputEventMouseMotion and mouse_look_enabled:
+			if healthCtl.Limbs["Neck"].dislocationAmount > 0.0:
+				healthCtl.Limbs["Neck"].pain += 0.005
 			var mouse_sens = mouse_sensitivity if not Input.is_action_pressed("zoom") else mouse_sensitivity / 4
 			look_rotation.x -= event.relative.x * (mouse_sens * healthCtl.consciousness)
 			look_rotation.y -= event.relative.y * (mouse_sens * healthCtl.consciousness)
@@ -400,14 +402,15 @@ func _physics_process(delta):
 	if is_moving:
 		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0015 * (1.5 - healthCtl.stamina)
 		for limb in healthCtl.Limbs.values():
-			if limb.dislocationAmount > 0.0:
-				limb.pain += 0.1 * delta
-				limb.muscleHealth -= 0.01 * delta
-				limb.dislocationAmount += 0.01 * delta
-			if limb.fractureAmount > 0.0 and not limb.splinted:
-				limb.pain += 0.2 * delta
-				limb.muscleHealth -= 0.01 * delta
-				limb.fractureAmount += 0.001 * delta
+			if limb.isLeg and not limb.splinted:
+				if limb.dislocationAmount > 0.0:
+					limb.pain += 0.1 * delta
+					limb.muscleHealth -= 0.01 * delta
+					limb.dislocationAmount += 0.01 * delta
+				if limb.fractureAmount > 0.0:
+					limb.pain += 0.2 * delta
+					limb.muscleHealth -= 0.01 * delta
+					limb.fractureAmount += 0.001 * delta
 
 	if not is_moving:
 		current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * 4.0)
@@ -576,47 +579,74 @@ func set_input_lock(source: String, locked: bool):
 func is_input_enabled() -> bool:
 	return input_lock_reasons.is_empty()
 
-func do_fall_damage():
-	if Global.godmode:
-		return
+func fall_dmg(limb):
 	var dislocated: bool = false
 	var fractured: bool = false
 	var injured: bool = false
+
+	if abs(fall_velocity) > 20:
+		healthCtl.brainHealth -= abs(fall_velocity + randf()) / 200
+		Global.cause_of_death = "fall"
+		injured = true
+	if abs(fall_velocity) > 16:
+		healthCtl.brainHealth -= abs(fall_velocity + randf()) / 600
+		healthCtl.consciousness = 0.0
+		Global.cause_of_death = "fall"
+		injured = true
+	if abs(fall_velocity) > 14:
+		healthCtl.consciousness -= abs(fall_velocity) / 200
+		viewpunch_velocity += Vector3(-300.0, 0, 0)
+		Global.playerGUI.shock()
+		if randf() > 0.5:
+			limb.pain += randf_range(0.01, abs(fall_velocity / 50))
+			limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+			limb.skinHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+			healthCtl.internalBleeding += randf_range(0.1, 1.0)
+		if randf() > 0.85:
+			limb.fractureAmount += abs(fall_velocity) / randf_range(38, 42)
+			fractured = true
+		if randf() > 0.75:
+			healthCtl.internalBleeding += randf_range(0.5, 1.5)
+			limb.dislocationAmount += abs(fall_velocity) / randf_range(48, 52)
+			limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+			limb.skinHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+			limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
+			dislocated = true
+		injured = true
+	elif abs(fall_velocity) > 10:
+		if randf() > 0.5:
+			viewpunch_velocity += Vector3(-200.0, 0, 0)
+			limb.muscleHealth -= randf_range(abs(fall_velocity / 125), abs(fall_velocity / 100))
+			limb.skinHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
+			limb.pain += randf_range(0.01, abs(fall_velocity / 100))
+		injured = true
+
+	return {
+		"injured": injured,
+		"dislocated": dislocated,
+		"fractured": fractured
+	}
+
+func do_fall_damage():
+	if Global.godmode:
+		return
+
+	var dislocated: bool = false
+	var fractured: bool = false
+	var injured: bool = false
+
 	for limb in healthCtl.Limbs.values():
 		if limb.isLeg:
-			if abs(fall_velocity) > 20:
-				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 200
-				Global.cause_of_death = "fall"
-				injured = true
-			if abs(fall_velocity) > 16:
-				healthCtl.brainHealth -= abs(fall_velocity + randf()) / 600
-				healthCtl.consciousness = 0.0
-				Global.cause_of_death = "fall"
-				injured = true
-			if abs(fall_velocity) > 14:
-				healthCtl.consciousness -= abs(fall_velocity) / 200
-				viewpunch_velocity += Vector3(-300.0, 0, 0)
-				Global.playerGUI.shock()
-				if randf() > 0.5:
-					limb.pain += randf_range(0.01, abs(fall_velocity / 50))
-					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
-					healthCtl.internalBleeding += randf_range(0.1, 1.0)
-				if randf() > 0.85:
-					limb.fractureAmount += abs(fall_velocity) / randf_range(38, 42)
-					fractured = true
-				if randf() > 0.75:
-					healthCtl.internalBleeding += randf_range(0.5, 1.5)
-					limb.dislocationAmount += abs(fall_velocity) / randf_range(48, 52)
-					limb.muscleHealth -= randf_range(abs(fall_velocity / 100), abs(fall_velocity / 50))
-					limb.pain += randf_range(0.5, abs(fall_velocity) / 25)
-					dislocated = true
-				injured = true
-			elif abs(fall_velocity) > 10:
-				if randf() > 0.5:
-					viewpunch_velocity += Vector3(-200.0, 0, 0)
-					limb.muscleHealth -= randf_range(abs(fall_velocity / 125), abs(fall_velocity / 100))
-					limb.pain += randf_range(0.01, abs(fall_velocity / 100))
-				injured = true
+			var data = fall_dmg(limb)
+			injured = data["injured"] if not injured else true
+			dislocated = data["dislocated"] if not dislocated else true
+			fractured = data["fractured"] if not fractured else true
+		elif randf() > 0.7:
+			var data = fall_dmg(limb)
+			injured = data["injured"] if not injured else true
+			dislocated = data["dislocated"] if not dislocated else true
+			fractured = data["fractured"] if not fractured else true
+
 	if dislocated:
 		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, 0.0, "Master")
 	if fractured:

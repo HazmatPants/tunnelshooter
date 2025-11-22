@@ -23,6 +23,8 @@ const sfx_gore := [
 	preload("res://assets/audio/sfx/player/gore5.ogg")
 ]
 
+var stylebox = StyleBoxFlat.new()
+
 func _ready() -> void:
 	pivot_offset = size / 2
 	base_pos = position
@@ -30,6 +32,10 @@ func _ready() -> void:
 	center = CenterContainer.new()
 	call_deferred("add_child", center)
 	center.size = size
+	stylebox.bg_color = Color.BLACK
+	stylebox.border_color = Color.WHITE
+	stylebox.set_border_width_all(2)
+	add_theme_stylebox_override("panel", stylebox)
 
 var was_colliding: bool = false
 var is_colliding: bool = false
@@ -41,11 +47,16 @@ func _process(delta: float) -> void:
 		randf_range(-pain, pain),
 		randf_range(-pain, pain)
 	)
-	var damage = clamp(muscleHealth, 0.0, 1.0)
-	var color = Color(1.0, damage, damage, 1.0)
-	if muscleHealth <= 0.01:
-		color = Color.BLACK
-	self_modulate = lerp(self_modulate, color, 0.1)
+	var muscle_color = Color(1.0 - muscleHealth, 0.0, 0.0, 1.0)
+	if muscleHealth <= 0.0:
+		muscle_color = Color.BLACK
+	stylebox.bg_color = lerp(stylebox.bg_color, muscle_color, 0.1)
+
+	var skin_color = Color(1.0, skinHealth, skinHealth, 1.0)
+	if muscleHealth <= 0.0:
+		skin_color = Color.BLACK
+	stylebox.border_color = lerp(stylebox.border_color, skin_color, 0.1)
+
 	is_colliding = Rect2(Vector2(), size).has_point(get_local_mouse_position())
 	if is_colliding:
 		if Input.is_action_just_pressed("lmb") and splinted:
@@ -68,6 +79,10 @@ func _process(delta: float) -> void:
 					Global.player.healthCtl.Limbs[name].pain -= 0.1
 					Global.player.healthCtl.Limbs[name].dislocationAmount = 0.0
 				else:
+					if name == "Neck":
+						Global.player.healthCtl.consciousness = 0.0
+						Global.player.healthCtl.Limbs[name].pain = 1.0
+						Global.player.healthCtl.brainHealth -= randf_range(0.0, 0.1)
 					Global.player.healthCtl.Limbs[name].pain += randf_range(0.25, 0.6)
 					Global.player.healthCtl.Limbs[name].dislocationAmount += randf()
 					Global.playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"))
@@ -78,7 +93,7 @@ func _process(delta: float) -> void:
 
 	if not was_colliding and is_colliding:
 		owner.get_node("HealthGUI").hovered_limb = name
-		self_modulate.a -= 0.5
+		stylebox.border_color.a -= 0.5
 
 	if dislocationAmount > last_disloc_amount:
 		if roundi(randf()):

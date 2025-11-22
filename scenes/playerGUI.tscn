@@ -317,7 +317,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kf1ee")
 
 [node name="Body" type="Control" parent="HealthGUI"]
-modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -332,7 +331,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Head" type="ColorRect" parent="HealthGUI/Body"]
+[node name="Head" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -341,13 +340,13 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -40.0
 offset_top = -205.23
-offset_right = 40.0
+offset_right = 39.999985
 offset_bottom = -125.23
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="Neck" type="ColorRect" parent="HealthGUI/Body"]
+[node name="Neck" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -356,13 +355,13 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -30.0
 offset_top = -123.935
-offset_right = 30.0
+offset_right = 29.999985
 offset_bottom = -111.935
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="Thorax" type="ColorRect" parent="HealthGUI/Body"]
+[node name="Thorax" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -371,7 +370,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -40.0
 offset_top = -111.0
-offset_right = 40.0
+offset_right = 39.999985
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -415,7 +414,7 @@ pivot_offset = Vector2(28, 0)
 theme = SubResource("Theme_q0f5p")
 theme_override_styles/panel = SubResource("StyleBoxFlat_q0f5p")
 
-[node name="Abdomen" type="ColorRect" parent="HealthGUI/Body"]
+[node name="Abdomen" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -424,43 +423,43 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -40.0
 offset_top = -40.0
-offset_right = 40.0
+offset_right = 39.999985
 offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LUpperArm" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LUpperArm" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 46.0
+offset_left = 45.999985
 offset_top = -111.0
-offset_right = 118.0
+offset_right = 117.999985
 offset_bottom = -73.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LForearm" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LForearm" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 122.68
+offset_left = 122.68001
 offset_top = -111.0
-offset_right = 202.68
+offset_right = 202.67998
 offset_bottom = -73.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LHand" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LHand" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -475,7 +474,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="RUpperArm" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RUpperArm" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -490,7 +489,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="RForearm" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RForearm" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -505,7 +504,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="RHand" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RHand" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -520,7 +519,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LThigh" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LThigh" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -529,43 +528,43 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 3.0
 offset_top = 26.0
-offset_right = 40.0
+offset_right = 39.999985
 offset_bottom = 89.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LCrus" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LCrus" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 3.00003
-offset_top = 92.02
-offset_right = 40.0
-offset_bottom = 155.02
+offset_left = 3.0000305
+offset_top = 92.01999
+offset_right = 39.999985
+offset_bottom = 155.02002
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="LFoot" type="ColorRect" parent="HealthGUI/Body"]
+[node name="LFoot" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 3.00003
+offset_left = 3.0000305
 offset_top = 158.56
-offset_right = 55.0
+offset_right = 54.999985
 offset_bottom = 179.56
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="RThigh" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RThigh" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -580,7 +579,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fay7l")
 
-[node name="RCrus" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RCrus" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -588,15 +587,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -40.0
-offset_top = 92.02
-offset_right = -2.99997
-offset_bottom = 155.02
+offset_top = 92.01999
+offset_right = -2.9999695
+offset_bottom = 155.02002
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(18, 31)
 script = ExtResource("5_fay7l")
 
-[node name="RFoot" type="ColorRect" parent="HealthGUI/Body"]
+[node name="RFoot" type="Panel" parent="HealthGUI/Body"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -605,7 +604,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -55.0
 offset_top = 158.56
-offset_right = -2.99997
+offset_right = -2.9999695
 offset_bottom = 179.56
 grow_horizontal = 2
 grow_vertical = 2

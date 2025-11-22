@@ -110,6 +110,6 @@ func photopsia():
 
 func lobotomy():
 	lob_timer = 0.0
-	Global.playerGUI.afterimage(randf() * 2, randf_range(2.0, 5.0), randf_range(5.0, 10.0), randf_range(5.0, 10.0))
-	Global.playsound(preload("res://assets/audio/music/lobotomy.wav"))
+	Global.playerGUI.afterimage(randf() / 2, randf_range(2.0, 10.0), randf_range(5.0, 10.0), randf_range(5.0, 10.0))
+	Global.playsound(preload("res://assets/audio/music/lobotomy.wav"), randf_range(0.9, 1.1))
 	next_lob_time = randf_range(30.0, 120.0)

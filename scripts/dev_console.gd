@@ -242,6 +242,8 @@ func parse_command(commandString: String):
 					stat.Limbs[limb].bleedingRate = 0.0
 					stat.Limbs[limb].muscleHealth = 1.0
 					stat.Limbs[limb].skinHealth = 1.0
+					stat.Limbs[limb].dislocationAmount = 0.0
+					stat.Limbs[limb].fractureAmount = 0.0
 
 				for organ in stat.organs.keys():
 					stat.organs[organ] = true

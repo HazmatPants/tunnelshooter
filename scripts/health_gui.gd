@@ -114,9 +114,14 @@ func _process(delta: float) -> void:
 				ap_ecg.playing = false
 
 	if visible:
+		if healthCtl.consciousness <= healthCtl.unconsciousThreshold:
+			visible = false
+			Global.player.set_input_lock("healthmenu", false)
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
 		ap_alarm.volume_db = -20
 		handle_tooltips()
-		
+
 		if hovered_limb:
 			$Panel/VBoxContainer/HoveredLimbLabel.text = "\n" + LimbDisplayNames[hovered_limb]
 
@@ -130,7 +135,7 @@ func _process(delta: float) -> void:
 			if $Panel/ECG/Gradient.position.x > 60:
 				$Panel/ECG/Gradient.position.x = -120
 		else:
-			$Panel/ECG/Gradient.position.x += 3 * healthCtl.heartRate / 60
+			$Panel/ECG/Gradient.position.x += 3.0 * healthCtl.heartRate / 60
 			$Panel/ECG.texture = preload("res://assets/textures/ui/ecg.png")
 		if healthCtl.heartRate > 1:
 			$Panel/ECG.scale.y = healthCtl.bloodOxygen
