@@ -334,7 +334,6 @@ func _physics_process(delta):
 	speed *= 4.0 if Global.flashmode else 1.0
 	var desired_velocity = input_dir * speed
 	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
-	
 
 	var accel
 	if input_dir.length() > 0:
@@ -349,11 +348,15 @@ func _physics_process(delta):
 			accel = decceleration * 0.05
 	
 
-	horizontal_velocity = horizontal_velocity.lerp(desired_velocity, accel * delta)
+	horizontal_velocity = horizontal_velocity.lerp(velocity + desired_velocity, accel * delta)
 
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.z
-	
+
+	if is_on_floor():
+		velocity.x = lerp(velocity.x, 0.0, 0.12)
+		velocity.z = lerp(velocity.z, 0.0, 0.12)
+
 	var current_bobbing_speed = sprint_bobbing_speed if sprinting else bobbing_speed if not crouching else crouch_bobbing_speed
 	var current_bobbing_amount = sprint_bobbing_amount if sprinting else bobbing_amount
 	var current_footstep_interval = sprint_footstep_interval if sprinting else footstep_interval
@@ -428,7 +431,7 @@ func _physics_process(delta):
 
 	was_moving = is_moving
 
-	ap_wind.volume_linear = clampf(abs(velocity.length() / 16) - 0.3, 0.0, INF)
+	ap_wind.volume_linear = clampf(abs(velocity.length() / 16) - 0.3, 0.0, 10.0)
 
 	if not was_on_floor and is_on_floor():
 		viewpunch_velocity += land_viewpunch

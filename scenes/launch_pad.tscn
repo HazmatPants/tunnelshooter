@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://dncqa7sai4fpb"]
+
+[ext_resource type="Script" uid="uid://b5job0obf0jwc" path="res://scripts/launch_pad.gd" id="1_0xpjp"]
+[ext_resource type="Material" uid="uid://bawk0x2ptoym0" path="res://assets/materials/metal.tres" id="2_478fv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ofsxf"]
+material = ExtResource("2_478fv")
+size = Vector3(1, 0.075, 1.67)
+
+[sub_resource type="BoxMesh" id="BoxMesh_aq4yb"]
+material = ExtResource("2_478fv")
+size = Vector3(0.9, 0.075, 1.57)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xpjp"]
+size = Vector3(0.9, 0.075, 1.57)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3x8rw"]
+size = Vector3(0.5, 0.15851563, 1.2)
+
+[node name="LaunchPad" type="Node3D"]
+script = ExtResource("1_0xpjp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ofsxf")
+
+[node name="LauncherPivot" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.041, 0.75)
+collision_layer = 3
+collision_mask = 3
+
+[node name="Launcher" type="MeshInstance3D" parent="LauncherPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)
+mesh = SubResource("BoxMesh_aq4yb")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LauncherPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)
+shape = SubResource("BoxShape3D_0xpjp")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54551554, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.36537692, 0)
+shape = SubResource("BoxShape3D_3x8rw")

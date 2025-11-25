@@ -72,10 +72,16 @@ func _process(_delta: float) -> void:
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
-func playsound(stream: AudioStream, volume: float=0, pitch=1.0):
-	var ap = AudioStreamPlayer.new()
+func playsound(stream: AudioStream, volume: float=0, pitch=1.0, position=null):
+	var ap
+	if position == null:
+		ap = AudioStreamPlayer.new()
+	else:
+		ap = AudioStreamPlayer3D.new()
 	ap.volume_db = volume
 	get_tree().current_scene.add_child(ap)
+	if position != null:
+		ap.global_position = position
 	ap.stream = stream
 	ap.pitch_scale = pitch
 	ap.play()

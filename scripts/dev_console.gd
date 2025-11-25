@@ -52,7 +52,6 @@ func parse_command(commandString: String):
 				var help_string = ""
 				help_string += "status: returns internal health status values\n"
 				help_string += "getbodyvars: returns all variables in healthCtl Node\n"
-				help_string += "	!! WARNING: contains values that may crash the game if changed incorrectly!\n"
 				help_string += "getbodyvar <var>: gets a body variable's value\n"
 				help_string += "setbodyvar <var> <value>: sets a body variable's value\n"
 				help_string += "getlimbvars <limb> <var> <value>: sets a limb variable's value\n"
@@ -62,6 +61,7 @@ func parse_command(commandString: String):
 				help_string += "godmode: toggles godmode (invincibility to damage)\n"
 				help_string += "flashmode: toggles flashmode (super speed)\n"
 				help_string += "fall <amount>: teleports you <amount> meters upwards\n"
+				help_string += "vel <x> <y> <z>: sets your velocity to Vector3(x, y, z)"
 				user_print(help_string)
 			"status":
 				var stat = Global.player.healthCtl
@@ -264,6 +264,26 @@ func parse_command(commandString: String):
 				if args.size() > 1:
 					amount = args[1]
 				Global.player.global_position.y += abs(float(amount))
+			"vel":
+				var x = 0.0
+				var y = 0.0
+				var z = 0.0
+				if args.size() > 1:
+					if args[1].is_valid_float():
+						x = float(args[1])
+					else:
+						user_print("x: not a number")
+				if args.size() > 2:
+					if args[2].is_valid_float():
+						y = float(args[2])
+					else:
+						user_print("y: not a number")
+				if args.size() > 3:
+					if args[3].is_valid_float():
+						z = float(args[3])
+					else:
+						user_print("z: not a number")
+				Global.player.velocity = Vector3(x, y, z)
 			_:
 				user_print("Command not valid")
 				return

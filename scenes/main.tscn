@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://dtqbmnfg75l2j"]
+[gd_scene load_steps=57 format=3 uid="uid://dtqbmnfg75l2j"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_0wfyh"]
@@ -30,6 +30,7 @@
 [ext_resource type="PackedScene" uid="uid://cgnvboti64r87" path="res://scenes/m45a1.tscn" id="27_vxglm"]
 [ext_resource type="Texture2D" uid="uid://d2ablh56gcqms" path="res://assets/textures/mutilatedmoonbaby.jpg" id="28_2f3dj"]
 [ext_resource type="PackedScene" uid="uid://di6onv7auy0oq" path="res://scenes/items/splint.tscn" id="30_fv21b"]
+[ext_resource type="PackedScene" uid="uid://dncqa7sai4fpb" path="res://scenes/launch_pad.tscn" id="31_tel4y"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wfyh"]
 size = Vector3(400, 1, 400)
@@ -483,3 +484,6 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -5.9
 
 [node name="Splint" parent="." instance=ExtResource("30_fv21b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9409332, 0.7834999, -7.928753)
+
+[node name="LaunchPad" parent="." instance=ExtResource("31_tel4y")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.7798638, 0.53750026, 17.371433)

@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 	if not Global.is_initialized:
 		return
 	ap_alarm.global_position = global_position
-	var target = Global.player.get_node("Head").global_transform.origin + Global.player.velocity / 3
+	var target = Global.player.get_node("Head").global_transform.origin + Vector3(0.0, 0.2, 0.0) + Global.player.velocity / 3
 	var target_basis: Basis
 	if state == "shoot":
 		if aggro_timer > aggro_time - 1.0:
