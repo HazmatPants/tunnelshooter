@@ -17,8 +17,6 @@ var bgm_dying = preload("res://assets/audio/music/dying.wav")
 func _ready() -> void:
 	await Global.initialized
 
-	Global.player.Death.connect(_death)
-
 	$Blackout.visible = true
 
 func show_hint(text: String) -> void:
@@ -77,26 +75,27 @@ func _process(delta: float) -> void:
 	$Pain/Pain.modulate.a = max_pain
 	$Pain/Pain.scale = $Pain/Pain.scale.clamp(Vector2(0.5, 0.5), Vector2(INF, INF))
 
-	var current_blur = $blur.material.get_shader_parameter("lod")
-	var target_blur = lerp(0.0, 5.0, max(max_pain, 1.0 - Global.player.healthCtl.brainHealth))
+	var current_blur := 0.0
+	current_blur = $blur.material.get_shader_parameter("blur_amount")
+	var target_blur = lerp(0.0, 3.0, max(max_pain, 1.0 - Global.player.healthCtl.brainHealth))
+	if $HealthGUI.visible and target_blur < 3.0:
+		target_blur = 3.0
 	var lerped_blur = lerp(current_blur, target_blur, 0.1)
-	$blur.material.set_shader_parameter("lod", lerped_blur)
+	$blur.material.set_shader_parameter("blur_amount", lerped_blur)
+
+	$chromAberration.material.set_shader_parameter("spread", (1.0 - Global.player.healthCtl.brainHealth) / 2)
+
+	$Blackout.color = Color(0.0, 0.0, 0.0)
 
 	$Blackout.modulate.a = 1.0 - Global.player.healthCtl.consciousness
 	if Global.player.healthCtl.brainHealth < last_brainHealth and $Blackout.modulate.a > 0.9:
 		if $Blackout.visible and not Global.player.dead: # dying
-			$Blackout/TextureProgressBar.modulate = Color(1, 0, 0, $Blackout/TextureProgressBar.modulate.a)
-			$Blackout/TextureProgressBar.value = Global.player.healthCtl.brainHealth
-			$Blackout/Label.modulate.a = 1.0
-			$Blackout/Label.text = "!!"
+			$Blackout.color = Color(1.0 - Global.player.healthCtl.brainHealth, 0.0, 0.0)
 			mp.volume_linear = lerp(mp.volume_linear, 1.0, 0.05)
-			$Blackout/TextureProgressBar.max_value = 1
 			if not mp.playing:
 				mp.stream = bgm_dying
 				mp.play()
 	else: # dead
-		$Blackout/Label.modulate.a = 0.0
-		$Blackout/TextureProgressBar.value = 0
 		mp.volume_linear = lerp(mp.volume_linear, 0.0, 0.05)
 
 	if last_consc < Global.player.healthCtl.consciousness:
@@ -117,9 +116,6 @@ func _process(delta: float) -> void:
 
 	if afterimageOverlay.modulate.a > 0.0:
 		afterimageOverlay.modulate.a -= 0.025 * delta
-
-func _death():
-	$Blackout/Label.text = ""
 
 func shock():
 	shockOverlay.modulate.a = 1.0

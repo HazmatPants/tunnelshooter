@@ -140,6 +140,55 @@ const sfx_foot_step = {
 	]
 }
 
+const sfx_foot_run = {
+	"default": [
+		preload("res://assets/audio/sfx/footsteps/default/default_step1.wav"),
+		preload("res://assets/audio/sfx/footsteps/default/default_step2.wav"),
+		preload("res://assets/audio/sfx/footsteps/default/default_step3.wav"),
+		preload("res://assets/audio/sfx/footsteps/default/default_step4.wav")
+	],
+	"plastic": [
+		preload("res://assets/audio/sfx/footsteps/plastic/plastic_step1.wav"),
+		preload("res://assets/audio/sfx/footsteps/plastic/plastic_step2.wav"),
+		preload("res://assets/audio/sfx/footsteps/plastic/plastic_step3.wav"),
+		preload("res://assets/audio/sfx/footsteps/plastic/plastic_step4.wav")
+	],
+	"metal": [
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run4.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run5.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run6.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run7.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run8.ogg"),
+		preload("res://assets/audio/sfx/footsteps/metal/metalbar_run9.ogg")
+	],
+	"concrete": [
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run4.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run5.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run6.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run7.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run8.ogg"),
+		preload("res://assets/audio/sfx/footsteps/concrete/concrete_run9.ogg")
+	],
+	"squeakywood": [
+		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/squeakywood/squeakywood_walk4.ogg")
+	],
+	"grass": [
+		preload("res://assets/audio/sfx/footsteps/grass/grass_run1.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_run2.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_run3.ogg"),
+		preload("res://assets/audio/sfx/footsteps/grass/grass_run4.ogg")
+	]
+}
+
 const sfx_foot_impact = {
 	"default": [
 		preload("res://assets/audio/sfx/footsteps/default/default_step1.wav"),
@@ -263,6 +312,8 @@ func footstep_sound(type: String="step", volume: float=0.0):
 			sound_list = sfx_foot_step.get(material, sfx_foot_step["default"])
 		elif type == "wander":
 			sound_list = sfx_foot_wander.get(material, sfx_foot_wander["default"])
+		elif type == "run":
+			sound_list = sfx_foot_run.get(material, sfx_foot_run["default"])
 
 		play_random_sfx(sound_list, volume, false)
 
@@ -386,9 +437,6 @@ func _physics_process(delta):
 				footstep_sound("impact")
 	crouching = Input.is_action_pressed("crouch")
 
-	if healthCtl.is_leg_injured():
-		crouching = true
-
 	if is_input_enabled():
 		if crouching:
 			$CollisionShape3D.position.y = lerp($CollisionShape3D.position.y, crouch_height, 0.1)
@@ -404,16 +452,6 @@ func _physics_process(delta):
 
 	if is_moving:
 		healthCtl.physicalWork += 0.0001 if not sprinting else 0.0015 * (1.5 - healthCtl.stamina)
-		for limb in healthCtl.Limbs.values():
-			if limb.isLeg and not limb.splinted:
-				if limb.dislocationAmount > 0.0:
-					limb.pain += 0.1 * delta
-					limb.muscleHealth -= 0.01 * delta
-					limb.dislocationAmount += 0.01 * delta
-				if limb.fractureAmount > 0.0:
-					limb.pain += 0.2 * delta
-					limb.muscleHealth -= 0.01 * delta
-					limb.fractureAmount += 0.001 * delta
 
 	if not is_moving:
 		current_strafe_roll = lerp(current_strafe_roll, target_roll, delta * 4.0)
@@ -469,14 +507,49 @@ func _physics_process(delta):
 
 		if bob_value < 0.0 and last_bob_value >= 0.0 and footstep_cooldown <= 0.0:
 			var volume: float = 0.1 if crouching else 0.4
-			footstep_sound("step", linear_to_db(volume))
+			if sprinting:
+				footstep_sound("run", linear_to_db(volume))
+			else:
+				footstep_sound("step", linear_to_db(volume))
 			viewpunch_velocity += step_viewpunch
 			footstep_cooldown = current_footstep_interval
 			step_side = not step_side
-			if healthCtl.is_leg_injured():
-				viewpunch_velocity += Vector3(0, 0, step_kick * 2) if step_side else Vector3(0, 0, -step_kick * 2)
-			else:
-				viewpunch_velocity += Vector3(0, 0, step_kick) if step_side else Vector3(0, 0, -step_kick)
+			viewpunch_velocity += Vector3(0, 0, step_kick) if step_side else Vector3(0, 0, -step_kick)
+			var injured_side := ""
+			for limb in healthCtl.Limbs.values():
+				if step_side:
+					if limb.isLeg and not limb.splinted and "L" in limb.name:
+						if limb.dislocationAmount > 0.0:
+							limb.pain += 0.05
+							limb.muscleHealth -= 0.005
+							limb.dislocationAmount += 0.005
+							injured_side = "L"
+						if limb.fractureAmount > 0.0:
+							limb.pain += 0.05
+							limb.muscleHealth -= 0.005
+							limb.fractureAmount += 0.005
+							injured_side = "L"
+				else:
+					if limb.isLeg and not limb.splinted and "R" in limb.name:
+
+						if limb.dislocationAmount > 0.0:
+							limb.pain += 0.05
+							limb.muscleHealth -= 0.005
+							limb.dislocationAmount += 0.005
+							if injured_side == "":
+								injured_side = "R"
+							else:
+								injured_side = "LR"
+						if limb.fractureAmount > 0.0:
+							limb.pain += 0.05
+							limb.muscleHealth -= 0.005
+							limb.fractureAmount += 0.005
+							if injured_side == "":
+								injured_side = "R"
+							else:
+								injured_side = "LR"
+			if injured_side != "":
+				viewpunch_velocity += Vector3(0, 0, step_kick * 4) if step_side else Vector3(0, 0, -step_kick * 4)
 
 		last_bob_value = bob_value
 		footstep_cooldown -= delta
@@ -651,7 +724,7 @@ func do_fall_damage():
 			fractured = data["fractured"] if not fractured else true
 
 	if dislocated:
-		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, 0.0, "Master")
+		playsound(preload("res://assets/audio/sfx/physics/land/dislocation.ogg"), false, 0.0)
 	if fractured:
 		play_random_sfx(sfx_fracture, 0.0, false, "Master")
 	if injured:

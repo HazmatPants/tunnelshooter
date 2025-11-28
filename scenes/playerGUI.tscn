@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dc7l8xehcc418"]
+[gd_scene load_steps=35 format=3 uid="uid://dc7l8xehcc418"]
 
 [ext_resource type="Script" uid="uid://bch43lv5jeax1" path="res://scripts/player_gui.gd" id="1_cvfx2"]
 [ext_resource type="AudioStream" uid="uid://2vpiayiwu6uf" path="res://assets/audio/music/death.wav" id="2_y1buc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bf5yudjb1uf7y" path="res://assets/textures/ui/hearticon.png" id="6_0f6tr"]
 [ext_resource type="Texture2D" uid="uid://dmi3u4ivo82ou" path="res://assets/textures/ui/braindeathprogress.png" id="8_epmk8"]
 [ext_resource type="Script" uid="uid://dve405pslbkba" path="res://scripts/dev_console.gd" id="9_q0f5p"]
+[ext_resource type="Shader" uid="uid://iok22nfn2lby" path="res://shaders/chromatic_aberration.gdshader" id="9_wgrh7"]
 [ext_resource type="Script" uid="uid://cls3l640543eb" path="res://scripts/afflictions.gd" id="10_bauuc"]
 [ext_resource type="Script" uid="uid://ct72clt2kjpmf" path="res://scripts/tooltip.gd" id="12_8rw1s"]
 [ext_resource type="Texture2D" uid="uid://ca7dshqmqa1kv" path="res://assets/textures/ui/painimage.png" id="12_calrp"]
@@ -24,9 +25,16 @@
 [ext_resource type="AudioStream" uid="uid://u8hkcds047jd" path="res://assets/audio/bgs/incoming_seizure.wav" id="19_blegf"]
 [ext_resource type="Shader" uid="uid://b6ruxsiaxscer" path="res://shaders/blur.gdshader" id="23_wgrh7"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2wsxk"]
 shader = ExtResource("23_wgrh7")
-shader_parameter/lod = 0.0
+shader_parameter/blur_amount = 0.0
+shader_parameter/mix_amount = 0.0
+shader_parameter/color_over = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_350o8"]
+shader = ExtResource("9_wgrh7")
+shader_parameter/levels = 64
+shader_parameter/spread = 0.01
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kf1ee"]
 bg_color = Color(0, 0, 0, 0.666667)
@@ -66,10 +74,6 @@ expand_margin_top = 10.0
 expand_margin_right = 10.0
 expand_margin_bottom = 10.0
 anti_aliasing = false
-
-[sub_resource type="Theme" id="Theme_epmk8"]
-default_font = ExtResource("4_kf1ee")
-default_font_size = 80
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wgrh7"]
 bg_color = Color(0.33, 0.209, 0, 1)
@@ -287,7 +291,15 @@ pivot_offset = Vector2(1024, 1024)
 texture = ExtResource("12_cle1p")
 
 [node name="blur" type="ColorRect" parent="."]
-top_level = true
+material = SubResource("ShaderMaterial_2wsxk")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="chromAberration" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_350o8")
 anchors_preset = 15
 anchor_right = 1.0
@@ -790,42 +802,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="Label" type="Label" parent="Blackout"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -67.0
-offset_top = -95.0
-offset_right = 68.0
-offset_bottom = -15.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_epmk8")
-text = "..."
-horizontal_alignment = 1
-
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Blackout"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -207.0
-offset_top = 16.56
-offset_right = 207.0
-offset_bottom = 56.56
-grow_horizontal = 2
-grow_vertical = 2
-max_value = 1.0
-step = 0.0
-value = 1.0
-nine_patch_stretch = true
-texture_progress = ExtResource("8_epmk8")
 
 [node name="Crosshair" type="TextureRect" parent="."]
 anchors_preset = 8

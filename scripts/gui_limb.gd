@@ -69,7 +69,10 @@ func _process(delta: float) -> void:
 			tooltip_progress.value += 0.333 * delta
 			tooltip_progress.custom_minimum_size.y = lerp(tooltip_progress.custom_minimum_size.y, 5.0, 0.1)
 			rotation_degrees = lerp(disloc_angle, 0.0, tooltip_progress.value)
-			Global.player.healthCtl.Limbs[name].pain += 0.1 * delta
+			if name == "Neck":
+				Global.player.healthCtl.Limbs[name].pain += 0.25 * delta
+			else:
+				Global.player.healthCtl.Limbs[name].pain += 0.1 * delta
 			if tooltip_progress.value >= 1.0:
 				tooltip_progress.value = 0.0
 				Global.playerGUI.shock()

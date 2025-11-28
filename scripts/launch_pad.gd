@@ -18,7 +18,7 @@ func _body_entered(body: Node3D) -> void:
 		reset_timer = 1.0
 		Global.playsound(preload("res://assets/audio/sfx/physics/launcher.wav"), 0, 1.0, global_position)
 		for b in bodies:
-			b.velocity += Vector3(0.0, 15.0, 10.0)
+			b.velocity += Vector3(0.0, 17.0, 13.0)
 			if b == Global.player:
 				b.viewpunch_velocity.x += 1000.0
 
