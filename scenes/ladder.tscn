@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://devgiahru0nr8"]
+
+[ext_resource type="Script" uid="uid://8u5f52jqrmvm" path="res://scripts/ladder.gd" id="1_xb1tl"]
+[ext_resource type="Material" uid="uid://bawk0x2ptoym0" path="res://assets/materials/metal.tres" id="1_xxwne"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xb1tl"]
+size = Vector3(1, 4, 0.37646484)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ku54x"]
+material = ExtResource("1_xxwne")
+size = Vector3(1, 0.1, 0.1)
+
+[node name="Ladder" type="Node3D"]
+script = ExtResource("1_xb1tl")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.18823242)
+shape = SubResource("BoxShape3D_xb1tl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_ku54x")
+
+[node name="PlayerPos" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5303341, 0.6632339)

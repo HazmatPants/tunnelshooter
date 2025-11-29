@@ -135,6 +135,7 @@ mesh = SubResource("BoxMesh_g2els")
 
 [node name="FrontRay" type="RayCast3D" parent="Head/Camera3D"]
 target_position = Vector3(0, 0, -5)
+collide_with_areas = true
 
 [node name="GrabPoint" type="Node3D" parent="Head/Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.208, -0.43)

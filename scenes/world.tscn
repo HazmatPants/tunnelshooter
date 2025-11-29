@@ -1,15 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://ef8o1tsh5fdp"]
+[gd_scene load_steps=12 format=3 uid="uid://ef8o1tsh5fdp"]
 
 [ext_resource type="PackedScene" uid="uid://b6e7d6pfq0oyt" path="res://scenes/playerFB.tscn" id="1_4wyf3"]
 [ext_resource type="Environment" uid="uid://m8173xuc6d13" path="res://assets/res/environment.tres" id="1_k0juu"]
 [ext_resource type="PackedScene" uid="uid://dc7l8xehcc418" path="res://scenes/playerGUI.tscn" id="2_k0juu"]
 [ext_resource type="Texture2D" uid="uid://cu2lwksqoxx75" path="res://assets/textures/surfaces/grass_top.png" id="3_71j4m"]
+[ext_resource type="PackedScene" uid="uid://devgiahru0nr8" path="res://scenes/ladder.tscn" id="5_71j4m"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qfnet"]
 size = Vector3(2000, 1, 2000)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
-albedo_color = Color(0.21950102, 0.21950102, 0.21950102, 1)
+albedo_color = Color(0.21960784, 0.43529412, 0.21960784, 1)
 albedo_texture = ExtResource("3_71j4m")
 uv1_triplanar = true
 texture_filter = 0
@@ -18,16 +19,27 @@ texture_filter = 0
 material = SubResource("StandardMaterial3D_i7141")
 size = Vector3(2000, 1, 2000)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_k0juu"]
+size = Vector3(10, 20, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0, 0, 0, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_qfnet"]
+material = SubResource("StandardMaterial3D_71j4m")
+size = Vector3(10, 20, 10)
+
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_k0juu")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.763417, -0.399789, -0.507309, 0.553464, -3.6406e-08, 0.832873, -0.332974, -0.916607, 0.221269, 0, 4.48028, 0)
+transform = Transform3D(-0.77526593, -0.36544538, 0.5151829, 0.5534642, -3.7757633e-07, 0.83287305, -0.30436873, 0.9308325, 0.2022612, 0, 4.48028, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_4wyf3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0761597, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7867985, 0)
 
 [node name="PlayerGUI" parent="." instance=ExtResource("2_k0juu")]
 
@@ -41,3 +53,35 @@ shape = SubResource("BoxShape3D_qfnet")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_4mrxx")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6182003, 10.237388, -8.233727)
+collision_layer = 3
+collision_mask = 2
+metadata/material_type = "grass"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_k0juu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_qfnet")
+
+[node name="Ladder" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.439, 0.5, -5.47)
+start = true
+
+[node name="Ladder2" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.439, 4.5, -5.47)
+
+[node name="Ladder3" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.439, 8.5, -5.47)
+
+[node name="Ladder4" parent="." instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.439, 12.5, -5.47)
+
+[node name="Ladder5" parent="." node_paths=PackedStringArray("end_position") instance=ExtResource("5_71j4m")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.439, 16.5, -5.47)
+end_position = NodePath("LadderEndPos")
+
+[node name="LadderEndPos" type="Node3D" parent="Ladder5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.671047, -0.87770724)

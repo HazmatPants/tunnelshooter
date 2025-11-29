@@ -7,6 +7,7 @@ extends CharacterBody3D
 @export var mouse_sensitivity := 0.004
 @export var jump_velocity := 4.5
 @export var gravity := Vector3.DOWN * 10
+@export var gravity_scale := 1.0
 
 @export var crouch_height: float = 0.4
 @export var crouch_move_speed := 2.0
@@ -89,6 +90,7 @@ var ap_wind = AudioStreamPlayer.new()
 var tinnitus: float = 0.0
 var hearing_damage: float = 0.0
 
+var is_on_ladder: bool = false
 var dead: bool = false
 
 @export var equipment := [
@@ -253,6 +255,13 @@ const sfx_foot_wander = {
 	]
 }
 
+const sfx_ladder = [
+	preload("res://assets/audio/sfx/footsteps/ladder/ladder1.wav"),
+	preload("res://assets/audio/sfx/footsteps/ladder/ladder2.wav"),
+	preload("res://assets/audio/sfx/footsteps/ladder/ladder3.wav"),
+	preload("res://assets/audio/sfx/footsteps/ladder/ladder4.wav")
+]
+
 const sfx_land_heavy := [
 	preload("res://assets/audio/sfx/physics/land/landheavy1.ogg"),
 	preload("res://assets/audio/sfx/physics/land/landheavy2.ogg")
@@ -352,21 +361,37 @@ func _unhandled_input(event):
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 	rotation.y = look_rotation.x
 
+var ladders := []
+var ladder_sfx_timer := 0.0
+
 var fall_velocity: float = 0.0
 func _physics_process(delta):
 	var input_dir = Vector3.ZERO
 	var forward = -transform.basis.z.normalized()
 	var right = transform.basis.x.normalized()
+	is_on_ladder = !ladders.is_empty()
+	if is_on_ladder:
+		gravity_scale = 0.0
+	else:
+		gravity_scale = 1.0
 	if is_input_enabled():
 		if Input.is_action_pressed("move_forward"):
 			input_dir += forward
+			if is_on_ladder:
+				ladder_sfx_timer += delta
+				global_position.y += 3.0 * delta
 		if Input.is_action_pressed("move_backward"):
 			input_dir -= forward
+			if is_on_ladder:
+				ladder_sfx_timer += delta
+				global_position.y -= 3.0 * delta
 		if Input.is_action_pressed("move_right"):
 			input_dir += right
 		if Input.is_action_pressed("move_left"):
 			input_dir -= right
-
+		if ladder_sfx_timer > 0.5:
+			ladder_sfx_timer = 0.0
+			Global.play_random_sfx(sfx_ladder)
 	var target_roll = 0.0
 	if is_input_enabled():
 		if is_on_floor():
@@ -414,7 +439,7 @@ func _physics_process(delta):
 	current_bobbing_speed *= healthCtl.stamina
 
 	if not is_on_floor():
-		velocity += gravity * delta
+		velocity += (gravity * gravity_scale) * delta
 		fall_velocity = velocity.y
 		if abs(fall_velocity) > 5:
 			viewpunch_velocity += Vector3(
@@ -429,7 +454,7 @@ func _physics_process(delta):
 		fall_velocity = 0.0
 		if is_input_enabled():
 			if Input.is_action_just_pressed("jump"):
-				healthCtl.physicalWork += 0.2 * (2.0 - healthCtl.stamina)
+				healthCtl.physicalWork += 0.1 * (2.0 - healthCtl.stamina)
 				var jump_height = jump_velocity * healthCtl.stamina
 				jump_height *= 3.0 if Global.flashmode else 1.0
 				velocity.y = jump_height
@@ -628,6 +653,17 @@ func _process(delta: float) -> void:
 	else:
 		AudioServer.get_bus_effect(1, 0).cutoff_hz = lowpass_hz
 
+	if Input.is_action_just_pressed("interact"):
+		var collider = frontRay.get_collider()
+		if collider:
+			var properties = collider.owner.get_method_list()
+			var exists := false
+			for property in properties:
+				if property.name == "interact":
+					exists = true
+					break
+			if exists:
+				collider.owner.interact()
 func damage_ears(amount: float):
 	if Global.quiet_guns:
 		return
